@@ -12,4 +12,4 @@ Email: suzhan.cn@gmail.com
 3. 整理存储格式 : 存储目录路径/拍摄日期/文件类型/... 如  d:/photo/2017.01.01/JPG/DES_1231.JPG  
 4. 如果目标文件中存在与源文件的MD5,sha1，文件大小都一样的文件就忽略处理，直接删除   
 5. 整理后删除源文件夹中的空目录。    
-6. 依赖 python 3.6 , pyqt5 , hachoir3.
+6. 依赖 python 3.6 , pyqt5 , hachoir3. exifread2.1.2
