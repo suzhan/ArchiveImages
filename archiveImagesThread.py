@@ -74,12 +74,28 @@ class GetPostThread(QThread):
         """
         处理'.jpg', '.png', '.mp4', '.nef', '.3gp', '.flv', '.mkv'文件.读出建立日期
         """
-        with open(filename,'rb') as f:
-            exif = exifread.process_file(f)
-            if exif is not None:
-                t= exif['EXIF DateTimeOriginal']
+        #with open(filename,'rb') as f:
+        #    exif = exifread.process_file(f)
+        #    if exif is not None:
+        #        t= exif['EXIF DateTimeOriginal']
+        #        return str(t).replace(":", ".")[:10]
+        #state = os.stat(filename)
+        #return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
+        try:
+            fd=open(filename, 'rb')
+        except:
+            raise ReadFailException("unopen file[%s]\n" % filename)
+
+        data=exifread.process_file(fd)
+
+        if data:
+            try:
+                t=data['EXIF DateTimeOriginal']
                 return str(t).replace(":", ".")[:10]
-        state = os.stat(filename)
+            except:
+                pass
+
+        state=os.stat(filename)
         return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
 
     def getOriginalDateMOV(self, filename):

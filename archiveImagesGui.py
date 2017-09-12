@@ -137,9 +137,13 @@ class Ui_Form(QWidget):
         self.progressBar.setValue(0)
         src = self.lineEdit_src.text()
         if src == "":
-            print("没有选择源文件夹")
+            #print("没有选择源文件夹")
             self.textBrowser.append("请选择整理目录。")
             return
+        if not os.listdir(self.sPath):
+            self.textBrowser.append("您所选择的整理目录为空目录。")
+            return
+
         self.textBrowser.clear()   #清空结果
         self.textBrowser.append("开始整理")
 
@@ -153,7 +157,7 @@ class Ui_Form(QWidget):
                 if e.lower() not in ('.jpg', '.png', '.nef', '.mp4', '.3gp', '.flv', '.mkv', '.mov'):
                     continue
                 filename_list.append(filename)
-            print(filename_list)
+            #print(filename_list)
 
         totalCount = len(filename_list)
         self.progressBar.setMaximum(totalCount)  #设置进度值总数
@@ -162,11 +166,11 @@ class Ui_Form(QWidget):
         self.testThread.setArchFilename(filename_list) #文件列表线程
         self.testThread.start()   #开始执行archThread线程
         self.startBtn.setEnabled(False)  # 设置开始按钮为禁用
-        self.stopBtn.setEnabled(True)  # 设置停止按钮为雇用
+        self.stopBtn.setEnabled(True)  # 设置停止按钮为启用
 
     def stopBtnClicked(self):
         '''停止整理'''
-        print("stop")
+        #print("stop")
         self.testThread.terminate()
         self.startBtn.setEnabled(True)  # 设置开始按钮为禁用
         self.stopBtn.setEnabled(False)  # 设置停止按钮为雇用
@@ -185,7 +189,7 @@ class Ui_Form(QWidget):
         self.stopBtn.setEnabled(False)  # 设置停止按钮为雇用
 
     def getPostSlot(self, top_post): #将整理结果显示到文本框textBrowser
-        print(top_post)   #打印执行结果 top_post 是getposttheard.py 执行结果
+        #print(top_post)   #打印执行结果 top_post 是getposttheard.py 执行结果
         self.textBrowser.append(top_post)  #消息打印到文本框textBrowser
         self.progressBar.setValue(self.progressBar.value() + 1) #处理一个进度条+1
 
@@ -198,7 +202,7 @@ class Ui_Form(QWidget):
                 myfile = os.path.join(root, file)
                 if not os.path.getsize(myfile):
                     os.remove(myfile)
-                    print('清理空文件:', myfile)
+                    #print('清理空文件:', myfile)
                     self.textBrowser.append('清理空文件:' + myfile)
 
             for dir in dirs:
@@ -206,7 +210,7 @@ class Ui_Form(QWidget):
                 if not os.listdir(mydir):
                     #shutil.rmtree(mydir)
                     os.rmdir(mydir)
-                    print('清理空文件夹:', mydir)
+                    #print('清理空文件夹:', mydir)
                     self.textBrowser.append('清理空文件夹:'+ mydir)
         self.textBrowser.append("清理源路径空目录完成。")
 
