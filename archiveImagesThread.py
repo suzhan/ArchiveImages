@@ -43,7 +43,7 @@ class GetPostThread(QThread):
             t = self.getOriginalDate(archFilename)
 
         # 建立存储目标目录名
-        dst = f'{self.subreddits_dst}/{t[0:4]}/{t}/{os.path.splitext(archFilename)[1][1:]}'
+        dst = f'{self.subreddits_dst}/{t[0:4]}/{t}'
         if not os.path.exists(dst):
             os.makedirs(dst)
 
