@@ -10,11 +10,19 @@
     <height>579</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>9</pointsize>
+    <weight>50</weight>
+    <bold>false</bold>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="lineEdit_src">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -24,7 +32,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButton_src">
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -37,7 +45,7 @@
      <string>浏览</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QCheckBox" name="checkBox_Subdirectory">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -50,12 +58,12 @@
      <string>包含子文件夹</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_2">
+   <widget class="QCheckBox" name="checkBox_del">
     <property name="geometry">
      <rect>
       <x>60</x>
       <y>90</y>
-      <width>221</width>
+      <width>231</width>
       <height>16</height>
      </rect>
     </property>
@@ -63,7 +71,7 @@
      <string>处理文件后，将其从此文件夹中删除</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="groupBox_src">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -76,7 +84,7 @@
      <string>来源</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="lineEdit_rename">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -89,7 +97,7 @@
      <string>&lt;原文件名&gt;_&lt;拍摄日期&gt;.jpg</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="pushButton_rename">
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -102,7 +110,7 @@
      <string>编辑</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_3">
+   <widget class="QCheckBox" name="checkBox_rename">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -121,7 +129,7 @@
      </size>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton">
+   <widget class="QRadioButton" name="radioButton_date">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -134,7 +142,7 @@
      <string>按拍摄日期</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton_2">
+   <widget class="QRadioButton" name="radioButton_cameraType">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -147,7 +155,7 @@
      <string>按相机型号</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton_3">
+   <widget class="QRadioButton" name="radioButton_lensType">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -160,7 +168,7 @@
      <string>按镜头型号</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton_4">
+   <widget class="QRadioButton" name="radioButton_focalLength">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -186,7 +194,7 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QGroupBox" name="groupBox_method">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -199,7 +207,7 @@
      <string>方法</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_3">
+   <widget class="QGroupBox" name="groupBox_dst">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -211,20 +219,20 @@
     <property name="title">
      <string>目的地</string>
     </property>
-    <widget class="QLineEdit" name="lineEdit_3">
+    <widget class="QLineEdit" name="lineEdit_dst">
      <property name="geometry">
       <rect>
        <x>20</x>
        <y>40</y>
-       <width>451</width>
+       <width>481</width>
        <height>23</height>
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="pushButton_dst">
      <property name="geometry">
       <rect>
-       <x>480</x>
+       <x>510</x>
        <y>40</y>
        <width>75</width>
        <height>23</height>
@@ -234,12 +242,12 @@
       <string>浏览</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="radioButton_5">
+    <widget class="QRadioButton" name="radioButton_select">
      <property name="geometry">
       <rect>
        <x>110</x>
        <y>20</y>
-       <width>89</width>
+       <width>91</width>
        <height>16</height>
       </rect>
      </property>
@@ -247,12 +255,12 @@
       <string>选择文件夹</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="radioButton_6">
+    <widget class="QRadioButton" name="radioButton_src">
      <property name="geometry">
       <rect>
        <x>230</x>
        <y>20</y>
-       <width>89</width>
+       <width>101</width>
        <height>16</height>
       </rect>
      </property>
@@ -261,7 +269,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="pushButton_start">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -274,7 +282,7 @@
      <string>开始</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="pushButton_stop">
     <property name="geometry">
      <rect>
       <x>480</x>
@@ -316,7 +324,7 @@
      <string>处理中：                  文件名：                        状态：                12 / 100 总数  </string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_4">
+   <widget class="QGroupBox" name="groupBox_schedule">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -329,24 +337,24 @@
      <string>进度</string>
     </property>
    </widget>
-   <zorder>groupBox_4</zorder>
-   <zorder>groupBox_2</zorder>
-   <zorder>groupBox</zorder>
-   <zorder>lineEdit</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>checkBox</zorder>
-   <zorder>checkBox_2</zorder>
-   <zorder>lineEdit_2</zorder>
-   <zorder>pushButton_2</zorder>
-   <zorder>checkBox_3</zorder>
-   <zorder>radioButton</zorder>
-   <zorder>radioButton_2</zorder>
-   <zorder>radioButton_3</zorder>
-   <zorder>radioButton_4</zorder>
+   <zorder>groupBox_schedule</zorder>
+   <zorder>groupBox_method</zorder>
+   <zorder>groupBox_src</zorder>
+   <zorder>lineEdit_src</zorder>
+   <zorder>pushButton_src</zorder>
+   <zorder>checkBox_Subdirectory</zorder>
+   <zorder>checkBox_del</zorder>
+   <zorder>lineEdit_rename</zorder>
+   <zorder>pushButton_rename</zorder>
+   <zorder>checkBox_rename</zorder>
+   <zorder>radioButton_date</zorder>
+   <zorder>radioButton_cameraType</zorder>
+   <zorder>radioButton_lensType</zorder>
+   <zorder>radioButton_focalLength</zorder>
    <zorder>horizontalSlider</zorder>
-   <zorder>groupBox_3</zorder>
-   <zorder>pushButton_4</zorder>
-   <zorder>pushButton_5</zorder>
+   <zorder>groupBox_dst</zorder>
+   <zorder>pushButton_start</zorder>
+   <zorder>pushButton_stop</zorder>
    <zorder>progressBar</zorder>
    <zorder>label</zorder>
   </widget>
