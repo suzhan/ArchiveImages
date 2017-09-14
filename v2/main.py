@@ -8,7 +8,7 @@
 
 from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import  QFileDialog
+from PyQt5.QtWidgets import  QFileDialog,QStyleFactory,QApplication
 from PyQt5.QtCore import Qt
 
 class Ui_MainWindow(object):
@@ -69,10 +69,14 @@ class Ui_MainWindow(object):
         self.checkBox_rename.setGeometry(QtCore.QRect(60, 150, 61, 20))
         self.checkBox_rename.setIconSize(QtCore.QSize(16, 16))
         self.checkBox_rename.setObjectName("checkBox_rename")
-
+        #按拍摄日期
         self.radioButton_date = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_date.setGeometry(QtCore.QRect(60, 220, 91, 20))
         self.radioButton_date.setObjectName("radioButton_date")
+        # add
+        self.radioButton_date.toggle()
+        self.radioButton_date.toggled.connect(self.changeDate)
+        # add_end
         #按相机型号
         self.radioButton_cameraType = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_cameraType.setGeometry(QtCore.QRect(60, 250, 91, 20))
@@ -207,7 +211,13 @@ class Ui_MainWindow(object):
         else:
             MainWindow.setWindowTitle("没有选择")
 
-
+    def changeDate(self, state):
+        '''选择按日期整理'''
+        print(state)
+        if self.radioButton_date.isChecked():
+            MainWindow.setWindowTitle("已经选择按日期整理")
+        else:
+            MainWindow.setWindowTitle("没有选择")
 
 
 if __name__ == "__main__":
