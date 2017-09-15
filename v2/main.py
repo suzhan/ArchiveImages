@@ -38,21 +38,19 @@ class Ui_MainWindow(object):
         self.checkBox_Subdirectory.setGeometry(QtCore.QRect(60, 70, 101, 16))
         self.checkBox_Subdirectory.setObjectName("checkBox_Subdirectory")
         # add
+        self.checkBox_Subdirectory.setChecked(False)
         self.checkBox_Subdirectory.toggle()
         self.checkBox_Subdirectory.stateChanged.connect(self.changeSubdirectory)
         # add_end
-
-
         #是否选择删除文件
         self.checkBox_del = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBox_del.setGeometry(QtCore.QRect(60, 90, 231, 16))
         self.checkBox_del.setObjectName("checkBox_del")
         # add
+        self.checkBox_del.setChecked(True)
         self.checkBox_del.toggle()
         self.checkBox_del.stateChanged.connect(self.changeDel)
         # add_end
-
-
         self.groupBox_src = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_src.setGeometry(QtCore.QRect(20, 19, 601, 101))
         self.groupBox_src.setObjectName("groupBox_src")
@@ -70,6 +68,7 @@ class Ui_MainWindow(object):
         self.checkBox_rename.setIconSize(QtCore.QSize(16, 16))
         self.checkBox_rename.setObjectName("checkBox_rename")
         # add
+        self.checkBox_rename.setChecked(True)
         self.checkBox_rename.toggle()
         self.checkBox_rename.stateChanged.connect(self.changeRename)
         # add_end
@@ -123,8 +122,6 @@ class Ui_MainWindow(object):
         self.groupBox_method = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_method.setGeometry(QtCore.QRect(20, 130, 601, 221))
         self.groupBox_method.setObjectName("groupBox_method")
-
-
         self.groupBox_dst = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_dst.setGeometry(QtCore.QRect(20, 360, 601, 80))
         self.groupBox_dst.setObjectName("groupBox_dst")
@@ -271,6 +268,11 @@ class Ui_MainWindow(object):
     def changeGPS(self,state):
         '''选择按镜头类型整理'''
         print(state)
+        if state:
+            self.horizontalSlider.setEnabled(True)
+        else:
+            self.horizontalSlider.setEnabled(False)
+
         if self.radioButton_GPS.isChecked():
             MainWindow.setWindowTitle("已经选择按GPS整理")
 
