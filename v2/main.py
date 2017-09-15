@@ -62,6 +62,8 @@ class Ui_MainWindow(object):
         self.pushButton_rename = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_rename.setGeometry(QtCore.QRect(530, 180, 75, 23))
         self.pushButton_rename.setObjectName("pushButton_rename")
+        self.pushButton_rename.clicked.connect(self.clickPushButton_rename)
+
         #是否选择重命令
         self.checkBox_rename = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBox_rename.setGeometry(QtCore.QRect(60, 150, 61, 20))
@@ -282,6 +284,10 @@ class Ui_MainWindow(object):
         Longitude = value * 24
         Latitude = value * 31
         self.label_gpsm.setText('经：±' +str(Longitude)+'米' + ' ' + '纬：±' +  str(Latitude)+'米')
+
+    def clickPushButton_rename(self):
+        
+
 
 
 if __name__ == "__main__":
