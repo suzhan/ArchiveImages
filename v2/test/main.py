@@ -34,4 +34,4 @@ bttn2.clicked.connect(Dialog3.show)
 if __name__ == "__main__":
     # 展示主窗口　chenSpider
     ChenSpider.show()
-    sys.exit(app.exec_())​
+    sys.exit(app.exec_())
