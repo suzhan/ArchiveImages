@@ -9,9 +9,12 @@
 from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import  QFileDialog,QStyleFactory,QApplication
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt,pyqtSignal
 
 class Ui_MainWindow(object):
+
+    rename_signal=pyqtSignal()
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(640, 579)
@@ -286,7 +289,7 @@ class Ui_MainWindow(object):
         self.label_gpsm.setText('经：±' +str(Longitude)+'米' + ' ' + '纬：±' +  str(Latitude)+'米')
 
     def clickPushButton_rename(self):
-        
+        print("xxxxxxxxxxxx")
 
 
 
