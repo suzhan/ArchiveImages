@@ -69,6 +69,10 @@ class Ui_MainWindow(object):
         self.checkBox_rename.setGeometry(QtCore.QRect(60, 150, 61, 20))
         self.checkBox_rename.setIconSize(QtCore.QSize(16, 16))
         self.checkBox_rename.setObjectName("checkBox_rename")
+        # add
+        self.checkBox_rename.toggle()
+        self.checkBox_rename.stateChanged.connect(self.changeRename)
+        # add_end
         #按拍摄日期
         self.radioButton_date = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_date.setGeometry(QtCore.QRect(60, 220, 91, 20))
@@ -81,23 +85,46 @@ class Ui_MainWindow(object):
         self.radioButton_cameraType = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_cameraType.setGeometry(QtCore.QRect(60, 250, 91, 20))
         self.radioButton_cameraType.setObjectName("radioButton_cameraType")
+        # add
+        self.radioButton_cameraType.toggle()
+        self.radioButton_cameraType.toggled.connect(self.changeCameraType)
+        # add_end
         #按镜头型号
         self.radioButton_lensType = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_lensType.setGeometry(QtCore.QRect(60, 280, 91, 20))
         self.radioButton_lensType.setObjectName("radioButton_lensType")
-        #按焦距
-        self.radioButton_focalLength = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_focalLength.setGeometry(QtCore.QRect(60, 310, 91, 20))
-        self.radioButton_focalLength.setObjectName("radioButton_focalLength")
-        #焦距范围
+        # add
+        self.radioButton_lensType.toggle()
+        self.radioButton_lensType.toggled.connect(self.changelensType)
+        # add_end
+        #按GPS范围
+        self.radioButton_GPS = QtWidgets.QRadioButton(self.centralwidget)
+        self.radioButton_GPS.setGeometry(QtCore.QRect(60, 310, 91, 20))
+        self.radioButton_GPS.setObjectName("radioButton_GPS")
+        # add
+        self.radioButton_GPS.toggle()
+        self.radioButton_GPS.toggled.connect(self.changeGPS)
+        # add_end
+
+        #GPS范围滑条
         self.horizontalSlider = QtWidgets.QSlider(self.centralwidget)
-        self.horizontalSlider.setGeometry(QtCore.QRect(140, 310, 221, 19))
+        self.horizontalSlider.setGeometry(QtCore.QRect(180, 312, 250, 19))
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
+        # add
+        self.horizontalSlider.valueChanged.connect(self.changeGPSvalue)
+        # add_end
+
+        # GPS范围值,米距离
+        self.label_gpsm=QtWidgets.QLabel(self.centralwidget)
+        self.label_gpsm.setGeometry(QtCore.QRect(440, 312, 270, 12))
+        self.label_gpsm.setObjectName("label_gpsm")
 
         self.groupBox_method = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_method.setGeometry(QtCore.QRect(20, 130, 601, 221))
         self.groupBox_method.setObjectName("groupBox_method")
+
+
         self.groupBox_dst = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_dst.setGeometry(QtCore.QRect(20, 360, 601, 80))
         self.groupBox_dst.setObjectName("groupBox_dst")
@@ -152,7 +179,7 @@ class Ui_MainWindow(object):
         self.radioButton_date.raise_()
         self.radioButton_cameraType.raise_()
         self.radioButton_lensType.raise_()
-        self.radioButton_focalLength.raise_()
+        self.radioButton_GPS.raise_()
         self.horizontalSlider.raise_()
         self.groupBox_dst.raise_()
         self.pushButton_start.raise_()
@@ -177,8 +204,9 @@ class Ui_MainWindow(object):
         self.radioButton_date.setText(_translate("MainWindow", "按拍摄日期"))
         self.radioButton_cameraType.setText(_translate("MainWindow", "按相机型号"))
         self.radioButton_lensType.setText(_translate("MainWindow", "按镜头型号"))
-        self.radioButton_focalLength.setText(_translate("MainWindow", "按焦距"))
+        self.radioButton_GPS.setText(_translate("MainWindow", "按GPS范围"))
         self.groupBox_method.setTitle(_translate("MainWindow", "方法"))
+        self.label_gpsm.setText(_translate("MainWindow", "经：±0米 纬：±0米"))
         self.groupBox_dst.setTitle(_translate("MainWindow", "目的地"))
         self.pushButton_dst.setText(_translate("MainWindow", "浏览"))
         self.radioButton_select.setText(_translate("MainWindow", "选择文件夹"))
@@ -200,24 +228,58 @@ class Ui_MainWindow(object):
         print(Qt.Checked)
         if Qt.Checked == state:
             MainWindow.setWindowTitle("已经选择子文件夹")
-            print("1")
         else:
-            MainWindow.setWindowTitle("没有选择")
-            print("0")
+            MainWindow.setWindowTitle("取消选择子文件夹")
+
+
     def changeDel(self,state):
         '''选择将文件删除'''
         if Qt.Checked == state:
             MainWindow.setWindowTitle("已经选择将文件删除")
         else:
-            MainWindow.setWindowTitle("没有选择")
+            MainWindow.setWindowTitle("取消选择将文件删除")
+
+
+    def changeRename(self,state):
+        '''选择将文件更名'''
+        if Qt.Checked == state:
+            MainWindow.setWindowTitle("已经选择将文件更名")
+        else:
+            MainWindow.setWindowTitle("取消选择将文件更名")
 
     def changeDate(self, state):
         '''选择按日期整理'''
         print(state)
         if self.radioButton_date.isChecked():
             MainWindow.setWindowTitle("已经选择按日期整理")
-        else:
-            MainWindow.setWindowTitle("没有选择")
+
+
+    def changeCameraType(self,state):
+        '''选择按相机类型整理'''
+        print(state)
+        if self.radioButton_cameraType.isChecked():
+            MainWindow.setWindowTitle("已经选择按相机类型整理")
+
+
+
+    def changelensType(self,state):
+        '''选择按镜头类型整理'''
+        print(state)
+        if self.radioButton_lensType.isChecked():
+            MainWindow.setWindowTitle("已经选择按镜头类型整理")
+
+    def changeGPS(self,state):
+        '''选择按镜头类型整理'''
+        print(state)
+        if self.radioButton_GPS.isChecked():
+            MainWindow.setWindowTitle("已经选择按GPS整理")
+
+    def changeGPSvalue(self, value):
+        print(value)
+        #经度1秒 = 23.6m 纬度1秒 = 大约30.9m
+        Longitude = value * 24
+        Latitude = value * 31
+        self.label_gpsm.setText('经：±' +str(Longitude)+'米' + ' ' + '纬：±' +  str(Latitude)+'米')
 
 
 if __name__ == "__main__":
