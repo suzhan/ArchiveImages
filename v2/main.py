@@ -10,6 +10,8 @@ from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import  QFileDialog,QStyleFactory,QApplication
 from PyQt5.QtCore import Qt,pyqtSignal
+from rename import Ui_Form
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
 
@@ -65,7 +67,8 @@ class Ui_MainWindow(object):
         self.pushButton_rename = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_rename.setGeometry(QtCore.QRect(530, 180, 75, 23))
         self.pushButton_rename.setObjectName("pushButton_rename")
-        self.pushButton_rename.clicked.connect(self.clickPushButton_rename)
+
+        #self.pushButton_rename.clicked.connect(Form.show)
 
         #是否选择重命令
         self.checkBox_rename = QtWidgets.QCheckBox(self.centralwidget)
@@ -297,8 +300,8 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    ui = Ui_MainWindow()  #取得ui的class实例
+    ui.setupUi(MainWindow)  #将ui实例绘制到窗口实例上﻿​
+    MainWindow.show()      # 展示窗口﻿​
     sys.exit(app.exec_())
 
