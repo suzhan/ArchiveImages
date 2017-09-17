@@ -8,41 +8,24 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import QTimer
 
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(580, 314)
+
+        #示例
         self.label_example = QtWidgets.QLabel(Form)
-        self.label_example.setGeometry(QtCore.QRect(90, 20, 41, 20))
+        self.label_example.setGeometry(QtCore.QRect(90, 20, 450, 20))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
-        font.setBold(True)
         font.setWeight(75)
         self.label_example.setFont(font)
         self.label_example.setObjectName("label_example")
-        self.comboBox_hyplen1 = QtWidgets.QComboBox(Form)
-        self.comboBox_hyplen1.setGeometry(QtCore.QRect(150, 70, 71, 22))
-        self.comboBox_hyplen1.setObjectName("comboBox_hyplen1")
-        self.comboBox_hyplen1.addItem("")
-        self.comboBox_hyplen1.addItem("")
-        self.comboBox_hyplen1.addItem("")
-        self.comboBox_hyplen1.addItem("")
-        self.comboBox_datetime = QtWidgets.QComboBox(Form)
-        self.comboBox_datetime.setGeometry(QtCore.QRect(230, 70, 121, 22))
-        self.comboBox_datetime.setObjectName("comboBox_datetime")
-        self.comboBox_datetime.addItem("")
-        self.comboBox_datetime.addItem("")
-        self.comboBox_datetime.addItem("")
-        self.comboBox_hyphen2 = QtWidgets.QComboBox(Form)
-        self.comboBox_hyphen2.setGeometry(QtCore.QRect(360, 70, 61, 22))
-        self.comboBox_hyphen2.setObjectName("comboBox_hyphen2")
-        self.comboBox_hyphen2.addItem("")
-        self.comboBox_hyphen2.addItem("")
-        self.comboBox_hyphen2.addItem("")
-        self.comboBox_hyphen2.addItem("")
 
+        #前缀文件名
         self.comboBox_name = QtWidgets.QComboBox(Form)
         self.comboBox_name.setGeometry(QtCore.QRect(20, 70, 121, 22))
         self.comboBox_name.setObjectName("comboBox_name")
@@ -52,7 +35,30 @@ class Ui_Form(object):
         self.comboBox_name.addItem("")
         self.comboBox_name.addItem("")
         self.comboBox_name.addItem("")
-
+        #前缀连接符号
+        self.comboBox_hyphen1 = QtWidgets.QComboBox(Form)
+        self.comboBox_hyphen1.setGeometry(QtCore.QRect(150, 70, 71, 22))
+        self.comboBox_hyphen1.setObjectName("comboBox_hyphen1")
+        self.comboBox_hyphen1.addItem("")
+        self.comboBox_hyphen1.addItem("")
+        self.comboBox_hyphen1.addItem("")
+        self.comboBox_hyphen1.addItem("")
+        #中缀拍摄日期时间
+        self.comboBox_datetime = QtWidgets.QComboBox(Form)
+        self.comboBox_datetime.setGeometry(QtCore.QRect(230, 70, 121, 22))
+        self.comboBox_datetime.setObjectName("comboBox_datetime")
+        self.comboBox_datetime.addItem("")
+        self.comboBox_datetime.addItem("")
+        self.comboBox_datetime.addItem("")
+        #后缀连接符
+        self.comboBox_hyphen2 = QtWidgets.QComboBox(Form)
+        self.comboBox_hyphen2.setGeometry(QtCore.QRect(360, 70, 61, 22))
+        self.comboBox_hyphen2.setObjectName("comboBox_hyphen2")
+        self.comboBox_hyphen2.addItem("")
+        self.comboBox_hyphen2.addItem("")
+        self.comboBox_hyphen2.addItem("")
+        self.comboBox_hyphen2.addItem("")
+        #后缀文件名
         self.comboBox_name2 = QtWidgets.QComboBox(Form)
         self.comboBox_name2.setGeometry(QtCore.QRect(430, 70, 121, 22))
         self.comboBox_name2.setObjectName("comboBox_name2")
@@ -68,14 +74,12 @@ class Ui_Form(object):
         self.pushButton_cancel.setGeometry(QtCore.QRect(300, 280, 75, 23))
         self.pushButton_cancel.setObjectName("pushButton_cancel")
 
-
+        #前缀新文件名层
         self.stackedWidget_newName = QtWidgets.QStackedWidget(Form)
         self.stackedWidget_newName.setGeometry(QtCore.QRect(20, 100, 151, 21))
         self.stackedWidget_newName.setObjectName("stackedWidget_newName")
-
         self.page = QtWidgets.QWidget()
         self.page.setObjectName("page")
-
         self.stackedWidget_newName.addWidget(self.page)
         self.page_1 = QtWidgets.QWidget()
         self.page_1.setObjectName("page_1")
@@ -83,9 +87,7 @@ class Ui_Form(object):
         self.lineEdit_newName.setGeometry(QtCore.QRect(0, 0, 121, 20))
         self.lineEdit_newName.setObjectName("lineEdit_newName")
         self.stackedWidget_newName.addWidget(self.page_1)
-
-
-
+        #后缀新文件名层
         self.stackedWidget_newName2 = QtWidgets.QStackedWidget(Form)
         self.stackedWidget_newName2.setGeometry(QtCore.QRect(420, 100, 161, 21))
         self.stackedWidget_newName2.setObjectName("stackedWidget_newName2")
@@ -154,6 +156,8 @@ class Ui_Form(object):
         self.groupBox.setGeometry(QtCore.QRect(20, 140, 531, 131))
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
+
+        #序号
         self.stackedWidget = QtWidgets.QStackedWidget(Form)
         self.stackedWidget.setGeometry(QtCore.QRect(26, 146, 521, 121))
         self.stackedWidget.setObjectName("stackedWidget")
@@ -168,7 +172,6 @@ class Ui_Form(object):
         self.label_snLength = QtWidgets.QLabel(self.page_sn)
         self.label_snLength.setGeometry(QtCore.QRect(220, 60, 81, 20))
         self.label_snLength.setObjectName("label_snLength")
-
         self.horizontalSlider_sn = QtWidgets.QSlider(self.page_sn)
         self.horizontalSlider_sn.setGeometry(QtCore.QRect(220, 90, 111, 19))
         self.horizontalSlider_sn.setOrientation(QtCore.Qt.Horizontal)
@@ -179,7 +182,7 @@ class Ui_Form(object):
         self.horizontalSlider_sn.valueChanged.connect(self.changeSnValue)
         # add_end
 
-
+       #按日期时间
         self.stackedWidget.addWidget(self.page_sn)
         self.page_datetime = QtWidgets.QWidget()
         self.page_datetime.setObjectName("page_datetime")
@@ -230,7 +233,7 @@ class Ui_Form(object):
         self.page_date = QtWidgets.QWidget()
         self.page_date.setObjectName("page_date")
 
-
+        #按日期+序号
         self.radioButton_yyyymmdd_2 = QtWidgets.QRadioButton(self.page_date)
         self.radioButton_yyyymmdd_2.setGeometry(QtCore.QRect(30, 10, 89, 16))
         self.radioButton_yyyymmdd_2.setObjectName("radioButton_yyyymmdd_2")
@@ -305,8 +308,8 @@ class Ui_Form(object):
         self.stackedWidget_newName.setCurrentIndex(0) #默认值
         self.stackedWidget_newName2.setCurrentIndex(0)  #默认值
         self.stackedWidget.setCurrentIndex(2)  #默认值
-        self.horizontalSlider_sn.setValue(4)
-        self.horizontalSlider_date.setValue(4)
+        self.horizontalSlider_sn.setValue(4)   #滑条，默认4位
+        self.horizontalSlider_date.setValue(4)  #滑条，默认4位
 
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -314,23 +317,34 @@ class Ui_Form(object):
         self.comboBox_name.currentIndexChanged[str].connect(self.setWidgetStack_newname) #开头文件名
         self.comboBox_name2.currentIndexChanged[str].connect(self.setWidgetStack_newname2)  #文件名结束
         self.comboBox_datetime.currentIndexChanged[str].connect(self.setWidgetStack_datetime) #按日期时间序号
+
+        self.comboBox_hyphen1.activated[str].connect(self.changeHyphen1)
+        self.comboBox_hyphen2.activated[str].connect(self.changeHyphen2)
+        #self.comboBox_datetime.activated[str].connect(self.changeDateTime)
+
         #add end
 
-        newname1 = ''
-        hyphen1 = ''
-        datetimesn = ''
-        hyphen2 = ''
-        newname2 = ''
-        self.label_example.setText('示例：' + newname1 + hyphen1 + datetimesn + hyphen2 + newname2)
+        self.newname1 = ''
+        self.hyphen1 = ''
+        self.datetimesn = ''
+        self.hyphen2 = ''
+        self.newname2 = ''
+
+        #self.timer = QtCore.QTimer(self)  # 初始化一个定时器
+        #self.timer.timeout.connect(self.operate)  # 计时结束调用operate()方法
+        #self.timer.start(2000)  # 设置计时间隔并启动
+
+    #def operate(self):
+    #    self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label_example.setText(_translate("Form", "示例:"))
-        self.comboBox_hyplen1.setItemText(0, _translate("Form", "下划线"))
-        self.comboBox_hyplen1.setItemText(1, _translate("Form", "连字符"))
-        self.comboBox_hyplen1.setItemText(2, _translate("Form", "空格"))
-        self.comboBox_hyplen1.setItemText(3, _translate("Form", "无"))
+        self.comboBox_hyphen1.setItemText(0, _translate("Form", "下划线"))
+        self.comboBox_hyphen1.setItemText(1, _translate("Form", "连字符"))
+        self.comboBox_hyphen1.setItemText(2, _translate("Form", "空格"))
+        self.comboBox_hyphen1.setItemText(3, _translate("Form", "无"))
 
         self.comboBox_datetime.setItemText(0, _translate("Form", "拍摄日期"))
         self.comboBox_datetime.setItemText(1, _translate("Form", "拍摄日期时间"))
@@ -394,23 +408,30 @@ class Ui_Form(object):
         '''文件名前缀'''
         if text == "新名称":
             self.stackedWidget_newName.setCurrentIndex(1)
-            #self.mileageLabel.setText("1000 miles")
-            #self.label_example_name.setText("<新文件名>")
-            self.newname1 = "<新文件名>"
-        else:
+            self.newname1 = '<新名称>'
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+        elif text == "原名称":
             self.stackedWidget_newName.setCurrentIndex(0)
-            #self.weightChanged(self.weightSpinBox.value())
-            #self.label_example_name.setText("<原文件名>")
-            self.newname1 = "<原文件名>"
+            self.newname1 = '<原名称>'
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+        else:
+            self.newname1 = ''
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
 
     def setWidgetStack_newname2(self, text):
         '''文件名作后缀'''
         if text == "新名称":
             self.stackedWidget_newName2.setCurrentIndex(1)
-            #self.mileageLabel.setText("1000 miles")
-        else:
+            self.newname2 = '<新名称2>'
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+        elif text == "原名称":
             self.stackedWidget_newName2.setCurrentIndex(0)
-            #self.weightChanged(self.weightSpinBox.value())
+            self.newname2 = '<原名称2>'
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+        else:
+            self.newname2 = '2'
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+
 
 
     def setWidgetStack_datetime(self, text):
@@ -422,22 +443,73 @@ class Ui_Form(object):
         if text == "拍摄日期时间":
             self.stackedWidget.setCurrentIndex(1)
             #self.weightChanged(self.weightSpinBox.value())
+
+
         if text == "序号":
             self.stackedWidget.setCurrentIndex(0)
+
+            self.datetimesn = self.mysnvalue
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+
+
+
+
 
     def changeDateSnValue(self, value):
         '''中缀中拍摄日期滑条'''
         print(value)
-        myvalue = str(0) * value
+        self.datesnvalue = str(0) * value
         self.label_3.setText(str(value))
-        self.lineEdit_sn2.setText(str(myvalue))
+        self.lineEdit_sn2.setText(str(self.datesnvalue))
 
     def changeSnValue(self, value):
         '''中缀中序号滑条'''
         print(value)
-        myvalue = str(0) * value
+        self.mysnvalue = str(0) * value
         self.label_2.setText(str(value))
-        self.lineEdit_sn.setText(str(myvalue))
+        self.lineEdit_sn.setText(str(self.mysnvalue))
+
+        #self.datetimesn = self.mysnvalue
+        #self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+
+
+
+
+    def changeHyphen1(self, text):
+        '''前缀连接符'''
+        #print(text)
+        if text == '下划线':
+            self.hyphen1 = "_"
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+        elif text == '连字符':
+            self.hyphen1 = "-"
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+        elif text == '空格':
+            self.hyphen1 = ' '
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+        else:
+            self.hyphen1 = ''
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+
+
+
+
+    def changeHyphen2(self, text):
+        '''后缀连接符'''
+        #print(text)
+        if text == '下划线':
+            self.hyphen2 = "_"
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+        elif text == '连字符':
+            self.hyphen2 = "-"
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+        elif text == '空格':
+            self.hyphen2 = ' '
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+        else:
+            self.hyphen2 = ''
+            self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+
 
 
 
