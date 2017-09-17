@@ -98,51 +98,51 @@ class Ui_Form(object):
         self.lineEdit_newName2.setGeometry(QtCore.QRect(10, 0, 121, 20))
         self.lineEdit_newName2.setObjectName("lineEdit_newName2")
         self.stackedWidget_newName2.addWidget(self.page_3)
-        self.label_example_name = QtWidgets.QLabel(Form)
-        self.label_example_name.setGeometry(QtCore.QRect(160, 20, 51, 20))
+        #self.label_example_name = QtWidgets.QLabel(Form)
+        #self.label_example_name.setGeometry(QtCore.QRect(160, 20, 51, 20))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
-        self.label_example_name.setFont(font)
-        self.label_example_name.setObjectName("label_example_name")
-        self.label_example_hyphen = QtWidgets.QLabel(Form)
-        self.label_example_hyphen.setGeometry(QtCore.QRect(220, 20, 51, 20))
+        #self.label_example_name.setFont(font)
+        #self.label_example_name.setObjectName("label_example_name")
+        #self.label_example_hyphen = QtWidgets.QLabel(Form)
+        #self.label_example_hyphen.setGeometry(QtCore.QRect(220, 20, 51, 20))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
-        self.label_example_hyphen.setFont(font)
-        self.label_example_hyphen.setObjectName("label_example_hyphen")
-        self.label_example_datetime = QtWidgets.QLabel(Form)
-        self.label_example_datetime.setGeometry(QtCore.QRect(280, 20, 51, 20))
+        #self.label_example_hyphen.setFont(font)
+        #self.label_example_hyphen.setObjectName("label_example_hyphen")
+        #self.label_example_datetime = QtWidgets.QLabel(Form)
+        #self.label_example_datetime.setGeometry(QtCore.QRect(280, 20, 51, 20))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
-        self.label_example_datetime.setFont(font)
-        self.label_example_datetime.setObjectName("label_example_datetime")
-        self.label_example_hyphen2 = QtWidgets.QLabel(Form)
-        self.label_example_hyphen2.setGeometry(QtCore.QRect(340, 20, 71, 20))
+        #self.label_example_datetime.setFont(font)
+        #self.label_example_datetime.setObjectName("label_example_datetime")
+        #self.label_example_hyphen2 = QtWidgets.QLabel(Form)
+        #self.label_example_hyphen2.setGeometry(QtCore.QRect(340, 20, 71, 20))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
-        self.label_example_hyphen2.setFont(font)
-        self.label_example_hyphen2.setObjectName("label_example_hyphen2")
-        self.label_example_name2 = QtWidgets.QLabel(Form)
-        self.label_example_name2.setGeometry(QtCore.QRect(420, 20, 41, 20))
+        #self.label_example_hyphen2.setFont(font)
+        #self.label_example_hyphen2.setObjectName("label_example_hyphen2")
+        #self.label_example_name2 = QtWidgets.QLabel(Form)
+        #self.label_example_name2.setGeometry(QtCore.QRect(420, 20, 41, 20))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
-        self.label_example_name2.setFont(font)
-        self.label_example_name2.setObjectName("label_example_name2")
+        #self.label_example_name2.setFont(font)
+        #self.label_example_name2.setObjectName("label_example_name2")
         self.label = QtWidgets.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(270, 100, 31, 31))
         font = QtGui.QFont()
@@ -316,8 +316,12 @@ class Ui_Form(object):
         self.comboBox_datetime.currentIndexChanged[str].connect(self.setWidgetStack_datetime) #按日期时间序号
         #add end
 
-
-
+        newname1 = ''
+        hyphen1 = ''
+        datetimesn = ''
+        hyphen2 = ''
+        newname2 = ''
+        self.label_example.setText('示例：' + newname1 + hyphen1 + datetimesn + hyphen2 + newname2)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -346,11 +350,13 @@ class Ui_Form(object):
         self.comboBox_name2.setItemText(2, _translate("Form", "无"))
         self.pushButton_ok.setText(_translate("Form", "确定"))
         self.pushButton_cancel.setText(_translate("Form", "取消"))
-        self.label_example_name.setText(_translate("Form", "name1"))
-        self.label_example_hyphen.setText(_translate("Form", "pyphen1"))
-        self.label_example_datetime.setText(_translate("Form", "datetime"))
-        self.label_example_hyphen2.setText(_translate("Form", "hyphen2"))
-        self.label_example_name2.setText(_translate("Form", "name2"))
+
+        #self.label_example_name.setText(_translate("Form", "name1"))
+        #self.label_example_hyphen.setText(_translate("Form", "pyphen1"))
+        #self.label_example_datetime.setText(_translate("Form", "datetime"))
+        #self.label_example_hyphen2.setText(_translate("Form", "hyphen2"))
+        #self.label_example_name2.setText(_translate("Form", "name2"))
+
         self.label.setText(_translate("Form", "┆"))
         self.label_sn.setText(_translate("Form", "序号"))
         self.label_snLength.setText(_translate("Form", "序号码长度"))
@@ -385,14 +391,20 @@ class Ui_Form(object):
         self.label_3.setText(_translate("Form", ""))
 
     def setWidgetStack_newname(self, text):
+        '''文件名前缀'''
         if text == "新名称":
             self.stackedWidget_newName.setCurrentIndex(1)
             #self.mileageLabel.setText("1000 miles")
+            #self.label_example_name.setText("<新文件名>")
+            self.newname1 = "<新文件名>"
         else:
             self.stackedWidget_newName.setCurrentIndex(0)
             #self.weightChanged(self.weightSpinBox.value())
+            #self.label_example_name.setText("<原文件名>")
+            self.newname1 = "<原文件名>"
 
     def setWidgetStack_newname2(self, text):
+        '''文件名作后缀'''
         if text == "新名称":
             self.stackedWidget_newName2.setCurrentIndex(1)
             #self.mileageLabel.setText("1000 miles")
@@ -402,9 +414,11 @@ class Ui_Form(object):
 
 
     def setWidgetStack_datetime(self, text):
+        '''中缀'''
         if text == "拍摄日期":
             self.stackedWidget.setCurrentIndex(2)
             #self.mileageLabel.setText("1000 miles")
+
         if text == "拍摄日期时间":
             self.stackedWidget.setCurrentIndex(1)
             #self.weightChanged(self.weightSpinBox.value())
@@ -412,12 +426,14 @@ class Ui_Form(object):
             self.stackedWidget.setCurrentIndex(0)
 
     def changeDateSnValue(self, value):
+        '''中缀中拍摄日期滑条'''
         print(value)
         myvalue = str(0) * value
         self.label_3.setText(str(value))
         self.lineEdit_sn2.setText(str(myvalue))
 
     def changeSnValue(self, value):
+        '''中缀中序号滑条'''
         print(value)
         myvalue = str(0) * value
         self.label_2.setText(str(value))
