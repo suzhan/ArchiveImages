@@ -171,20 +171,13 @@ class Ui_Form(object):
 
 		self.label_15.setFont(font)
 		self.label_15.setObjectName("label_15")
+		#日期
 		self.radioButton_yyyymmdd_1 = QtWidgets.QRadioButton(self.page_datetime)
 		self.radioButton_yyyymmdd_1.setGeometry(QtCore.QRect(30, 10, 89, 16))
 		self.radioButton_yyyymmdd_1.setObjectName("radioButton_yyyymmdd_1")
 		self.radioButton_mmddyy_1 = QtWidgets.QRadioButton(self.page_datetime)
 		self.radioButton_mmddyy_1.setGeometry(QtCore.QRect(30, 70, 89, 16))
 		self.radioButton_mmddyy_1.setObjectName("radioButton_mmddyy_1")
-		self.radioButton_hhmm_1 = QtWidgets.QRadioButton(self.page_datetime)
-		self.radioButton_hhmm_1.setGeometry(QtCore.QRect(390, 60, 89, 16))
-		self.radioButton_hhmm_1.setObjectName("radioButton_hhmm_1")
-
-		self.radioButton_hhmmss_1 = QtWidgets.QRadioButton(self.page_datetime)
-		self.radioButton_hhmmss_1.setGeometry(QtCore.QRect(390, 30, 89, 16))
-		self.radioButton_hhmmss_1.setObjectName("radioButton_hhmmss_1")
-
 		self.radioButton_mmddyyyy_1 = QtWidgets.QRadioButton(self.page_datetime)
 		self.radioButton_mmddyyyy_1.setGeometry(QtCore.QRect(30, 50, 89, 16))
 		self.radioButton_mmddyyyy_1.setObjectName("radioButton_mmddyyyy_1")
@@ -194,6 +187,18 @@ class Ui_Form(object):
 		self.radioButton_mmdd_1 = QtWidgets.QRadioButton(self.page_datetime)
 		self.radioButton_mmdd_1.setGeometry(QtCore.QRect(30, 90, 89, 16))
 		self.radioButton_mmdd_1.setObjectName("radioButton_mmdd_1")
+        #时间,加入另一个redioButtonGroup 分组
+		self.radioButton_hhmm_1 = QtWidgets.QRadioButton(self.page_datetime)
+		self.radioButton_hhmm_1.setGeometry(QtCore.QRect(390, 60, 89, 16))
+		self.radioButton_hhmm_1.setObjectName("radioButton_hhmm_1")
+		self.radioButton_hhmmss_1 = QtWidgets.QRadioButton(self.page_datetime)
+		self.radioButton_hhmmss_1.setGeometry(QtCore.QRect(390, 30, 89, 16))
+		self.radioButton_hhmmss_1.setObjectName("radioButton_hhmmss_1")
+		self.buttonGroup = QtWidgets.QButtonGroup(Form)
+		self.buttonGroup.setObjectName("buttonGroup")
+		self.buttonGroup.addButton(self.radioButton_hhmm_1)
+		self.buttonGroup.addButton(self.radioButton_hhmmss_1)
+
 		self.stackedWidget.addWidget(self.page_datetime)
 		self.page_date = QtWidgets.QWidget()
 		self.page_date.setObjectName("page_date")
@@ -357,8 +362,6 @@ class Ui_Form(object):
 
 	def operate(self):
 		"""自动刷新示例"""
-		# print("!!!!")
-
 		# 前缀名称
 		if self.comboBox_name.currentText() == "新名称":
 			self.newname1 = self.lineEdit_newName.text()  # 将新文件名提交到示例
@@ -451,21 +454,17 @@ class Ui_Form(object):
 			else:
 				self.datetimesn3 = ''
 
-
 			# 整合按 "拍摄日期+日期时间"
 			self.datetimesn = self.datetimesn1 + self.datetimesn2 + self.datetimesn3
-			print(self.datetimesn)
 
 		else:
 			self.datetimesn = self.mysnvalue  # 将中缀的序号提交到示例
 
-
-
 		# 刷新示例
-		self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
+		self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2 + '.JPG')
 
 	def setWidgetStack_newname(self, text):
-		"""文件名前缀"""
+		"""文件名前缀,当选择新名称时显示输入框"""
 		if text == "新名称":
 			self.stackedWidget_newName.setCurrentIndex(1)
 		elif text == "原名称":
@@ -474,7 +473,7 @@ class Ui_Form(object):
 			self.stackedWidget_newName.setCurrentIndex(0)
 
 	def setWidgetStack_newname2(self, text):
-		"""文件名作后缀"""
+		"""文件名作后缀，当选择新名称时显示输入框"""
 		if text == "新名称":
 			self.stackedWidget_newName2.setCurrentIndex(1)
 		elif text == "原名称":
@@ -483,21 +482,14 @@ class Ui_Form(object):
 			self.stackedWidget_newName2.setCurrentIndex(0)
 
 	def setWidgetStack_datetime(self, text):
-		"""中缀"""
+		"""中缀，按选择变更不同的子页面"""
 		if text == "拍摄日期":
 			self.stackedWidget.setCurrentIndex(2)
-		# self.mileageLabel.setText("1000 miles")
-
 		if text == "拍摄日期时间":
 			self.stackedWidget.setCurrentIndex(1)
-		# self.weightChanged(self.weightSpinBox.value())
-
 		if text == "序号":
 			self.stackedWidget.setCurrentIndex(0)
-
 			self.datetimesn = self.mysnvalue
-			self.label_example.setText(
-				'示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
 
 	def changeDateSnValue(self, value):
 		"""中缀中拍摄日期滑条"""
@@ -513,8 +505,6 @@ class Ui_Form(object):
 		self.label_2.setText(str(value))
 		self.lineEdit_sn.setText(str(self.mysnvalue))
 
-	# self.datetimesn = self.mysnvalue
-	# self.label_example.setText('示例：' + self.newname1 + self.hyphen1 + self.datetimesn + self.hyphen2 + self.newname2)
 
 	def changeHyphen1(self, text):
 		"""前缀连接符"""

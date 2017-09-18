@@ -289,7 +289,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="page_sn">
     <widget class="QLabel" name="label_sn">
@@ -462,6 +462,9 @@
      <property name="text">
       <string>hhmm*</string>
      </property>
+     <attribute name="buttonGroup">
+      <string notr="true">buttonGroup</string>
+     </attribute>
     </widget>
     <widget class="QRadioButton" name="radioButton_hhmmss_1">
      <property name="geometry">
@@ -475,6 +478,9 @@
      <property name="text">
       <string>hhmmss*</string>
      </property>
+     <attribute name="buttonGroup">
+      <string notr="true">buttonGroup</string>
+     </attribute>
     </widget>
     <widget class="QRadioButton" name="radioButton_mmddyyyy_1">
      <property name="geometry">
@@ -717,4 +723,7 @@
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>
