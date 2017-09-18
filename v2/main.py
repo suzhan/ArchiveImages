@@ -10,12 +10,12 @@ from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import  QFileDialog,QStyleFactory,QApplication
 from PyQt5.QtCore import Qt,pyqtSignal
-from rename import Ui_Form
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
 
-    rename_signal=pyqtSignal()
+    #rename_signal=pyqtSignal()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         self.checkBox_Subdirectory.setGeometry(QtCore.QRect(60, 70, 101, 16))
         self.checkBox_Subdirectory.setObjectName("checkBox_Subdirectory")
         # add
-        self.checkBox_Subdirectory.setChecked(False)
+
         self.checkBox_Subdirectory.toggle()
         self.checkBox_Subdirectory.stateChanged.connect(self.changeSubdirectory)
         # add_end
@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
         self.checkBox_del.setGeometry(QtCore.QRect(60, 90, 231, 16))
         self.checkBox_del.setObjectName("checkBox_del")
         # add
-        self.checkBox_del.setChecked(True)
+
         self.checkBox_del.toggle()
         self.checkBox_del.stateChanged.connect(self.changeDel)
         # add_end
@@ -76,7 +76,7 @@ class Ui_MainWindow(object):
         self.checkBox_rename.setIconSize(QtCore.QSize(16, 16))
         self.checkBox_rename.setObjectName("checkBox_rename")
         # add
-        self.checkBox_rename.setChecked(True)
+
         self.checkBox_rename.toggle()
         self.checkBox_rename.stateChanged.connect(self.changeRename)
         # add_end
@@ -141,13 +141,28 @@ class Ui_MainWindow(object):
         self.pushButton_dst = QtWidgets.QPushButton(self.groupBox_dst)
         self.pushButton_dst.setGeometry(QtCore.QRect(510, 40, 75, 23))
         self.pushButton_dst.setObjectName("pushButton_dst")
+        #add
+        self.pushButton_dst.clicked.connect(lambda: self.dstBtnClicked(self.lineEdit_dst.text()))  # 选择源文件夹按钮后将参数传到 lineEdit_src
         #选择文件夹或选择源目标
         self.radioButton_select = QtWidgets.QRadioButton(self.groupBox_dst)
         self.radioButton_select.setGeometry(QtCore.QRect(110, 20, 91, 16))
         self.radioButton_select.setObjectName("radioButton_select")
+
+
+        # add
+        self.radioButton_select.toggle()
+        self.radioButton_select.toggled.connect(self.changeDstSelect)
+
+        # add_end
+
         self.radioButton_src = QtWidgets.QRadioButton(self.groupBox_dst)
         self.radioButton_src.setGeometry(QtCore.QRect(230, 20, 101, 16))
         self.radioButton_src.setObjectName("radioButton_src")
+        # add
+        self.radioButton_src.toggle()
+        self.radioButton_src.toggled.connect(self.changeSrc)
+        # add_end
+
         #开始处理
         self.pushButton_start = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_start.setGeometry(QtCore.QRect(400, 540, 75, 23))
@@ -196,6 +211,14 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.checkBox_Subdirectory.setChecked(True)  # 设定默认值
+        self.checkBox_del.setChecked(False)
+        self.checkBox_rename.setChecked(False)
+        self.radioButton_select.setChecked(True)  # 默认选中
+        self.radioButton_date.setChecked(True)
+        self.pushButton_rename.setDisabled(True)
+
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -231,47 +254,48 @@ class Ui_MainWindow(object):
         '''选择子文件夹'''
         print(state)
         print(Qt.Checked)
-        if Qt.Checked == state:
-            MainWindow.setWindowTitle("已经选择子文件夹")
-        else:
-            MainWindow.setWindowTitle("取消选择子文件夹")
+        #if Qt.Checked == state:
+        #    MainWindow.setWindowTitle("已经选择子文件夹")
+        #else:
+        #    MainWindow.setWindowTitle("取消选择子文件夹")
 
 
     def changeDel(self,state):
         '''选择将文件删除'''
-        if Qt.Checked == state:
-            MainWindow.setWindowTitle("已经选择将文件删除")
-        else:
-            MainWindow.setWindowTitle("取消选择将文件删除")
+        #if Qt.Checked == state:
+        #    MainWindow.setWindowTitle("已经选择将文件删除")
+        #else:
+        #    MainWindow.setWindowTitle("取消选择将文件删除")
 
 
     def changeRename(self,state):
         '''选择将文件更名'''
-        if Qt.Checked == state:
-            MainWindow.setWindowTitle("已经选择将文件更名")
-        else:
-            MainWindow.setWindowTitle("取消选择将文件更名")
+        self.pushButton_rename.setDisabled(False)
+        #if Qt.Checked == state:
+        #    MainWindow.setWindowTitle("已经选择将文件更名")
+        #else:
+        #    MainWindow.setWindowTitle("取消选择将文件更名")
 
     def changeDate(self, state):
         '''选择按日期整理'''
         print(state)
-        if self.radioButton_date.isChecked():
-            MainWindow.setWindowTitle("已经选择按日期整理")
+        #if self.radioButton_date.isChecked():
+        #    MainWindow.setWindowTitle("已经选择按日期整理")
 
 
     def changeCameraType(self,state):
         '''选择按相机类型整理'''
         print(state)
-        if self.radioButton_cameraType.isChecked():
-            MainWindow.setWindowTitle("已经选择按相机类型整理")
+        #if self.radioButton_cameraType.isChecked():
+        #    MainWindow.setWindowTitle("已经选择按相机类型整理")
 
 
 
     def changelensType(self,state):
         '''选择按镜头类型整理'''
         print(state)
-        if self.radioButton_lensType.isChecked():
-            MainWindow.setWindowTitle("已经选择按镜头类型整理")
+        #if self.radioButton_lensType.isChecked():
+        #    MainWindow.setWindowTitle("已经选择按镜头类型整理")
 
     def changeGPS(self,state):
         '''选择按镜头类型整理'''
@@ -281,8 +305,8 @@ class Ui_MainWindow(object):
         else:
             self.horizontalSlider.setEnabled(False)
 
-        if self.radioButton_GPS.isChecked():
-            MainWindow.setWindowTitle("已经选择按GPS整理")
+        #if self.radioButton_GPS.isChecked():
+        #    MainWindow.setWindowTitle("已经选择按GPS整理")
 
     def changeGPSvalue(self, value):
         print(value)
@@ -294,6 +318,17 @@ class Ui_MainWindow(object):
     def clickPushButton_rename(self):
         print("xxxxxxxxxxxx")
 
+    def changeDstSelect(self):
+        """选择一个目录作为存储目录"""
+        self.pushButton_dst.setDisabled(False)
+
+    def changeSrc(self):
+        """选择源目录"""
+        self.pushButton_dst.setDisabled(True)
+
+    def dstBtnClicked(self, filepath ):
+        self.dPath=QFileDialog.getExistingDirectory()
+        self.lineEdit_dst.setText(self.dPath)
 
 
 if __name__ == "__main__":
