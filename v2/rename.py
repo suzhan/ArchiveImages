@@ -18,7 +18,7 @@ class Ui_Form(object):
 		super(Ui_Form, self).__init__()
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.operate)
-		self.timer.start(200)
+		self.timer.start(1000)
 
 	def setupUi(self, Form):
 		Form.setObjectName("Form")
@@ -38,9 +38,6 @@ class Ui_Form(object):
 		self.comboBox_name = QtWidgets.QComboBox(Form)
 		self.comboBox_name.setGeometry(QtCore.QRect(20, 70, 121, 22))
 		self.comboBox_name.setObjectName("comboBox_name")
-		# add
-		# self.comboBox_name.currentIndexChanged(0)
-		# addend
 		self.comboBox_name.addItem("")
 		self.comboBox_name.addItem("")
 		self.comboBox_name.addItem("")
@@ -160,14 +157,14 @@ class Ui_Form(object):
 		self.label_14.setGeometry(QtCore.QRect(140, 40, 41, 31))
 		font = QtGui.QFont()
 		font.setFamily("微软雅黑")
-		font.setPointSize(26)
+		font.setPointSize(22)
 		self.label_14.setFont(font)
 		self.label_14.setObjectName("label_14")
 		self.label_15 = QtWidgets.QLabel(self.page_datetime)
 		self.label_15.setGeometry(QtCore.QRect(310, 40, 41, 31))
 		font = QtGui.QFont()
 		font.setFamily("微软雅黑")
-		font.setPointSize(26)
+		font.setPointSize(22)
 
 		self.label_15.setFont(font)
 		self.label_15.setObjectName("label_15")
@@ -223,7 +220,7 @@ class Ui_Form(object):
 		self.label_10.setGeometry(QtCore.QRect(140, 40, 41, 31))
 		font = QtGui.QFont()
 		font.setFamily("微软雅黑")
-		font.setPointSize(26)
+		font.setPointSize(22)
 		self.label_10.setFont(font)
 		self.label_10.setObjectName("label_10")
 		self.comboBox_8 = QtWidgets.QComboBox(self.page_date)
@@ -237,7 +234,7 @@ class Ui_Form(object):
 		self.label_11.setGeometry(QtCore.QRect(310, 40, 41, 31))
 		font = QtGui.QFont()
 		font.setFamily("微软雅黑")
-		font.setPointSize(26)
+		font.setPointSize(22)
 		self.label_11.setFont(font)
 		self.label_11.setObjectName("label_11")
 		self.label_sn_2 = QtWidgets.QLabel(self.page_date)
@@ -280,6 +277,12 @@ class Ui_Form(object):
 		self.horizontalSlider_sn.setValue(4)  # 滑条，默认4位
 		self.horizontalSlider_date.setValue(4)  # 滑条，默认4位
 
+		self.comboBox_hyphen2.setCurrentIndex(3) #默认为无
+		self.comboBox_name2.setCurrentIndex(2)   #默认后缀文件名为无
+		self.radioButton_yyyymmdd_1.setChecked(True)  #默认选中yymmdd
+		self.radioButton_hhmmss_1.setChecked(True)   #默认选中hhmmss
+		self.radioButton_yyyymmdd_2.setChecked(True)  #默认选择yymmdd
+
 		QtCore.QMetaObject.connectSlotsByName(Form)
 
 		# add
@@ -289,15 +292,7 @@ class Ui_Form(object):
 
 		self.comboBox_hyphen1.activated[str].connect(self.changeHyphen1)
 		self.comboBox_hyphen2.activated[str].connect(self.changeHyphen2)
-		# self.comboBox_datetime.activated[str].connect(self.changeDateTime)
 
-		# add end
-
-		self.newname1 = ''
-		self.hyphen1 = ''
-		self.datetimesn = ''
-		self.hyphen2 = ''
-		self.newname2 = ''
 
 	def retranslateUi(self, Form):
 		_translate = QtCore.QCoreApplication.translate
@@ -493,14 +488,14 @@ class Ui_Form(object):
 
 	def changeDateSnValue(self, value):
 		"""中缀中拍摄日期滑条"""
-		print(value)
+		#print(value)
 		self.datesnvalue = str(0) * value
 		self.label_3.setText(str(value))
 		self.lineEdit_sn2.setText(str(self.datesnvalue))
 
 	def changeSnValue(self, value):
 		"""中缀中序号滑条"""
-		print(value)
+		#print(value)
 		self.mysnvalue = str(0) * value
 		self.label_2.setText(str(value))
 		self.lineEdit_sn.setText(str(self.mysnvalue))
