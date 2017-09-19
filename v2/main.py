@@ -232,7 +232,7 @@ class Ui_MainWindow(object):
         self.checkBox_Subdirectory.setText(_translate("MainWindow", "包含子文件夹"))
         self.checkBox_del.setText(_translate("MainWindow", "处理文件后，将其从此文件夹中删除"))
         self.groupBox_src.setTitle(_translate("MainWindow", "来源"))
-        self.lineEdit_rename.setText(_translate("MainWindow", "<原文件名>_<拍摄日期>.jpg"))
+        self.lineEdit_rename.setText(_translate("MainWindow", ""))
         self.pushButton_rename.setText(_translate("MainWindow", "编辑"))
         self.checkBox_rename.setText(_translate("MainWindow", "重命名"))
         self.radioButton_date.setText(_translate("MainWindow", "按拍摄日期"))
