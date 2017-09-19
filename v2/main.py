@@ -220,6 +220,10 @@ class Ui_MainWindow(object):
         self.radioButton_date.setChecked(True)
         self.pushButton_rename.setDisabled(True)
 
+        if not self.lineEdit_src.text():
+            self.radioButton_src.setDisabled(True)
+        else:
+            self.radioButton_src.setDisabled(False)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -249,10 +253,11 @@ class Ui_MainWindow(object):
 
     def srcBtnClicked(self,filepath):
         '''选择源文件夹'''
-        f = QFileDialog.getExistingDirectory()
-        self.sPath = f
+        self.sPath = QFileDialog.getExistingDirectory()
         print(self.sPath)
         self.lineEdit_src.setText(self.sPath)
+        self.radioButton_src.setDisabled(False)
+
         return self.sPath
 
     def changeSubdirectory(self,state):
@@ -326,15 +331,15 @@ class Ui_MainWindow(object):
     def changeDstSelect(self):
         """选择一个目录作为存储目录"""
         self.pushButton_dst.setDisabled(False)
+        self.lineEdit_dst.setText("") #清空目标目录框
 
     def changeSrc(self, filepath ):
         """选择源目录作为存储目录"""
         self.pushButton_dst.setDisabled(True)
-        print("1111111")
-        if self.sPath == "":
-             print("222")
+        #如果没有选择源目录
+        if  not self.lineEdit_src.text():
+             print("请选择源文件夹")
         else:
-             print(self.sPath)
              self.lineEdit_dst.setText(self.sPath)
 
     def dstBtnClicked(self, filepath ):
