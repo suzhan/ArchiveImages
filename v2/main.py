@@ -6,6 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+import os
 from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import  QFileDialog,QStyleFactory,QApplication
@@ -159,8 +160,9 @@ class Ui_MainWindow(object):
         self.radioButton_src.setGeometry(QtCore.QRect(230, 20, 101, 16))
         self.radioButton_src.setObjectName("radioButton_src")
         # add
-        self.radioButton_src.toggle()
-        self.radioButton_src.toggled.connect(self.changeSrc)
+        #self.radioButton_src.toggle()
+        #self.pushButton_src.clicked.connect(lambda: self.srcBtnClicked(self.lineEdit_src.text()))
+        self.radioButton_src.clicked.connect(self.changeSrc)
         # add_end
 
         #开始处理
@@ -247,8 +249,11 @@ class Ui_MainWindow(object):
 
     def srcBtnClicked(self,filepath):
         '''选择源文件夹'''
-        self.sPath=QFileDialog.getExistingDirectory()
+        f = QFileDialog.getExistingDirectory()
+        self.sPath = f
+        print(self.sPath)
         self.lineEdit_src.setText(self.sPath)
+        return self.sPath
 
     def changeSubdirectory(self,state):
         '''选择子文件夹'''
@@ -298,7 +303,7 @@ class Ui_MainWindow(object):
         #    MainWindow.setWindowTitle("已经选择按镜头类型整理")
 
     def changeGPS(self,state):
-        '''选择按镜头类型整理'''
+        '''选择按GPS整理'''
         print(state)
         if state:
             self.horizontalSlider.setEnabled(True)
@@ -322,11 +327,18 @@ class Ui_MainWindow(object):
         """选择一个目录作为存储目录"""
         self.pushButton_dst.setDisabled(False)
 
-    def changeSrc(self):
-        """选择源目录"""
+    def changeSrc(self, filepath ):
+        """选择源目录作为存储目录"""
         self.pushButton_dst.setDisabled(True)
+        print("1111111")
+        if self.sPath == "":
+             print("222")
+        else:
+             print(self.sPath)
+             self.lineEdit_dst.setText(self.sPath)
 
     def dstBtnClicked(self, filepath ):
+        """选择一个文件夹作为存储目录"""
         self.dPath=QFileDialog.getExistingDirectory()
         self.lineEdit_dst.setText(self.dPath)
 
