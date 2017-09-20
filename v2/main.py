@@ -6,17 +6,37 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-import os
+import sys, os
 from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import  QFileDialog,QStyleFactory,QApplication
+from PyQt5.QtWidgets import  (QFileDialog,QStyleFactory,QApplication,QMessageBox)
 from PyQt5.QtCore import Qt,pyqtSignal
 from PyQt5 import QtCore, QtGui, QtWidgets
+from archiveImagesThread import GetPostThread
 
 
 class Ui_MainWindow(object):
 
     #rename_signal=pyqtSignal()
+    def __init__( self, parent = None ):
+        super().__init__()
+        #sys.exit(app.exec_())
+        
+        print("111")
+        
+        
+        #self = Ui_MainWindow()
+        #self.setupUi()
+        #self.Ui.pushButton_rename.clicked.connect(self.rename)  # 编辑按钮打开重命名窗体
+        
+        #self.testThread = GetPostThread() #GetpostThread 参数传递地
+
+        #self.testThread = GetPostThread() #GetpostThread 参数传递地
+
+        #建立信号槽连接
+        #self.testThread.postSignal.connect(self.getPostSlot)  #getpostthread.py run 线程送过来的信号， 主线程获得信号，并将它与信号处理函数（槽函数）相连接
+        #self.testThread.finished.connect(self.threadFinished)  # 完成时的线程处理
+
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -169,6 +189,9 @@ class Ui_MainWindow(object):
         self.pushButton_start = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_start.setGeometry(QtCore.QRect(400, 540, 75, 23))
         self.pushButton_start.setObjectName("pushButton_start")
+        #开始整理
+        self.pushButton_start.clicked.connect(self.startBtnClicked)  # 开始信号
+
         #停止处理
         self.pushButton_stop = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_stop.setGeometry(QtCore.QRect(480, 540, 75, 23))
@@ -347,6 +370,27 @@ class Ui_MainWindow(object):
         self.dPath=QFileDialog.getExistingDirectory()
         self.lineEdit_dst.setText(self.dPath)
 
+    def startBtnClicked(self):
+        """开始整理"""
+        print("开始整理")
+        #如没有选择来源目录，弹窗口提示
+        if not self.lineEdit_src.text():
+            self.selectMessage()
+
+    
+    
+    
+    def selectMessage(self):
+        """没有选择来源目录时，弹出窗口提示"""
+        infoBox = QMessageBox()
+        #infoBox.setIcon(QMessageBox.Information)
+        infoBox.setText("请选择来源目录.        ")
+        infoBox.setInformativeText("")
+        infoBox.setWindowTitle("消息")
+        #infoBox.setDetailedText("Detailed Text")
+        infoBox.setStandardButtons(QMessageBox.Ok)
+        infoBox.setEscapeButton(infoBox.exec_())
+
 
 if __name__ == "__main__":
     import sys
@@ -356,4 +400,5 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)  #将ui实例绘制到窗口实例上﻿​
     MainWindow.show()      # 展示窗口﻿​
     sys.exit(app.exec_())
+    
 
