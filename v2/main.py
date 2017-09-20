@@ -371,24 +371,19 @@ class Ui_MainWindow(object):
         if not self.lineEdit_dst.text():
             self.messages('请选择存储目录。')
             return
-        
-        #如果没选择子文件夹
-        if self.checkBox_Subdirectory.isChecked() == False:
-            print("不选择子目录")
-            
-        
-            
 
         filename_list = []
         #将需整理的文件放入数组
         for root, dirs, files in os.walk(self.sPath, True):
-            dirs[:] = []
-            for filename in files:
-                filename = os.path.join(root, filename)
-                f, e = os.path.splitext(filename)
-                if e.lower() not in ('.jpg', '.png', '.nef', '.mp4', '.3gp', '.flv', '.mkv', '.mov'):
-                    continue
-                filename_list.append(filename)
+            # 如果没选择子文件夹,限在根目录
+            if self.checkBox_Subdirectory.isChecked() == False:
+                dirs[:] = []
+                for filename in files:
+                    filename = os.path.join(root, filename)
+                    f, e = os.path.splitext(filename)
+                    if e.lower() not in ('.jpg','.jpeg', '.png', '.nef', '.mp4', '.3gp', '.flv', '.mkv', '.mov'):
+                        continue
+                    filename_list.append(filename)
                 
         #处理进度消息显示总文件数
         self.label.setText('共' +str(len(filename_list))+'文件')

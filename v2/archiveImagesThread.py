@@ -55,7 +55,10 @@ class GetPostThread(QThread):
         if len(dubfilelist) == 0:
             #如果没有重复的
             shutil.copy2(archFilename, dst)
-            #os.remove(archFilename)
+            #如果选择删除文件
+            if self.checkBox_del.isChecked() == False:
+                print("dellllll")
+                os.remove(archFilename)
             top_post = '处理文件:' + info + '移动到:' + dst
         else:
             if self.calculate_hashes(archFilename) in dubfilelist:
@@ -66,7 +69,10 @@ class GetPostThread(QThread):
                 newfilename = f'{os.path.splitext(archFilename)[0]}{"_"}{t}{os.path.splitext(archFilename)[1]}'
                 shutil.move(archFilename, newfilename)
                 shutil.copy2(newfilename, dst)
-                #os.remove(newfilename)
+                # 如果选择删除文件
+                if self.checkBox_del.isChecked() == False:
+                    print("dellllll")
+                    os.remove(archFilename)
                 top_post = '处理文件:' + archFilename + "  "  + "在存储目录存在此文件名文件, 变更文件名为" + newfilename + "复制"
         return top_post
 
