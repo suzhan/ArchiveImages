@@ -22,20 +22,11 @@ class Ui_MainWindow(object):
         super().__init__()
         #sys.exit(app.exec_())
         
-        print("111")
-        
-        
-        #self = Ui_MainWindow()
-        #self.setupUi()
-        #self.Ui.pushButton_rename.clicked.connect(self.rename)  # 编辑按钮打开重命名窗体
-        
-        #self.testThread = GetPostThread() #GetpostThread 参数传递地
-
-        #self.testThread = GetPostThread() #GetpostThread 参数传递地
+        self.testThread = GetPostThread() #GetpostThread 参数传递地
 
         #建立信号槽连接
-        #self.testThread.postSignal.connect(self.getPostSlot)  #getpostthread.py run 线程送过来的信号， 主线程获得信号，并将它与信号处理函数（槽函数）相连接
-        #self.testThread.finished.connect(self.threadFinished)  # 完成时的线程处理
+        self.testThread.postSignal.connect(self.getPostSlot)  #getpostthread.py run 线程送过来的信号， 主线程获得信号，并将它与信号处理函数（槽函数）相连接
+        self.testThread.finished.connect(self.threadFinished)  # 完成时的线程处理
 
 
     def setupUi(self, MainWindow):
@@ -180,8 +171,6 @@ class Ui_MainWindow(object):
         self.radioButton_src.setGeometry(QtCore.QRect(230, 20, 101, 16))
         self.radioButton_src.setObjectName("radioButton_src")
         # add
-        #self.radioButton_src.toggle()
-        #self.pushButton_src.clicked.connect(lambda: self.srcBtnClicked(self.lineEdit_src.text()))
         self.radioButton_src.clicked.connect(self.changeSrc)
         # add_end
 
@@ -270,7 +259,7 @@ class Ui_MainWindow(object):
         self.radioButton_src.setText(_translate("MainWindow", "选择源文件夹"))
         self.pushButton_start.setText(_translate("MainWindow", "开始"))
         self.pushButton_stop.setText(_translate("MainWindow", "取消"))
-        self.label.setText(_translate("MainWindow", "处理中：                  文件名：                        状态：                12 / 100 总数  "))
+        self.label.setText(_translate("MainWindow", ""))
         self.groupBox_schedule.setTitle(_translate("MainWindow", "进度"))
 
 
@@ -280,7 +269,10 @@ class Ui_MainWindow(object):
         print(self.sPath)
         self.lineEdit_src.setText(self.sPath)
         self.radioButton_src.setDisabled(False)
-
+        #判断是否为空目录,如空目录弹出窗口，并退出
+        if not os.listdir(self.sPath):
+            self.messages('所选择的来源目录为空目录。')
+            return
         return self.sPath
 
     def changeSubdirectory(self,state):
@@ -333,13 +325,11 @@ class Ui_MainWindow(object):
     def changeGPS(self,state):
         '''选择按GPS整理'''
         print(state)
+        #当选择按GPS整理时，滑条生效
         if state:
             self.horizontalSlider.setEnabled(True)
         else:
             self.horizontalSlider.setEnabled(False)
-
-        #if self.radioButton_GPS.isChecked():
-        #    MainWindow.setWindowTitle("已经选择按GPS整理")
 
     def changeGPSvalue(self, value):
         print(value)
@@ -375,16 +365,65 @@ class Ui_MainWindow(object):
         print("开始整理")
         #如没有选择来源目录，弹窗口提示
         if not self.lineEdit_src.text():
-            self.selectMessage()
+            self.messages('请选择来源目录。')
+            return
+        # 如没有选择来源目录，弹窗口提示
+        if not self.lineEdit_dst.text():
+            self.messages('请选择存储目录。')
+            return
+        
+        #如果没选择子文件夹
+        if self.checkBox_Subdirectory.isChecked() == False:
+            print("不选择子目录")
+            
+        
+            
 
+        filename_list = []
+        #将需整理的文件放入数组
+        for root, dirs, files in os.walk(self.sPath, True):
+            dirs[:] = []
+            for filename in files:
+                filename = os.path.join(root, filename)
+                f, e = os.path.splitext(filename)
+                if e.lower() not in ('.jpg', '.png', '.nef', '.mp4', '.3gp', '.flv', '.mkv', '.mov'):
+                    continue
+                filename_list.append(filename)
+                
+        #处理进度消息显示总文件数
+        self.label.setText('共' +str(len(filename_list))+'文件')
+        self.progressBar.setMaximum(len(filename_list))  #设置进度值总数
+        
+        self.testThread.setSubReddit_src(self.sPath) # 取得源文件夹的路径,传送给
+        self.testThread.setSubReddit_dst(self.dPath)  # 取得目标文件夹的路径,传送给
+        self.testThread.setArchFilename(filename_list) #文件列表线程
+        self.testThread.start()   #开始执行archThread线程
+        
+        self.pushButton_start.setEnabled(False)  # 设置开始按钮为禁用
+        self.pushButton_stop.setEnabled(True)  # 设置停止按钮为启用
+        
+    def getPostSlot(self, top_post): #将整理结果显示到文本框textBrowser
+        """处理过程"""
+        #print(top_post)   #打印执行结果 top_post 是getposttheard.py 执行结果
+        #self.self.label.append(top_post)  #消息打印到文本框textBrowser
+        self.progressBar.setValue(self.progressBar.value() + 1) #处理一个进度条+1
+        
+        
+    def threadFinished(self):
+        '''完成整理'''
+        #self.progressBar.setValue(0)  #进度条值清空
+        #if self.testThread.isRunning():
+        #    self.testThread.terminate()
+        #self.label.setText("整理结束。")
+        self.pushButton_start.setEnabled(True)  # 设置开始按钮为禁用
+        self.pushButton_stop.setEnabled(False)  # 设置停止按钮为雇用
+   
     
-    
-    
-    def selectMessage(self):
+    def messages(self, messages):
         """没有选择来源目录时，弹出窗口提示"""
         infoBox = QMessageBox()
         #infoBox.setIcon(QMessageBox.Information)
-        infoBox.setText("请选择来源目录.        ")
+        infoBox.setText(messages + "       ")
         infoBox.setInformativeText("")
         infoBox.setWindowTitle("消息")
         #infoBox.setDetailedText("Detailed Text")
