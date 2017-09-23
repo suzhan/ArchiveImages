@@ -20,6 +20,7 @@ class GetPostThread(QThread):
         QThread.__init__(self)
         self.subreddits_src = []
         self.subreddits_dst = []
+        self.myCheckBox_del = []
         self.filelist = []
 
     def setSubReddit_src(self, lineEdit_src):
@@ -29,6 +30,11 @@ class GetPostThread(QThread):
     def setSubReddit_dst(self, lineEdit_dst):
         """存储目录"""
         self.subreddits_dst = lineEdit_dst
+
+    def setCheckBox_del(self, checkBox_del):
+        """是否选择删除"""
+        self.myCheckBox_del = checkBox_del
+
 
     def setArchFilename(self, archFilename):
         """需整理目录"""
@@ -56,9 +62,10 @@ class GetPostThread(QThread):
             #如果没有重复的
             shutil.copy2(archFilename, dst)
             #如果选择删除文件
-            if self.checkBox_del.isChecked() == False:
-                print("dellllll")
-                os.remove(archFilename)
+            if self.myCheckBox_del == True:
+                print("选择删除")
+                #os.remove(archFilename)
+
             top_post = '处理文件:' + info + '移动到:' + dst
         else:
             if self.calculate_hashes(archFilename) in dubfilelist:
@@ -69,10 +76,11 @@ class GetPostThread(QThread):
                 newfilename = f'{os.path.splitext(archFilename)[0]}{"_"}{t}{os.path.splitext(archFilename)[1]}'
                 shutil.move(archFilename, newfilename)
                 shutil.copy2(newfilename, dst)
+                print("dellllll222")
                 # 如果选择删除文件
-                if self.checkBox_del.isChecked() == False:
-                    print("dellllll")
-                    os.remove(archFilename)
+                #if self.checkBox_del.isChecked() == False:
+                #    print("dellllll222")
+                #    os.remove(archFilename)
                 top_post = '处理文件:' + archFilename + "  "  + "在存储目录存在此文件名文件, 变更文件名为" + newfilename + "复制"
         return top_post
 

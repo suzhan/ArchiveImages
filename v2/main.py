@@ -54,20 +54,12 @@ class Ui_MainWindow(object):
         self.checkBox_Subdirectory = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBox_Subdirectory.setGeometry(QtCore.QRect(60, 70, 101, 16))
         self.checkBox_Subdirectory.setObjectName("checkBox_Subdirectory")
-        # add
 
-        self.checkBox_Subdirectory.toggle()
-        self.checkBox_Subdirectory.stateChanged.connect(self.changeSubdirectory)
-        # add_end
         #是否选择删除文件
         self.checkBox_del = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBox_del.setGeometry(QtCore.QRect(60, 90, 231, 16))
         self.checkBox_del.setObjectName("checkBox_del")
-        # add
 
-        self.checkBox_del.toggle()
-        self.checkBox_del.stateChanged.connect(self.changeDel)
-        # add_end
         self.groupBox_src = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_src.setGeometry(QtCore.QRect(20, 19, 601, 101))
         self.groupBox_src.setObjectName("groupBox_src")
@@ -96,26 +88,17 @@ class Ui_MainWindow(object):
         self.radioButton_date = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_date.setGeometry(QtCore.QRect(60, 220, 91, 20))
         self.radioButton_date.setObjectName("radioButton_date")
-        # add
-        self.radioButton_date.toggle()
-        self.radioButton_date.toggled.connect(self.changeDate)
-        # add_end
+
         #按相机型号
         self.radioButton_cameraType = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_cameraType.setGeometry(QtCore.QRect(60, 250, 91, 20))
         self.radioButton_cameraType.setObjectName("radioButton_cameraType")
-        # add
-        self.radioButton_cameraType.toggle()
-        self.radioButton_cameraType.toggled.connect(self.changeCameraType)
-        # add_end
+
         #按镜头型号
         self.radioButton_lensType = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_lensType.setGeometry(QtCore.QRect(60, 280, 91, 20))
         self.radioButton_lensType.setObjectName("radioButton_lensType")
-        # add
-        self.radioButton_lensType.toggle()
-        self.radioButton_lensType.toggled.connect(self.changelensType)
-        # add_end
+
         #按GPS范围
         self.radioButton_GPS = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_GPS.setGeometry(QtCore.QRect(60, 310, 91, 20))
@@ -275,52 +258,11 @@ class Ui_MainWindow(object):
             return
         return self.sPath
 
-    def changeSubdirectory(self,state):
-        '''选择子文件夹'''
-        print(state)
-        print(Qt.Checked)
-        #if Qt.Checked == state:
-        #    MainWindow.setWindowTitle("已经选择子文件夹")
-        #else:
-        #    MainWindow.setWindowTitle("取消选择子文件夹")
-
-
-    def changeDel(self,state):
-        '''选择将文件删除'''
-        #if Qt.Checked == state:
-        #    MainWindow.setWindowTitle("已经选择将文件删除")
-        #else:
-        #    MainWindow.setWindowTitle("取消选择将文件删除")
-
 
     def changeRename(self,state):
         '''选择将文件更名'''
         self.pushButton_rename.setDisabled(False)
-        #if Qt.Checked == state:
-        #    MainWindow.setWindowTitle("已经选择将文件更名")
-        #else:
-        #    MainWindow.setWindowTitle("取消选择将文件更名")
 
-    def changeDate(self, state):
-        '''选择按日期整理'''
-        print(state)
-        #if self.radioButton_date.isChecked():
-        #    MainWindow.setWindowTitle("已经选择按日期整理")
-
-
-    def changeCameraType(self,state):
-        '''选择按相机类型整理'''
-        print(state)
-        #if self.radioButton_cameraType.isChecked():
-        #    MainWindow.setWindowTitle("已经选择按相机类型整理")
-
-
-
-    def changelensType(self,state):
-        '''选择按镜头类型整理'''
-        print(state)
-        #if self.radioButton_lensType.isChecked():
-        #    MainWindow.setWindowTitle("已经选择按镜头类型整理")
 
     def changeGPS(self,state):
         '''选择按GPS整理'''
@@ -337,9 +279,6 @@ class Ui_MainWindow(object):
         Longitude = value * 24
         Latitude = value * 31
         self.label_gpsm.setText('经：±' +str(Longitude)+'米' + ' ' + '纬：±' +  str(Latitude)+'米')
-
-    def clickPushButton_rename(self):
-        print("xxxxxxxxxxxx")
 
     def changeDstSelect(self):
         """选择一个目录作为存储目录"""
@@ -363,6 +302,13 @@ class Ui_MainWindow(object):
     def startBtnClicked(self):
         """开始整理"""
         print("开始整理")
+
+        print(self.checkBox_del.isChecked())
+
+        self.checkBox_del= self.checkBox_del.isChecked()
+
+        print(self.checkBox_del)
+
         #如没有选择来源目录，弹窗口提示
         if not self.lineEdit_src.text():
             self.messages('请选择来源目录。')
@@ -378,20 +324,25 @@ class Ui_MainWindow(object):
             # 如果没选择子文件夹,限在根目录
             if self.checkBox_Subdirectory.isChecked() == False:
                 dirs[:] = []
-                for filename in files:
-                    filename = os.path.join(root, filename)
-                    f, e = os.path.splitext(filename)
-                    if e.lower() not in ('.jpg','.jpeg', '.png', '.nef', '.mp4', '.3gp', '.flv', '.mkv', '.mov'):
-                        continue
-                    filename_list.append(filename)
+            for filename in files:
+                filename = os.path.join(root, filename)
+                f, e = os.path.splitext(filename)
+                if e.lower() not in ('.jpg','.jpeg', '.png', '.nef', '.mp4', '.3gp', '.flv', '.mkv', '.mov'):
+                    continue
+                filename_list.append(filename)
                 
         #处理进度消息显示总文件数
         self.label.setText('共' +str(len(filename_list))+'文件')
         self.progressBar.setMaximum(len(filename_list))  #设置进度值总数
         
-        self.testThread.setSubReddit_src(self.sPath) # 取得源文件夹的路径,传送给
-        self.testThread.setSubReddit_dst(self.dPath)  # 取得目标文件夹的路径,传送给
-        self.testThread.setArchFilename(filename_list) #文件列表线程
+        self.testThread.setSubReddit_src(self.sPath) # 取得源文件夹的路径,传送给archiveImagesThread.py
+        self.testThread.setSubReddit_dst(self.dPath)  # 取得目标文件夹的路径,传送给archiveImagesThread.py
+
+        self.testThread.setCheckBox_del(self.checkBox_del)  # 取得目标文件夹的路径,传送给archiveImagesThread.py
+
+        self.testThread.setArchFilename(filename_list) #文件列表线程,传送给archiveImagesThread.py
+
+
         self.testThread.start()   #开始执行archThread线程
         
         self.pushButton_start.setEnabled(False)  # 设置开始按钮为禁用
@@ -401,6 +352,7 @@ class Ui_MainWindow(object):
         """处理过程"""
         #print(top_post)   #打印执行结果 top_post 是getposttheard.py 执行结果
         #self.self.label.append(top_post)  #消息打印到文本框textBrowser
+        self.label.setText(top_post)
         self.progressBar.setValue(self.progressBar.value() + 1) #处理一个进度条+1
         
         
