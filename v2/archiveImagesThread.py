@@ -21,6 +21,16 @@ class GetPostThread(QThread):
         self.subreddits_src = []
         self.subreddits_dst = []
         self.myCheckBox_del = []
+        self.myCheckBox_rename = []
+        self.mylineEdit_rename = []
+
+        self.myRadioButton_date = []
+        self.myRadioButton_cameraType = []
+        self.myRadioButton_lensType = []
+        self.myRadioButton_GPS = []
+
+
+
         self.filelist = []
 
     def setSubReddit_src(self, lineEdit_src):
@@ -34,6 +44,31 @@ class GetPostThread(QThread):
     def setCheckBox_del(self, checkBox_del):
         """是否选择删除"""
         self.myCheckBox_del = checkBox_del
+
+    def setCheckBox_rename(self, checkBox_rename):
+        """是否选择重命名"""
+        self.myCheckBox_del = checkBox_rename
+
+    def setLineEdit_rename(self, lineEdit_rename):
+        """重命名格式框"""
+        self.mylineEdit_rename = lineEdit_rename
+
+    def setRadioButton_date(self,radioButton_date):
+        """按拍摄日期选择"""
+        self.myRadioButton_date = radioButton_date
+
+    def setRadioButton_cameraType(self,radioButton_cameraType):
+        """按相机类型选择"""
+        self.myRadioButton_cameraType = radioButton_cameraType
+
+    def setRadioButton_lensType(self,radioButton_lensType):
+        """按镜头类型选择"""
+        self.myRadioButton_lensType = radioButton_lensType
+
+    def setRadioButton_GPS(self,radioButton_GPS):
+        """按GPS选择"""
+        self.myRadioButton_GPS = radioButton_GPS
+
 
 
     def setArchFilename(self, archFilename):
@@ -56,32 +91,31 @@ class GetPostThread(QThread):
         # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
         dubfilelist = self.find_dub_filename(os.path.split(archFilename)[1])
 
-        info = "文件名:" + archFilename + " " + "拍摄时间：" + t + " "
+        info = os.path.split(archFilename)[1] + " " + "拍摄时间:" + t + " "
+
+
+
 
         if len(dubfilelist) == 0:
             #如果没有重复的
             shutil.copy2(archFilename, dst)
             #如果选择删除文件
             if self.myCheckBox_del == True:
-                print("选择删除")
-                #os.remove(archFilename)
-
-            top_post = '处理文件:' + info + '移动到:' + dst
+                os.remove(archFilename)
+            top_post = info + "移动到:" + os.path.split(dst)[1]
         else:
             if self.calculate_hashes(archFilename) in dubfilelist:
                 #有重复的
-                top_post = '处理:' + info + "已存在" +  ", 不作复制"
+                top_post = info + "已存在，不作复制"
             else:
                 #只是文件名重复，修改为文件名再复制
                 newfilename = f'{os.path.splitext(archFilename)[0]}{"_"}{t}{os.path.splitext(archFilename)[1]}'
                 shutil.move(archFilename, newfilename)
                 shutil.copy2(newfilename, dst)
-                print("dellllll222")
                 # 如果选择删除文件
-                #if self.checkBox_del.isChecked() == False:
-                #    print("dellllll222")
-                #    os.remove(archFilename)
-                top_post = '处理文件:' + archFilename + "  "  + "在存储目录存在此文件名文件, 变更文件名为" + newfilename + "复制"
+                if self.myCheckBox_del == True:
+                   os.remove(archFilename)
+                top_post = os.path.split(archFilename)[1] + " "  + "文件名已存在, 变更文件名为" + newfilename + "复制"
         return top_post
 
     def getOriginalDate(self, filename):

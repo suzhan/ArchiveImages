@@ -22,11 +22,11 @@ class Ui_MainWindow(object):
         super().__init__()
         #sys.exit(app.exec_())
         
-        self.testThread = GetPostThread() #GetpostThread 参数传递地
+        self.archThread = GetPostThread() #GetpostThread 参数传递地
 
         #建立信号槽连接
-        self.testThread.postSignal.connect(self.getPostSlot)  #getpostthread.py run 线程送过来的信号， 主线程获得信号，并将它与信号处理函数（槽函数）相连接
-        self.testThread.finished.connect(self.threadFinished)  # 完成时的线程处理
+        self.archThread.postSignal.connect(self.getPostSlot)  #getpostthread.py run 线程送过来的信号， 主线程获得信号，并将它与信号处理函数（槽函数）相连接
+        self.archThread.finished.connect(self.threadFinished)  # 完成时的线程处理
 
 
     def setupUi(self, MainWindow):
@@ -335,15 +335,21 @@ class Ui_MainWindow(object):
         self.label.setText('共' +str(len(filename_list))+'文件')
         self.progressBar.setMaximum(len(filename_list))  #设置进度值总数
         
-        self.testThread.setSubReddit_src(self.sPath) # 取得源文件夹的路径,传送给archiveImagesThread.py
-        self.testThread.setSubReddit_dst(self.dPath)  # 取得目标文件夹的路径,传送给archiveImagesThread.py
+        self.archThread.setSubReddit_src(self.sPath) # 取得源文件夹的路径,传送给archiveImagesThread.py
+        self.archThread.setSubReddit_dst(self.dPath)  # 取得目标文件夹的路径,传送给archiveImagesThread.py
+        self.archThread.setCheckBox_del(self.checkBox_del)  # 是否确认删除原文件,传送给archiveImagesThread.py
+        self.archThread.setArchFilename(filename_list) #文件列表线程,传送给archiveImagesThread.py
 
-        self.testThread.setCheckBox_del(self.checkBox_del)  # 取得目标文件夹的路径,传送给archiveImagesThread.py
+        self.archThread.setCheckBox_rename(self.checkBox_rename)  # 是否重命名,传送给archiveImagesThread.py
+        self.archThread.setLineEdit_rename(self.lineEdit_rename)  # 重命名格式,传送给archiveImagesThread.py
 
-        self.testThread.setArchFilename(filename_list) #文件列表线程,传送给archiveImagesThread.py
+        self.archThread.setRadioButton_date(self.radioButton_date)   # 选择按拍摄日期处理， 传送给archiveImagesThread.py
+        self.archThread.setRadioButton_cameraType(self.radioButton_cameraType)   # 选择按相机类型处理， 传送给archiveImagesThread.py
+        self.archThread.setRadioButton_lensType(self.radioButton_lensType)   # 选择按镜头类型处理， 传送给archiveImagesThread.py
+        self.archThread.setRradioButton_GPS(self.radioButton_GPS)   # 选择按GPS处理， 传送给archiveImagesThread.py
 
 
-        self.testThread.start()   #开始执行archThread线程
+        self.archThread.start()   #开始执行archThread线程
         
         self.pushButton_start.setEnabled(False)  # 设置开始按钮为禁用
         self.pushButton_stop.setEnabled(True)  # 设置停止按钮为启用
@@ -359,8 +365,8 @@ class Ui_MainWindow(object):
     def threadFinished(self):
         '''完成整理'''
         #self.progressBar.setValue(0)  #进度条值清空
-        #if self.testThread.isRunning():
-        #    self.testThread.terminate()
+        #if self.archThread.isRunning():
+        #    self.archThread.terminate()
         #self.label.setText("整理结束。")
         self.pushButton_start.setEnabled(True)  # 设置开始按钮为禁用
         self.pushButton_stop.setEnabled(False)  # 设置停止按钮为雇用
