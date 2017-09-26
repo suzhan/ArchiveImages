@@ -29,8 +29,6 @@ class GetPostThread(QThread):
         self.myRadioButton_lensType = []
         self.myRadioButton_GPS = []
 
-
-
         self.filelist = []
 
     def setSubReddit_src(self, lineEdit_src):
@@ -47,37 +45,39 @@ class GetPostThread(QThread):
 
     def setCheckBox_rename(self, checkBox_rename):
         """是否选择重命名"""
-        self.myCheckBox_del = checkBox_rename
+        self.myCheckBox_rename = checkBox_rename
 
     def setLineEdit_rename(self, lineEdit_rename):
         """重命名格式框"""
         self.mylineEdit_rename = lineEdit_rename
 
-    def setRadioButton_date(self,radioButton_date):
+    def setRadioButton_date(self, radioButton_date):
         """按拍摄日期选择"""
         self.myRadioButton_date = radioButton_date
 
-    def setRadioButton_cameraType(self,radioButton_cameraType):
+    def setRadioButton_cameraType(self, radioButton_cameraType):
         """按相机类型选择"""
         self.myRadioButton_cameraType = radioButton_cameraType
 
-    def setRadioButton_lensType(self,radioButton_lensType):
+    def setRadioButton_lensType(self, radioButton_lensType):
         """按镜头类型选择"""
         self.myRadioButton_lensType = radioButton_lensType
 
-    def setRadioButton_GPS(self,radioButton_GPS):
+    def setRadioButton_GPS(self, radioButton_GPS):
         """按GPS选择"""
         self.myRadioButton_GPS = radioButton_GPS
-
 
 
     def setArchFilename(self, archFilename):
         """需整理目录"""
         self.myfilenames = archFilename
 
-    def _get_top_post(self, archFilename):
+    def get_top_post(self, archFilename):
         """对源目录中的文件进行处理"""
         # 取得exif中的拍摄日期时间
+
+        print(archFilename)
+
         if  os.path.splitext(archFilename)[1] == '.MOV':
             t = self.getOriginalDateMOV(archFilename)
         else:
@@ -91,14 +91,27 @@ class GetPostThread(QThread):
         # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
         dubfilelist = self.find_dub_filename(os.path.split(archFilename)[1])
 
-        info = os.path.split(archFilename)[1] + " " + "拍摄时间:" + t + " "
+        info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " +  os.path.split(archFilename)[1] + " " + "拍摄时间:" + t + " "
 
+        print("^^^^^^^^^^^^^^^^")
 
 
 
         if len(dubfilelist) == 0:
             #如果没有重复的
-            shutil.copy2(archFilename, dst)
+            #如果选择重命名
+
+            #print(self.myCheckBox_rename.isChecked())
+            #
+            if self.myCheckBox_rename.isChecked() == True:
+                print("选择了重命令及方式不为空")
+                print(self.mylineEdit_rename.text())
+
+                #print(self.rename.newname1)
+
+            #shutil.copy2(archFilename, dst)
+
+
             #如果选择删除文件
             if self.myCheckBox_del == True:
                 os.remove(archFilename)
@@ -115,7 +128,7 @@ class GetPostThread(QThread):
                 # 如果选择删除文件
                 if self.myCheckBox_del == True:
                    os.remove(archFilename)
-                top_post = os.path.split(archFilename)[1] + " "  + "文件名已存在, 变更文件名为" + newfilename + "复制"
+                top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + os.path.split(archFilename)[1] + " "  + "文件名已存在, 变更文件名为" + newfilename + "复制"
         return top_post
 
     def getOriginalDate(self, filename):
@@ -175,5 +188,5 @@ class GetPostThread(QThread):
 
     def run(self):
         for archFilename in self.myfilenames:  # 需处理的图像列表传到线程类中
-            top_post = self._get_top_post(archFilename)  # 进行归档处理
+            top_post = self.get_top_post(archFilename)  # 进行归档处理
             self.postSignal.emit(top_post)  # run方法中处理并获得数据，然后通过信号将其发出

@@ -9,7 +9,7 @@
 import sys, os
 from PyQt5 import QtCore, QtGui
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import  (QFileDialog,QStyleFactory,QApplication,QMessageBox)
+from PyQt5.QtWidgets import QFileDialog,QStyleFactory,QApplication,QMessageBox,QTextBrowser
 from PyQt5.QtCore import Qt,pyqtSignal
 from PyQt5 import QtCore, QtGui, QtWidgets
 from archiveImagesThread import GetPostThread
@@ -31,7 +31,7 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(640, 579)
+        MainWindow.resize(640, 685)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(9)
@@ -159,14 +159,14 @@ class Ui_MainWindow(object):
 
         #开始处理
         self.pushButton_start = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_start.setGeometry(QtCore.QRect(400, 540, 75, 23))
+        self.pushButton_start.setGeometry(QtCore.QRect(400, 650, 75, 23))
         self.pushButton_start.setObjectName("pushButton_start")
         #开始整理
         self.pushButton_start.clicked.connect(self.startBtnClicked)  # 开始信号
 
         #停止处理
         self.pushButton_stop = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_stop.setGeometry(QtCore.QRect(480, 540, 75, 23))
+        self.pushButton_stop.setGeometry(QtCore.QRect(480, 650, 75, 23))
         self.pushButton_stop.setObjectName("pushButton_stop")
         #进度条
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
@@ -174,14 +174,15 @@ class Ui_MainWindow(object):
         self.progressBar.setProperty("value", 0)
         self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
         self.progressBar.setObjectName("progressBar")
-        #处理进度标签
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(30, 500, 581, 31))
-        self.label.setObjectName("label")
 
         self.groupBox_schedule = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_schedule.setGeometry(QtCore.QRect(20, 450, 601, 81))
+        self.groupBox_schedule.setGeometry(QtCore.QRect(20, 450, 601, 191))
         self.groupBox_schedule.setObjectName("groupBox_schedule")
+        #处理进度消息
+        self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
+        self.textBrowser.setGeometry(QtCore.QRect(30, 500, 581, 131))
+        self.textBrowser.setObjectName("textBrowser")
+        
         self.groupBox_schedule.raise_()
         self.groupBox_method.raise_()
         self.groupBox_src.raise_()
@@ -202,7 +203,8 @@ class Ui_MainWindow(object):
         self.pushButton_start.raise_()
         self.pushButton_stop.raise_()
         self.progressBar.raise_()
-        self.label.raise_()
+        self.textBrowser.raise_()
+        #self.label.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -242,7 +244,7 @@ class Ui_MainWindow(object):
         self.radioButton_src.setText(_translate("MainWindow", "选择源文件夹"))
         self.pushButton_start.setText(_translate("MainWindow", "开始"))
         self.pushButton_stop.setText(_translate("MainWindow", "取消"))
-        self.label.setText(_translate("MainWindow", ""))
+        #self.label.setText(_translate("MainWindow", ""))
         self.groupBox_schedule.setTitle(_translate("MainWindow", "进度"))
 
 
@@ -266,7 +268,7 @@ class Ui_MainWindow(object):
 
     def changeGPS(self,state):
         '''选择按GPS整理'''
-        print(state)
+        #print(state)
         #当选择按GPS整理时，滑条生效
         if state:
             self.horizontalSlider.setEnabled(True)
@@ -274,7 +276,7 @@ class Ui_MainWindow(object):
             self.horizontalSlider.setEnabled(False)
 
     def changeGPSvalue(self, value):
-        print(value)
+        #print(value)
         #经度1秒 = 23.6m 纬度1秒 = 大约30.9m
         Longitude = value * 24
         Latitude = value * 31
@@ -296,18 +298,11 @@ class Ui_MainWindow(object):
 
     def dstBtnClicked(self, filepath ):
         """选择一个文件夹作为存储目录"""
-        self.dPath=QFileDialog.getExistingDirectory()
+        self.dPath = QFileDialog.getExistingDirectory()
         self.lineEdit_dst.setText(self.dPath)
 
     def startBtnClicked(self):
         """开始整理"""
-        print("开始整理")
-
-        print(self.checkBox_del.isChecked())
-
-        self.checkBox_del= self.checkBox_del.isChecked()
-
-        print(self.checkBox_del)
 
         #如没有选择来源目录，弹窗口提示
         if not self.lineEdit_src.text():
@@ -327,27 +322,31 @@ class Ui_MainWindow(object):
             for filename in files:
                 filename = os.path.join(root, filename)
                 f, e = os.path.splitext(filename)
-                if e.lower() not in ('.jpg','.jpeg', '.png', '.nef', '.mp4', '.3gp', '.flv', '.mkv', '.mov'):
+                if e.lower() not in ('.jpg', '.jpeg', '.png', '.nef', '.mp4', '.3gp', '.flv', '.mkv', '.mov'):
                     continue
                 filename_list.append(filename)
                 
         #处理进度消息显示总文件数
-        self.label.setText('共' +str(len(filename_list))+'文件')
-        self.progressBar.setMaximum(len(filename_list))  #设置进度值总数
+        self.textBrowser.clear()   #清空结果
+        self.textBrowser.append("开始整理")
+
+        self.textBrowser.append('共' +str(len(filename_list))+'文件')
+
+        print("!!!!!!!!!!!")
+        print(newname1)
+
         
+        self.progressBar.setMaximum(len(filename_list))  #设置进度值总数
         self.archThread.setSubReddit_src(self.sPath) # 取得源文件夹的路径,传送给archiveImagesThread.py
         self.archThread.setSubReddit_dst(self.dPath)  # 取得目标文件夹的路径,传送给archiveImagesThread.py
         self.archThread.setCheckBox_del(self.checkBox_del)  # 是否确认删除原文件,传送给archiveImagesThread.py
         self.archThread.setArchFilename(filename_list) #文件列表线程,传送给archiveImagesThread.py
-
         self.archThread.setCheckBox_rename(self.checkBox_rename)  # 是否重命名,传送给archiveImagesThread.py
         self.archThread.setLineEdit_rename(self.lineEdit_rename)  # 重命名格式,传送给archiveImagesThread.py
-
         self.archThread.setRadioButton_date(self.radioButton_date)   # 选择按拍摄日期处理， 传送给archiveImagesThread.py
         self.archThread.setRadioButton_cameraType(self.radioButton_cameraType)   # 选择按相机类型处理， 传送给archiveImagesThread.py
         self.archThread.setRadioButton_lensType(self.radioButton_lensType)   # 选择按镜头类型处理， 传送给archiveImagesThread.py
-        self.archThread.setRradioButton_GPS(self.radioButton_GPS)   # 选择按GPS处理， 传送给archiveImagesThread.py
-
+        self.archThread.setRadioButton_GPS(self.radioButton_GPS)   # 选择按GPS处理， 传送给archiveImagesThread.py
 
         self.archThread.start()   #开始执行archThread线程
         
@@ -356,9 +355,7 @@ class Ui_MainWindow(object):
         
     def getPostSlot(self, top_post): #将整理结果显示到文本框textBrowser
         """处理过程"""
-        #print(top_post)   #打印执行结果 top_post 是getposttheard.py 执行结果
-        #self.self.label.append(top_post)  #消息打印到文本框textBrowser
-        self.label.setText(top_post)
+        self.textBrowser.append(top_post)
         self.progressBar.setValue(self.progressBar.value() + 1) #处理一个进度条+1
         
         
@@ -368,6 +365,8 @@ class Ui_MainWindow(object):
         #if self.archThread.isRunning():
         #    self.archThread.terminate()
         #self.label.setText("整理结束。")
+        self.textBrowser.append("整理完成！")
+
         self.pushButton_start.setEnabled(True)  # 设置开始按钮为禁用
         self.pushButton_stop.setEnabled(False)  # 设置停止按钮为雇用
    
