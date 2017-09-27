@@ -29,6 +29,22 @@ class MainClass(QtWidgets.QMainWindow):
     def getRenameFormat(self):
         """将参数传递到main"""
         self.Ui.lineEdit_rename.setText(self.rename.newname1 + self.rename.hyphen1 + self.rename.datetimesn + self.rename.hyphen2 + self.rename.newname2)
+        #传递给main隐藏标签
+        self.Ui.label_1.setText(self.rename.newname1)
+        self.Ui.label_2.setText(self.rename.hyphen1)
+        self.Ui.label_3.setText(self.rename.datetimesn)
+        self.Ui.label_4.setText(self.rename.hyphen2)
+        self.Ui.label_5.setText(self.rename.newname2)
+        self.Ui.label_6.setText(self.rename.lineEdit_sn.text()) #中缀序号位数
+        #中缀日期
+
+        self.Ui.label_8.setText(self.rename.datetimesn1)
+        self.Ui.label_9.setText(self.rename.datetimesn2)
+        #self.Ui.label_7.setText(self.rename.datetimesn3)  # 中缀拍摄日期序列位数
+
+
+
+
         self.Form.close()
 
     def appclose(self):

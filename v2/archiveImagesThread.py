@@ -29,6 +29,17 @@ class GetPostThread(QThread):
         self.myRadioButton_lensType = []
         self.myRadioButton_GPS = []
 
+        self.mylabel_1 = []
+        self.mylabel_2 = []
+        self.mylabel_3 = []
+        self.mylabel_4 = []
+        self.mylabel_5 = []
+        self.mylabel_6 = []
+        self.mylabel_7 = []
+        self.mylabel_8 = []
+        self.mylabel_9 = []
+
+
         self.filelist = []
 
     def setSubReddit_src(self, lineEdit_src):
@@ -68,6 +79,35 @@ class GetPostThread(QThread):
         self.myRadioButton_GPS = radioButton_GPS
 
 
+    def setlabel_1(self, label_1):
+        """重命名参数1"""
+        self.mylabel_1 = label_1
+    def setlabel_2(self, label_2):
+        """重命名参数2"""
+        self.mylabel_2 = label_2
+    def setlabel_3(self, label_3):
+        """重命名参数3"""
+        self.mylabel_3 = label_3
+    def setlabel_4(self, label_4):
+        """重命名参数4"""
+        self.mylabel_4 = label_4
+    def setlabel_5(self, label_5):
+        """重命名参数5"""
+        self.mylabel_5 = label_5
+    def setlabel_6(self, label_6):
+        """重命名参数6"""
+        self.mylabel_6 = label_6
+    def setlabel_7(self, label_7):
+        """重命名参数7"""
+        self.mylabel_7 = label_7
+    def setlabel_8(self, label_8):
+        """重命名参数7"""
+        self.mylabel_8 = label_8
+    def setlabel_9(self, label_9):
+        """重命名参数7"""
+        self.mylabel_9 = label_9
+
+
     def setArchFilename(self, archFilename):
         """需整理目录"""
         self.myfilenames = archFilename
@@ -75,8 +115,8 @@ class GetPostThread(QThread):
     def get_top_post(self, archFilename):
         """对源目录中的文件进行处理"""
         # 取得exif中的拍摄日期时间
+        #print(archFilename)
 
-        print(archFilename)
 
         if  os.path.splitext(archFilename)[1] == '.MOV':
             t = self.getOriginalDateMOV(archFilename)
@@ -93,9 +133,6 @@ class GetPostThread(QThread):
 
         info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " +  os.path.split(archFilename)[1] + " " + "拍摄时间:" + t + " "
 
-        print("^^^^^^^^^^^^^^^^")
-
-
 
         if len(dubfilelist) == 0:
             #如果没有重复的
@@ -105,7 +142,39 @@ class GetPostThread(QThread):
             #
             if self.myCheckBox_rename.isChecked() == True:
                 print("选择了重命令及方式不为空")
-                print(self.mylineEdit_rename.text())
+                print("^^^^^^^^^^^^^^^^")
+                print(self.mylabel_1.text())
+                print(self.mylabel_2.text())
+                print(self.mylabel_3.text())
+                print(self.mylabel_4.text())
+                print(self.mylabel_5.text())
+                print(self.mylabel_6.text())
+                print(self.mylabel_7.text())
+                print(self.mylabel_8.text())
+                print(self.mylabel_9.text())
+                print("^^^^^^^^^^^^^^^^")
+                if self.mylabel_1.text() == "<原名称>":
+                    dst_name1 = os.path.split(dst)[1]
+                elif self.mylabel_1.text() == "无":
+                    dst_name1 = ''
+                else:
+                    dst_name1 = self.mylabel_1.text()
+
+                if self.mylabel_3.text() == "20171130-0000":
+                    dst_name3 = os.path.split(dst)[1]
+                elif self.mylabel_3.text() == "无":
+                    dst_name3 = ''
+                else:
+                    dst_name3 = self.mylabel_3.text()
+
+                if self.mylabel_5.text() == "<原名称>":
+                    dst_name5 = os.path.split(dst)[1]
+                elif self.mylabel_5.text() == "无":
+                    dst_name5 = ''
+                else:
+                    dst_name5 = self.mylabel_5.text()
+
+
 
                 #print(self.rename.newname1)
 
