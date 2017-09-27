@@ -415,7 +415,9 @@ class Ui_Form(object):
                 self.datetimesn2 = ''
 
             # 整合按 "拍摄日期+序列号"
-            self.datetimesn = self.datetimesn1 + self.datetimesn2 + self.lineEdit_sn2.text()
+            self.datetimesn3 = self.lineEdit_sn2.text()
+
+            self.datetimesn = self.datetimesn1 + self.datetimesn2 + self.datetimesn3
 
         elif self.comboBox_datetime.currentText() == "拍摄日期时间":
             if self.radioButton_yyyymmdd_1.isChecked() == True:
@@ -448,6 +450,7 @@ class Ui_Form(object):
                 self.datetimesn3 = ''
 
             # 整合按 "拍摄日期+日期时间"
+
             self.datetimesn = self.datetimesn1 + self.datetimesn2 + self.datetimesn3
 
         else:

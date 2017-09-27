@@ -184,33 +184,30 @@ class Ui_MainWindow(object):
         self.textBrowser.setObjectName("textBrowser")
 
         #隐藏标签，用于接受参数传递
-        self.label_1 = QtWidgets.QLabel(self.centralwidget)
-        self.label_1.setObjectName("label_1")
-        self.label_1.setHidden(True)
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setObjectName("label_2")
-        self.label_2.setHidden(True)
-        self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setObjectName("label_3")
-        self.label_3.setHidden(True)
-        self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setObjectName("label_4")
-        self.label_4.setHidden(True)
-        self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setObjectName("label_5")
-        self.label_5.setHidden(True)
-        self.label_6 = QtWidgets.QLabel(self.centralwidget)
-        self.label_6.setObjectName("label_6")
-        self.label_6.setHidden(True)
-        self.label_7 = QtWidgets.QLabel(self.centralwidget)
-        self.label_7.setObjectName("label_7")
-        self.label_7.setHidden(True)
-        self.label_8 = QtWidgets.QLabel(self.centralwidget)
-        self.label_8.setObjectName("label_8")
-        self.label_8.setHidden(True)
-        self.label_9 = QtWidgets.QLabel(self.centralwidget)
-        self.label_9.setObjectName("label_9")
-        self.label_9.setHidden(True)
+        self.label_newname1 = QtWidgets.QLabel(self.centralwidget)
+        self.label_newname1.setObjectName("label_newname1")
+        self.label_newname1.setHidden(True)
+        self.label_hyphen1 = QtWidgets.QLabel(self.centralwidget)
+        self.label_hyphen1.setObjectName("label_hyphen1")
+        self.label_hyphen1.setHidden(True)
+        self.label_datetimesn1 = QtWidgets.QLabel(self.centralwidget)
+        self.label_datetimesn1.setObjectName("label_datetimesn1")
+        self.label_datetimesn1.setHidden(True)
+        self.label_datetimesn2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_datetimesn2.setObjectName("label_datetimesn2")
+        self.label_datetimesn2.setHidden(True)
+        self.label_datetimesn3 = QtWidgets.QLabel(self.centralwidget)
+        self.label_datetimesn3.setObjectName("label_datetimesn3")
+        self.label_datetimesn3.setHidden(True)
+        self.label_hyphen2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_hyphen2.setObjectName("label_hyphen2")
+        self.label_hyphen2.setHidden(True)
+        self.label_newname2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_newname2.setObjectName("label_newname2")
+        self.label_newname2.setHidden(True)
+        self.label_lineEdit_sn = QtWidgets.QLabel(self.centralwidget)
+        self.label_lineEdit_sn.setObjectName("label_lineEdit_sn")
+        self.label_lineEdit_sn.setHidden(True)
 
 
 
@@ -365,15 +362,15 @@ class Ui_MainWindow(object):
         self.textBrowser.append('共' +str(len(filename_list))+'文件')
 
         print("!!!!!!!!!!!")
-        print(self.label_1.text())
-        print(self.label_2.text())
-        print(self.label_3.text())
-        print(self.label_4.text())
-        print(self.label_5.text())
-        print(self.label_6.text())
-        print(self.label_7.text())
-        print(self.label_8.text())
-        print(self.label_9.text())
+        print(self.label_newname1.text())
+        print(self.label_newname1.text())
+        print(self.label_hyphen1.text())
+        print(self.label_datetimesn1.text())
+        print(self.label_datetimesn2.text())
+        print(self.label_datetimesn3.text())
+        print(self.label_hyphen2.text())
+        print(self.label_newname2.text())
+        print(self.label_lineEdit_sn.text())
         print("!!!!!!!!!!!")
 
         
@@ -390,16 +387,14 @@ class Ui_MainWindow(object):
         self.archThread.setRadioButton_GPS(self.radioButton_GPS)   # 选择按GPS处理， 传送给archiveImagesThread.py
 
         #重命名传递到archiveImagesThread.py
-        self.archThread.setlabel_1(self.label_1)
-        self.archThread.setlabel_2(self.label_2)
-        self.archThread.setlabel_3(self.label_3)
-        self.archThread.setlabel_4(self.label_4)
-        self.archThread.setlabel_5(self.label_5)
-        self.archThread.setlabel_6(self.label_6) #中缀序列号
-        self.archThread.setlabel_7(self.label_7) #中缀拍摄日期序列号
-        self.archThread.setlabel_8(self.label_8)
-        self.archThread.setlabel_9(self.label_9)
-
+        self.archThread.setlabel_newname1(self.label_newname1)
+        self.archThread.setlabel_hyphen1(self.label_hyphen1)
+        self.archThread.setlabel_datetimesn1(self.label_datetimesn1)
+        self.archThread.setlabel_datetimesn2(self.label_datetimesn2)
+        self.archThread.setlabel_datetimesn3(self.label_datetimesn3)
+        self.archThread.setlabel_hyphen2(self.label_hyphen2) #中缀序列号
+        self.archThread.setlabel_newname2(self.label_newname2) #中缀拍摄日期序列号
+        self.archThread.setlabel_lineEdit_sn(self.label_lineEdit_sn)
 
         self.archThread.start()   #开始执行archThread线程
         

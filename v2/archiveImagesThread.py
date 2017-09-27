@@ -29,17 +29,14 @@ class GetPostThread(QThread):
         self.myRadioButton_lensType = []
         self.myRadioButton_GPS = []
 
-        self.mylabel_1 = []
-        self.mylabel_2 = []
-        self.mylabel_3 = []
-        self.mylabel_4 = []
-        self.mylabel_5 = []
-        self.mylabel_6 = []
-        self.mylabel_7 = []
-        self.mylabel_8 = []
-        self.mylabel_9 = []
-
-
+        self.mylabel_newname1 = []
+        self.mylabel_hyphen1 = []
+        self.mylabel_datetimesn1 = []
+        self.mylabel_datetimesn2 = []
+        self.mylabel_datetimesn3 = []
+        self.mylabel_hyphen2 = []
+        self.mylabel_newname2 = []
+        self.mylabel_lineEdit_sn = []
         self.filelist = []
 
     def setSubReddit_src(self, lineEdit_src):
@@ -79,33 +76,38 @@ class GetPostThread(QThread):
         self.myRadioButton_GPS = radioButton_GPS
 
 
-    def setlabel_1(self, label_1):
-        """重命名参数1"""
-        self.mylabel_1 = label_1
-    def setlabel_2(self, label_2):
-        """重命名参数2"""
-        self.mylabel_2 = label_2
-    def setlabel_3(self, label_3):
-        """重命名参数3"""
-        self.mylabel_3 = label_3
-    def setlabel_4(self, label_4):
-        """重命名参数4"""
-        self.mylabel_4 = label_4
-    def setlabel_5(self, label_5):
-        """重命名参数5"""
-        self.mylabel_5 = label_5
-    def setlabel_6(self, label_6):
-        """重命名参数6"""
-        self.mylabel_6 = label_6
-    def setlabel_7(self, label_7):
-        """重命名参数7"""
-        self.mylabel_7 = label_7
-    def setlabel_8(self, label_8):
-        """重命名参数7"""
-        self.mylabel_8 = label_8
-    def setlabel_9(self, label_9):
-        """重命名参数7"""
-        self.mylabel_9 = label_9
+    def setlabel_newname1(self, label_newname1):
+        """前缀名称"""
+        self.mylabel_newname1 = label_newname1
+
+    def setlabel_hyphen1(self, label_hyphen1):
+        """前缀连接符"""
+        self.mylabel_hyphen1 = label_hyphen1
+
+    def setlabel_datetimesn1(self, label_datetimesn1):
+        """中缀日期类型"""
+        self.mylabel_datetimesn1 = label_datetimesn1
+
+    def setlabel_datetimesn2(self, label_datetimesn2):
+        """中缀连接符"""
+        self.mylabel_datetimesn2 = label_datetimesn2
+
+    def setlabel_datetimesn3(self, label_datetimesn3):
+        """中缀时间或序号位数"""
+        self.mylabel_datetimesn3 = label_datetimesn3
+
+    def setlabel_hyphen2(self, label_hyphen2):
+        """后缀连接符"""
+        self.mylabel_hyphen2 = label_hyphen2
+
+    def setlabel_newname2(self, label_newname2):
+        """后缀名称"""
+        self.mylabel_newname2 = label_newname2
+
+    def setlabel_lineEdit_sn(self, label_lineEdit_sn):
+        """中缀序列号"""
+        self.mylabel_lineEdit_sn = label_lineEdit_sn
+
 
 
     def setArchFilename(self, archFilename):
@@ -136,47 +138,35 @@ class GetPostThread(QThread):
 
         if len(dubfilelist) == 0:
             #如果没有重复的
-            #如果选择重命名
 
-            #print(self.myCheckBox_rename.isChecked())
-            #
+            #如果选择重命名
             if self.myCheckBox_rename.isChecked() == True:
                 print("选择了重命令及方式不为空")
                 print("^^^^^^^^^^^^^^^^")
-                print(self.mylabel_1.text())
-                print(self.mylabel_2.text())
-                print(self.mylabel_3.text())
-                print(self.mylabel_4.text())
-                print(self.mylabel_5.text())
-                print(self.mylabel_6.text())
-                print(self.mylabel_7.text())
-                print(self.mylabel_8.text())
-                print(self.mylabel_9.text())
+                print(self.mylabel_newname1.text())
+                print(self.mylabel_hyphen1.text())
+                print(self.mylabel_datetimesn1.text())
+                print(self.mylabel_datetimesn2.text())
+                print(self.mylabel_datetimesn3.text())
+                print(self.mylabel_hyphen2.text())
+                print(self.mylabel_newname2.text())
+                print(self.mylabel_lineEdit_sn.text())
                 print("^^^^^^^^^^^^^^^^")
-                if self.mylabel_1.text() == "<原名称>":
-                    dst_name1 = os.path.split(dst)[1]
-                elif self.mylabel_1.text() == "无":
-                    dst_name1 = ''
-                else:
-                    dst_name1 = self.mylabel_1.text()
 
-                if self.mylabel_3.text() == "20171130-0000":
-                    dst_name3 = os.path.split(dst)[1]
-                elif self.mylabel_3.text() == "无":
-                    dst_name3 = ''
-                else:
-                    dst_name3 = self.mylabel_3.text()
-
-                if self.mylabel_5.text() == "<原名称>":
-                    dst_name5 = os.path.split(dst)[1]
-                elif self.mylabel_5.text() == "无":
-                    dst_name5 = ''
-                else:
-                    dst_name5 = self.mylabel_5.text()
-
-
-
+                #原文件名
+                print(os.path.split(archFilename)[1])
                 #print(self.rename.newname1)
+
+                #新文件名
+                if self.mylabel_newname1.text() == "<原名称>":
+                    newName1 = os.path.split(archFilename)[1][:-4]
+                elif self.mylabel_newname1.text() == "无":
+                    newName1 = ''
+                else:
+                    newName1 = self.mylabel_newname1.text()
+
+
+                print(newName1)   
 
             #shutil.copy2(archFilename, dst)
 
