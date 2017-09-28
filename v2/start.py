@@ -39,9 +39,6 @@ class MainClass(QtWidgets.QMainWindow):
         self.Ui.label_hyphen2.setText(self.rename.hyphen2)  #后缀连接符
         self.Ui.label_newname2.setText(self.rename.newname2)  #后缀文件名
 
-        self.Ui.label_lineEdit_sn.setText(self.rename.lineEdit_sn.text()) #中缀序号位数
-        #中缀日期
-
         self.Form.close()
 
     def appclose(self):

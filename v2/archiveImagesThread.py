@@ -36,7 +36,7 @@ class GetPostThread(QThread):
         self.mylabel_datetimesn3 = []
         self.mylabel_hyphen2 = []
         self.mylabel_newname2 = []
-        self.mylabel_lineEdit_sn = []
+
         self.filelist = []
 
     def setSubReddit_src(self, lineEdit_src):
@@ -117,7 +117,7 @@ class GetPostThread(QThread):
     def get_top_post(self, archFilename):
         """对源目录中的文件进行处理"""
         # 取得exif中的拍摄日期时间
-        #print(archFilename)
+        print(archFilename)
 
 
         if  os.path.splitext(archFilename)[1] == '.MOV':
@@ -125,70 +125,138 @@ class GetPostThread(QThread):
         else:
             t = self.getOriginalDate(archFilename)
 
-        # 建立存储目标目录名
-        dst = f'{self.subreddits_dst}/{t[0:4]}/{t}'
-        if not os.path.exists(dst):
-            os.makedirs(dst)
+        # t = 2005-03-10 15:10:48
+        #t[0:4] = 2005
+        #t[:10] = 2005-03-10
 
-        # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
-        dubfilelist = self.find_dub_filename(os.path.split(archFilename)[1])
+        #如果按拍摄日期存储
+        print(self.myRadioButton_date.isChecked())
 
-        info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " +  os.path.split(archFilename)[1] + " " + "拍摄时间:" + t + " "
+        if self.myRadioButton_date.isChecked() == True:
+            # 建立存储目标目录名 t[0:4] = 2005  t[:10] = 2005-03-10
+            dst = f'{self.subreddits_dst}/{t[0:4]}/{t[:10]}'
+            if not os.path.exists(dst):
+                os.makedirs(dst)
+
+            # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
+            dubfilelist = self.find_dub_filename(os.path.split(archFilename)[1])
+
+            info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " +  os.path.split(archFilename)[1] + " " + "拍摄时间:" + t + " "
+
+            if len(dubfilelist) == 0:
+                #如果没有重复的
+
+                #如果选择重命名
+                if self.myCheckBox_rename.isChecked() == True:
+                    print("选择了重命令及方式不为空")
+                    print("^^^^^^^^^^^^^^^^")
+                    print(self.mylabel_newname1.text())
+                    print(self.mylabel_hyphen1.text())
+                    print(self.mylabel_datetimesn1.text())
+                    print(self.mylabel_datetimesn2.text())
+                    print(self.mylabel_datetimesn3.text())
+                    print(self.mylabel_hyphen2.text())
+                    print(self.mylabel_newname2.text())
+                    print("^^^^^^^^^^^^^^^^")
+
+                    #原文件名
+                    print(os.path.split(archFilename)[1])
+                    #print(self.rename.newname1)
+
+                    #新文件名前缀名称
+                    if self.mylabel_newname1.text() == "<原名称>":
+                        newName1 = os.path.split(archFilename)[1][:-4]
+                    elif self.mylabel_newname1.text() == "无":
+                        newName1 = ''
+                    else:
+                        newName1 = self.mylabel_newname1.text()
+
+                    print(newName1)
+
+                    #新文件名前缀连接符
+                    newName2 = self.mylabel_hyphen1.text()
+
+                    print(newName2)
+
+                    print(self.mylabel_datetimesn1.text())
+                    #中缀
+                    if self.mylabel_datetimesn1.text() == "20171130":
+                        newName3_1 = t.replace('-','')[:8] #去掉日期中的.号
+                    elif self.mylabel_datetimesn1.text() == "171130":
+                        newName3_1 = t.replace('-', '')[3:] #去掉日期中的. 及删除20
+                    elif self.mylabel_datetimesn1.text() == "11302017":
+                        newName3_1 = t.replace('-','')[:4] + t[4:]
+                    elif self.mylabel_datetimesn1.text() == "113017":
+                        pass
+                    elif self.mylabel_datetimesn1.text() == "1130":
+                        pass
+                    else:
+                        newName3_1 = ''
+
+                    newName3_2 = self.mylabel_datetimesn2.text()
+
+                    a = 0
+
+                    if  self.mylabel_datetimesn3.text() == "150922":
+                        a = a + 1
+                        newName3_3 = t.replace(':', '')[12:] + '_' + str(a)
+                    elif  self.mylabel_datetimesn3.text() == "1509":
+                        a = a + 1
+                        newName3_3 = t.replace(':', '')[14:] + '_' + str(a)
+                    else:
+                        a = a + 1
+                        
+                        newName3_3 = self.mylabel_datetimesn3.text()[1:] + str(a)   #中缀位数
+
+                    print("************************************")
+                    print(newName3_3)
+
+                    newName3 = str(newName3_1) +  str(newName3_2) + str(newName3_3)
+
+                    print("************************************")
+                    print(newName3)
 
 
-        if len(dubfilelist) == 0:
-            #如果没有重复的
-
-            #如果选择重命名
-            if self.myCheckBox_rename.isChecked() == True:
-                print("选择了重命令及方式不为空")
-                print("^^^^^^^^^^^^^^^^")
-                print(self.mylabel_newname1.text())
-                print(self.mylabel_hyphen1.text())
-                print(self.mylabel_datetimesn1.text())
-                print(self.mylabel_datetimesn2.text())
-                print(self.mylabel_datetimesn3.text())
-                print(self.mylabel_hyphen2.text())
-                print(self.mylabel_newname2.text())
-                print(self.mylabel_lineEdit_sn.text())
-                print("^^^^^^^^^^^^^^^^")
-
-                #原文件名
-                print(os.path.split(archFilename)[1])
-                #print(self.rename.newname1)
-
-                #新文件名
-                if self.mylabel_newname1.text() == "<原名称>":
-                    newName1 = os.path.split(archFilename)[1][:-4]
-                elif self.mylabel_newname1.text() == "无":
-                    newName1 = ''
-                else:
-                    newName1 = self.mylabel_newname1.text()
 
 
-                print(newName1)   
-
-            #shutil.copy2(archFilename, dst)
 
 
-            #如果选择删除文件
-            if self.myCheckBox_del == True:
-                os.remove(archFilename)
-            top_post = info + "移动到:" + os.path.split(dst)[1]
-        else:
-            if self.calculate_hashes(archFilename) in dubfilelist:
-                #有重复的
-                top_post = info + "已存在，不作复制"
-            else:
-                #只是文件名重复，修改为文件名再复制
-                newfilename = f'{os.path.splitext(archFilename)[0]}{"_"}{t}{os.path.splitext(archFilename)[1]}'
-                shutil.move(archFilename, newfilename)
-                shutil.copy2(newfilename, dst)
-                # 如果选择删除文件
+
+                #shutil.copy2(archFilename, dst)
+
+
+                #如果选择删除文件
                 if self.myCheckBox_del == True:
-                   os.remove(archFilename)
-                top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + os.path.split(archFilename)[1] + " "  + "文件名已存在, 变更文件名为" + newfilename + "复制"
-        return top_post
+                    os.remove(archFilename)
+                top_post = info + "移动到:" + os.path.split(dst)[1]
+            else:
+                if self.calculate_hashes(archFilename) in dubfilelist:
+                    #有重复的
+                    top_post = info + "已存在，不作复制"
+                else:
+                    #只是文件名重复，修改为文件名再复制
+                    newfilename = f'{os.path.splitext(archFilename)[0]}{"_"}{t}{os.path.splitext(archFilename)[1]}'
+                    shutil.move(archFilename, newfilename)
+                    shutil.copy2(newfilename, dst)
+                    # 如果选择删除文件
+                    if self.myCheckBox_del == True:
+                       os.remove(archFilename)
+                    top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + os.path.split(archFilename)[1] + " "  + "文件名已存在, 变更文件名为" + newfilename + "复制"
+            return top_post
+
+        if self.myRadioButton_cameraType.isChecked() == True:
+            #如果按相机类型
+            pass
+
+        if self.myRadioButton_lensType.isChecked() == True:
+            #如果按镜头类型
+            pass
+
+        if self.myRadioButton_GPS.isChecked() == True:
+            #如果按GSP
+            pass
+
+
 
     def getOriginalDate(self, filename):
         """
@@ -211,19 +279,19 @@ class GetPostThread(QThread):
         if data:
             try:
                 t=data['EXIF DateTimeOriginal']
-                return str(t).replace(":", ".")[:10]
+                return str(t).replace(":", "-")[:10] + str(t)[10:] #格式 2026-11-24 14:41:16
             except:
                 pass
 
-        state=os.stat(filename)
-        return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
+        #state=os.stat(filename)
+        #return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
 
     def getOriginalDateMOV(self, filename):
         """单独处理mov视频文件,读出建立日期"""
         with createParser(filename) as parser:
             metadata = extractMetadata(parser)
-            t = metadata.exportPlaintext(line_prefix="")[4][15:25]  # 截取建立日期
-            return str(t).replace("-", ".")
+            t = metadata.exportPlaintext(line_prefix="")[4][15:] #2014-03-13 02:09:03)
+            return str(t)
 
     def calculate_hashes(self, filename):
         """得出文件的MD5,sha1码，文件大小,用于对比文件"""

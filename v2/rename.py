@@ -1,18 +1,10 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'rename.ui'
-#
-# Created by: PyQt5 UI code generator 5.9
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
 
 class Ui_Form(object):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         """定时刷新"""
         super(Ui_Form, self).__init__()
         self.timer = QTimer()
@@ -183,7 +175,7 @@ class Ui_Form(object):
         self.radioButton_mmdd_1 = QtWidgets.QRadioButton(self.page_datetime)
         self.radioButton_mmdd_1.setGeometry(QtCore.QRect(30, 90, 89, 16))
         self.radioButton_mmdd_1.setObjectName("radioButton_mmdd_1")
-		# 时间,加入另一个redioButtonGroup 分组
+        # 时间,加入另一个redioButtonGroup 分组
         self.radioButton_hhmm_1 = QtWidgets.QRadioButton(self.page_datetime)
         self.radioButton_hhmm_1.setGeometry(QtCore.QRect(390, 60, 89, 16))
         self.radioButton_hhmm_1.setObjectName("radioButton_hhmm_1")
@@ -455,6 +447,7 @@ class Ui_Form(object):
 
         else:
             self.datetimesn = self.mysnvalue  # 将中缀的序号提交到示例
+            self.datetimesn3 = self.datetimesn #用于将中缀提交到archimagesthread.py 方便
 
         # 刷新示例
         self.label_example.setText(

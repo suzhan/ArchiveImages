@@ -205,13 +205,7 @@ class Ui_MainWindow(object):
         self.label_newname2 = QtWidgets.QLabel(self.centralwidget)
         self.label_newname2.setObjectName("label_newname2")
         self.label_newname2.setHidden(True)
-        self.label_lineEdit_sn = QtWidgets.QLabel(self.centralwidget)
-        self.label_lineEdit_sn.setObjectName("label_lineEdit_sn")
-        self.label_lineEdit_sn.setHidden(True)
 
-
-
-        
         self.groupBox_schedule.raise_()
         self.groupBox_method.raise_()
         self.groupBox_src.raise_()
@@ -370,7 +364,6 @@ class Ui_MainWindow(object):
         print(self.label_datetimesn3.text())
         print(self.label_hyphen2.text())
         print(self.label_newname2.text())
-        print(self.label_lineEdit_sn.text())
         print("!!!!!!!!!!!")
 
         
@@ -391,10 +384,9 @@ class Ui_MainWindow(object):
         self.archThread.setlabel_hyphen1(self.label_hyphen1)
         self.archThread.setlabel_datetimesn1(self.label_datetimesn1)
         self.archThread.setlabel_datetimesn2(self.label_datetimesn2)
-        self.archThread.setlabel_datetimesn3(self.label_datetimesn3)
+        self.archThread.setlabel_datetimesn3(self.label_datetimesn3)  #中缀序号，拍摄日期序号，拍摄时间日期中的时间
         self.archThread.setlabel_hyphen2(self.label_hyphen2) #中缀序列号
         self.archThread.setlabel_newname2(self.label_newname2) #中缀拍摄日期序列号
-        self.archThread.setlabel_lineEdit_sn(self.label_lineEdit_sn)
 
         self.archThread.start()   #开始执行archThread线程
         
