@@ -35,9 +35,11 @@ class MainClass(QtWidgets.QMainWindow):
         self.Ui.label_hyphen1.setText(self.rename.hyphen1)   #前缀连接符
         self.Ui.label_datetimesn1.setText(self.rename.datetimesn1) # 中缀拍摄日期
         self.Ui.label_datetimesn2.setText(self.rename.datetimesn2) # 中缀连接符
-        self.Ui.label_datetimesn3.setText(self.rename.datetimesn3)  #中缀拍摄日期中的位数或
+        self.Ui.label_datetimesn3.setText(self.rename.datetimesn3)  #中缀拍摄日期中的位数或序列
         self.Ui.label_hyphen2.setText(self.rename.hyphen2)  #后缀连接符
         self.Ui.label_newname2.setText(self.rename.newname2)  #后缀文件名
+
+        print(self.rename.datetimesn1)
 
         self.Form.close()
 

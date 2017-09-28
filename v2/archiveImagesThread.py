@@ -163,6 +163,13 @@ class GetPostThread(QThread):
                     print(os.path.split(archFilename)[1])
                     #print(self.rename.newname1)
 
+                    newName1 = ''
+                    newName2 = ''
+                    newName3 = ''
+                    newName3_1 = ''
+                    newName3_2 = ''
+                    newName3_3 = ''
+
                     #新文件名前缀名称
                     if self.mylabel_newname1.text() == "<原名称>":
                         newName1 = os.path.split(archFilename)[1][:-4]
@@ -199,25 +206,23 @@ class GetPostThread(QThread):
 
                     if  self.mylabel_datetimesn3.text() == "150922":
                         a = a + 1
-                        newName3_3 = t.replace(':', '')[12:] + '_' + str(a)
+                        newName3_3 = t.replace(':', '')[11:] + '_' + str(a)
                     elif  self.mylabel_datetimesn3.text() == "1509":
                         a = a + 1
-                        newName3_3 = t.replace(':', '')[14:] + '_' + str(a)
+                        newName3_3 = t.replace(':', '')[13:] + '_' + str(a)
                     else:
                         a = a + 1
-                        
-                        newName3_3 = self.mylabel_datetimesn3.text()[1:] + str(a)   #中缀位数
 
-                    print("************************************")
-                    print(newName3_3)
+                        b = len(str(self.mylabel_datetimesn3.text()))
+                        c = len(str(a))
 
+                        newName3_3 =  (str(0) * (b -c)) + str(a)   #中缀位数
+
+                    #整合
                     newName3 = str(newName3_1) +  str(newName3_2) + str(newName3_3)
 
                     print("************************************")
                     print(newName3)
-
-
-
 
 
 

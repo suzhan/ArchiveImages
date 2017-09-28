@@ -357,7 +357,6 @@ class Ui_MainWindow(object):
 
         print("!!!!!!!!!!!")
         print(self.label_newname1.text())
-        print(self.label_newname1.text())
         print(self.label_hyphen1.text())
         print(self.label_datetimesn1.text())
         print(self.label_datetimesn2.text())

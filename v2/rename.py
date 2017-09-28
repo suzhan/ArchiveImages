@@ -384,6 +384,10 @@ class Ui_Form(object):
 
         # 中缀
         if self.comboBox_datetime.currentText() == "拍摄日期":
+            self.datetimesn1 = ''
+            self.datetimesn2 = ''
+            self.datetimesn3 = ''
+
             if self.radioButton_yyyymmdd_2.isChecked() == True:
                 self.datetimesn1 = '20171130'
             elif self.radioButton_yymmdd_2.isChecked() == True:
@@ -412,6 +416,9 @@ class Ui_Form(object):
             self.datetimesn = self.datetimesn1 + self.datetimesn2 + self.datetimesn3
 
         elif self.comboBox_datetime.currentText() == "拍摄日期时间":
+            self.datetimesn1 = ''
+            self.datetimesn2 = ''
+            self.datetimesn3 = ''
             if self.radioButton_yyyymmdd_1.isChecked() == True:
                 self.datetimesn1 = '20171130'
             elif self.radioButton_yymmdd_1.isChecked() == True:
@@ -446,6 +453,9 @@ class Ui_Form(object):
             self.datetimesn = self.datetimesn1 + self.datetimesn2 + self.datetimesn3
 
         else:
+            self.datetimesn1 = ''
+            self.datetimesn2 = ''
+            self.datetimesn3 = ''
             self.datetimesn = self.mysnvalue  # 将中缀的序号提交到示例
             self.datetimesn3 = self.datetimesn #用于将中缀提交到archimagesthread.py 方便
 
