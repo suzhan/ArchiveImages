@@ -355,17 +355,6 @@ class Ui_MainWindow(object):
 
         self.textBrowser.append('共' +str(len(filename_list))+'文件')
 
-        print("!!!!!!!!!!!")
-        print(self.label_newname1.text())
-        print(self.label_hyphen1.text())
-        print(self.label_datetimesn1.text())
-        print(self.label_datetimesn2.text())
-        print(self.label_datetimesn3.text())
-        print(self.label_hyphen2.text())
-        print(self.label_newname2.text())
-        print("!!!!!!!!!!!")
-
-        
         self.progressBar.setMaximum(len(filename_list))  #设置进度值总数
         self.archThread.setSubReddit_src(self.sPath) # 取得源文件夹的路径,传送给archiveImagesThread.py
         self.archThread.setSubReddit_dst(self.dPath)  # 取得目标文件夹的路径,传送给archiveImagesThread.py

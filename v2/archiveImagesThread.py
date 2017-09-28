@@ -125,6 +125,8 @@ class GetPostThread(QThread):
         else:
             t = self.getOriginalDate(archFilename)
 
+        print("T=")
+        print(t)
         # t = 2005-03-10 15:10:48
         #t[0:4] = 2005
         #t[:10] = 2005-03-10
@@ -148,27 +150,9 @@ class GetPostThread(QThread):
 
                 #如果选择重命名
                 if self.myCheckBox_rename.isChecked() == True:
-                    print("选择了重命令及方式不为空")
-                    print("^^^^^^^^^^^^^^^^")
-                    print(self.mylabel_newname1.text())
-                    print(self.mylabel_hyphen1.text())
-                    print(self.mylabel_datetimesn1.text())
-                    print(self.mylabel_datetimesn2.text())
-                    print(self.mylabel_datetimesn3.text())
-                    print(self.mylabel_hyphen2.text())
-                    print(self.mylabel_newname2.text())
-                    print("^^^^^^^^^^^^^^^^")
-
                     #原文件名
                     print(os.path.split(archFilename)[1])
                     #print(self.rename.newname1)
-
-                    newName1 = ''
-                    newName2 = ''
-                    newName3 = ''
-                    newName3_1 = ''
-                    newName3_2 = ''
-                    newName3_3 = ''
 
                     #新文件名前缀名称
                     if self.mylabel_newname1.text() == "<原名称>":
@@ -178,25 +162,21 @@ class GetPostThread(QThread):
                     else:
                         newName1 = self.mylabel_newname1.text()
 
-                    print(newName1)
-
                     #新文件名前缀连接符
                     newName2 = self.mylabel_hyphen1.text()
 
-                    print(newName2)
-
                     print(self.mylabel_datetimesn1.text())
                     #中缀
-                    if self.mylabel_datetimesn1.text() == "20171130":
-                        newName3_1 = t.replace('-','')[:8] #去掉日期中的.号
-                    elif self.mylabel_datetimesn1.text() == "171130":
-                        newName3_1 = t.replace('-', '')[3:] #去掉日期中的. 及删除20
-                    elif self.mylabel_datetimesn1.text() == "11302017":
-                        newName3_1 = t.replace('-','')[:4] + t[4:]
-                    elif self.mylabel_datetimesn1.text() == "113017":
-                        pass
-                    elif self.mylabel_datetimesn1.text() == "1130":
-                        pass
+                    if self.mylabel_datetimesn1.text() == "20171130":   #yyyymmdd
+                        newName3_1 = t.replace('-','')[:8]
+                    elif self.mylabel_datetimesn1.text() == "171130":   #yymmdd
+                        newName3_1 = t.replace('-', '')[2:8]
+                    elif self.mylabel_datetimesn1.text() == "11302017":  #mmddyyyy
+                        newName3_1 = t.replace('-','')[4:8] + t[0:4]
+                    elif self.mylabel_datetimesn1.text() == "113017":  #mmddyy
+                        newName3_1 = t.replace('-', '')[4:8] + t[2:4]
+                    elif self.mylabel_datetimesn1.text() == "1130":   #mmdd
+                        newName3_1 = t.replace('-', '')[4:8]
                     else:
                         newName3_1 = ''
 
@@ -212,41 +192,42 @@ class GetPostThread(QThread):
                         newName3_3 = t.replace(':', '')[13:] + '_' + str(a)
                     else:
                         a = a + 1
-
                         b = len(str(self.mylabel_datetimesn3.text()))
                         c = len(str(a))
-
                         newName3_3 =  (str(0) * (b -c)) + str(a)   #中缀位数
 
-                    #整合
+                    #整合newName3
                     newName3 = str(newName3_1) +  str(newName3_2) + str(newName3_3)
+                    newName4 = self.mylabel_hyphen2.text()
 
-                    print("************************************")
-                    print(newName3)
+                    # 新文件名后缀名称
+                    if self.mylabel_newname2.text() == "<原名称>":
+                        newName5 = os.path.split(archFilename)[1][:-4]
+                    elif self.mylabel_newname2.text() == "无":
+                        newName5 = ''
+                    else:
+                        newName5 = self.mylabel_newname2.text()
 
+                    #文件名整合
+                    newName = newName1 + newName2 + newName3 + newName4 + newName5
+                    print(newName)
 
-
-
-                #shutil.copy2(archFilename, dst)
-
-
-                #如果选择删除文件
-                if self.myCheckBox_del == True:
-                    os.remove(archFilename)
-                top_post = info + "移动到:" + os.path.split(dst)[1]
+                    shutil.copy2(archFilename, dst)
+                    #如果选择删除文件
+                    if self.myCheckBox_del == True:
+                        os.remove(archFilename)
+                        top_post = info + "移动到:" + os.path.split(dst)[1]
             else:
                 if self.calculate_hashes(archFilename) in dubfilelist:
-                    #有重复的
-                    top_post = info + "已存在，不作复制"
+                    top_post = info + "已存在，不作复制"   #有重复的
                 else:
                     #只是文件名重复，修改为文件名再复制
                     newfilename = f'{os.path.splitext(archFilename)[0]}{"_"}{t}{os.path.splitext(archFilename)[1]}'
                     shutil.move(archFilename, newfilename)
                     shutil.copy2(newfilename, dst)
-                    # 如果选择删除文件
-                    if self.myCheckBox_del == True:
-                       os.remove(archFilename)
-                    top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + os.path.split(archFilename)[1] + " "  + "文件名已存在, 变更文件名为" + newfilename + "复制"
+                    if self.myCheckBox_del == True:   # 如果选择删除文件
+                        os.remove(archFilename)
+                        top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + os.path.split(archFilename)[1] + " "  + "文件名已存在, 变更文件名为" + newfilename + "复制"
             return top_post
 
         if self.myRadioButton_cameraType.isChecked() == True:
