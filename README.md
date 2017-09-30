@@ -13,3 +13,6 @@ Email: suzhan.cn@gmail.com
 4. 如果目标文件中存在与源文件的MD5,sha1，文件大小都一样的文件就忽略处理，直接删除   
 5. 整理后删除源文件夹中的空目录。    
 6. 依赖 python 3.6 , pyqt5 , hachoir3. exifread2.1.2
+
+
+开源协议: GNU General Public Licence v3
