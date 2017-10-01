@@ -206,6 +206,7 @@ class Ui_MainWindow(object):
         self.label_newname2.setObjectName("label_newname2")
         self.label_newname2.setHidden(True)
 
+
         self.groupBox_schedule.raise_()
         self.groupBox_method.raise_()
         self.groupBox_src.raise_()
@@ -375,6 +376,8 @@ class Ui_MainWindow(object):
         self.archThread.setlabel_datetimesn3(self.label_datetimesn3)  #中缀序号，拍摄日期序号，拍摄时间日期中的时间
         self.archThread.setlabel_hyphen2(self.label_hyphen2) #中缀序列号
         self.archThread.setlabel_newname2(self.label_newname2) #中缀拍摄日期序列号
+
+
 
         self.archThread.start()   #开始执行archThread线程
         

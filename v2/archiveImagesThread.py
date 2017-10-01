@@ -39,6 +39,8 @@ class GetPostThread(QThread):
 
         self.filelist = []
 
+        #a = self.mylabel_0.text()
+
     def setSubReddit_src(self, lineEdit_src):
         """源目录"""
         self.subreddits_src = lineEdit_src
@@ -109,30 +111,26 @@ class GetPostThread(QThread):
         self.mylabel_lineEdit_sn = label_lineEdit_sn
 
 
-
     def setArchFilename(self, archFilename):
         """需整理目录"""
         self.myfilenames = archFilename
 
-    def get_top_post(self, archFilename):
+    def get_top_post(self, archFilename, a):
         """对源目录中的文件进行处理"""
         # 取得exif中的拍摄日期时间
-        print(archFilename)
+        #print(archFilename)
 
 
         if  os.path.splitext(archFilename)[1] == '.MOV':
             t = self.getOriginalDateMOV(archFilename)
         else:
             t = self.getOriginalDate(archFilename)
-
-        print("T=")
-        print(t)
-        # t = 2005-03-10 15:10:48
-        #t[0:4] = 2005
-        #t[:10] = 2005-03-10
+            # t = 2005-03-10 15:10:48
+            #t[0:4] = 2005
+            #t[:10] = 2005-03-10
 
         #如果按拍摄日期存储
-        print(self.myRadioButton_date.isChecked())
+        #print(self.myRadioButton_date.isChecked())
 
         if self.myRadioButton_date.isChecked() == True:
             # 建立存储目标目录名 t[0:4] = 2005  t[:10] = 2005-03-10
@@ -153,22 +151,23 @@ class GetPostThread(QThread):
                     #原文件名
                     print("原文件名")
                     print(os.path.split(archFilename)[1])
-                    aa = os.path.split(archFilename)[1]
-                    #print(self.rename.newname1)
-                    print("函数")
-                    bb = self.reFilename(archFilename, t) + os.path.splitext(archFilename)[1]
-                    print(bb)
-                    print(dst)
-                    print("函数bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+
+                    bb = self.reFilename(archFilename, t, a) + os.path.splitext(archFilename)[1]
 
                     shutil.copy2(archFilename, dst)
-                    
+                    print("函数aaaaa")
+                    print(dst + '/' + os.path.split(archFilename)[1]) #原文件名
+                    print(dst + '/' + bb) #新名路径
+                    #shutil.move(dst+ os.path.split(archFilename)[1], newfilename)
+                    shutil.move(dst + '/' + os.path.split(archFilename)[1],dst + '/' + bb)
+
 
 
                     #如果选择删除文件
                     if self.myCheckBox_del == True:
                         os.remove(archFilename)
-                        top_post = info + "移动到:" + os.path.split(dst)[1]
+                    else:
+                        top_post = a + ' ' + info + "移动到:" + os.path.split(dst)[1]
             else:
                 if self.calculate_hashes(archFilename) in dubfilelist:
                     top_post = info + "已存在，不作复制"   #有重复的
@@ -196,10 +195,12 @@ class GetPostThread(QThread):
 
 
 
-    def reFilename(self, filename, t):
+    def reFilename(self, filename, t , a):
         """
         重命名文件名
         """
+        print("aaaaaaaaaaaaaaaaaaa")
+        print(a)
 
         # 新文件名前缀名称
         if self.mylabel_newname1.text() == "<原名称>":
@@ -236,19 +237,29 @@ class GetPostThread(QThread):
 
         newName3_2 = self.mylabel_datetimesn2.text()
 
-        a = 0
+        #a = 0
 
         if self.mylabel_datetimesn3.text() == "150922":
-            a = a + 1
+
+
+            print(a)
+
             newName3_3 = self.t.replace(':', '')[11:] + '_' + str(a)
+
+
+            print(newName3_3)
+
         elif self.mylabel_datetimesn3.text() == "1509":
-            a = a + 1
             newName3_3 = self.t.replace(':', '')[13:] + '_' + str(a)
+            print(newName3_3)
         else:
-            a = a + 1
             b = len(str(self.mylabel_datetimesn3.text()))
             c = len(str(a))
             newName3_3 = (str(0) * (b - c)) + str(a)  # 中缀位数
+
+            print(a)
+
+            print(newName3_3)
 
         # 整合newName3
         newName3 = str(newName3_1) + str(newName3_2) + str(newName3_3)
@@ -328,6 +339,8 @@ class GetPostThread(QThread):
         return result
 
     def run(self):
+        a = 0
         for archFilename in self.myfilenames:  # 需处理的图像列表传到线程类中
-            top_post = self.get_top_post(archFilename)  # 进行归档处理
+            a = a + 1
+            top_post = self.get_top_post(archFilename, a)  # 进行归档处理
             self.postSignal.emit(top_post)  # run方法中处理并获得数据，然后通过信号将其发出
