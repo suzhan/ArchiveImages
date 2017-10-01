@@ -151,68 +151,20 @@ class GetPostThread(QThread):
                 #如果选择重命名
                 if self.myCheckBox_rename.isChecked() == True:
                     #原文件名
+                    print("原文件名")
                     print(os.path.split(archFilename)[1])
+                    aa = os.path.split(archFilename)[1]
                     #print(self.rename.newname1)
-
-                    #新文件名前缀名称
-                    if self.mylabel_newname1.text() == "<原名称>":
-                        newName1 = os.path.split(archFilename)[1][:-4]
-                    elif self.mylabel_newname1.text() == "无":
-                        newName1 = ''
-                    else:
-                        newName1 = self.mylabel_newname1.text()
-
-                    #新文件名前缀连接符
-                    newName2 = self.mylabel_hyphen1.text()
-
-                    print(self.mylabel_datetimesn1.text())
-                    #中缀
-                    if self.mylabel_datetimesn1.text() == "20171130":   #yyyymmdd
-                        newName3_1 = t.replace('-','')[:8]
-                    elif self.mylabel_datetimesn1.text() == "171130":   #yymmdd
-                        newName3_1 = t.replace('-', '')[2:8]
-                    elif self.mylabel_datetimesn1.text() == "11302017":  #mmddyyyy
-                        newName3_1 = t.replace('-','')[4:8] + t[0:4]
-                    elif self.mylabel_datetimesn1.text() == "113017":  #mmddyy
-                        newName3_1 = t.replace('-', '')[4:8] + t[2:4]
-                    elif self.mylabel_datetimesn1.text() == "1130":   #mmdd
-                        newName3_1 = t.replace('-', '')[4:8]
-                    else:
-                        newName3_1 = ''
-
-                    newName3_2 = self.mylabel_datetimesn2.text()
-
-                    a = 0
-
-                    if  self.mylabel_datetimesn3.text() == "150922":
-                        a = a + 1
-                        newName3_3 = t.replace(':', '')[11:] + '_' + str(a)
-                    elif  self.mylabel_datetimesn3.text() == "1509":
-                        a = a + 1
-                        newName3_3 = t.replace(':', '')[13:] + '_' + str(a)
-                    else:
-                        a = a + 1
-                        b = len(str(self.mylabel_datetimesn3.text()))
-                        c = len(str(a))
-                        newName3_3 =  (str(0) * (b -c)) + str(a)   #中缀位数
-
-                    #整合newName3
-                    newName3 = str(newName3_1) +  str(newName3_2) + str(newName3_3)
-                    newName4 = self.mylabel_hyphen2.text()
-
-                    # 新文件名后缀名称
-                    if self.mylabel_newname2.text() == "<原名称>":
-                        newName5 = os.path.split(archFilename)[1][:-4]
-                    elif self.mylabel_newname2.text() == "无":
-                        newName5 = ''
-                    else:
-                        newName5 = self.mylabel_newname2.text()
-
-                    #文件名整合
-                    newName = newName1 + newName2 + newName3 + newName4 + newName5
-                    print(newName)
+                    print("函数")
+                    bb = self.reFilename(archFilename, t) + os.path.splitext(archFilename)[1]
+                    print(bb)
+                    print(dst)
+                    print("函数bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
 
                     shutil.copy2(archFilename, dst)
+                    
+
+
                     #如果选择删除文件
                     if self.myCheckBox_del == True:
                         os.remove(archFilename)
@@ -242,6 +194,82 @@ class GetPostThread(QThread):
             #如果按GSP
             pass
 
+
+
+    def reFilename(self, filename, t):
+        """
+        重命名文件名
+        """
+
+        # 新文件名前缀名称
+        if self.mylabel_newname1.text() == "<原名称>":
+            newName1 = os.path.split(filename)[1][:-4]
+        elif self.mylabel_newname1.text() == "无":
+            newName1 = ''
+        else:
+            newName1 = self.mylabel_newname1.text()
+
+        print(newName1)
+
+        # 新文件名前缀连接符
+        newName2 = self.mylabel_hyphen1.text()
+
+        print(newName2)
+        print(t)
+        #print(self.mylabel_datetimesn1.text())
+        # 中缀
+        if self.mylabel_datetimesn1.text() == "20171130":  # yyyymmdd
+            newName3_1 = t.replace('-', '')[:8]
+        elif self.mylabel_datetimesn1.text() == "171130":  # yymmdd
+            newName3_1 = t.replace('-', '')[2:8]
+        elif self.mylabel_datetimesn1.text() == "11302017":  # mmddyyyy
+            newName3_1 = t.replace('-', '')[4:8] + t[0:4]
+        elif self.mylabel_datetimesn1.text() == "113017":  # mmddyy
+            newName3_1 = t.replace('-', '')[4:8] + t[2:4]
+        elif self.mylabel_datetimesn1.text() == "1130":  # mmdd
+            newName3_1 = t.replace('-', '')[4:8]
+        else:
+            newName3_1 = ''
+
+        print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        print(newName3_1)
+
+        newName3_2 = self.mylabel_datetimesn2.text()
+
+        a = 0
+
+        if self.mylabel_datetimesn3.text() == "150922":
+            a = a + 1
+            newName3_3 = self.t.replace(':', '')[11:] + '_' + str(a)
+        elif self.mylabel_datetimesn3.text() == "1509":
+            a = a + 1
+            newName3_3 = self.t.replace(':', '')[13:] + '_' + str(a)
+        else:
+            a = a + 1
+            b = len(str(self.mylabel_datetimesn3.text()))
+            c = len(str(a))
+            newName3_3 = (str(0) * (b - c)) + str(a)  # 中缀位数
+
+        # 整合newName3
+        newName3 = str(newName3_1) + str(newName3_2) + str(newName3_3)
+
+        print(newName3)
+
+        newName4 = self.mylabel_hyphen2.text()
+
+        # 新文件名后缀名称
+        if self.mylabel_newname2.text() == "<原名称>":
+            newName5 = os.path.split(filename)[1][:-4]
+        elif self.mylabel_newname2.text() == "无":
+            newName5 = ''
+        else:
+            newName5 = self.mylabel_newname2.text()
+
+        # 文件名整合
+        newName = newName1 + newName2 + newName3 + newName4 + newName5
+        print(newName)
+
+        return newName
 
 
     def getOriginalDate(self, filename):
