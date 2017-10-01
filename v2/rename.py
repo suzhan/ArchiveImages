@@ -9,7 +9,7 @@ class Ui_Form(object):
         super(Ui_Form, self).__init__()
         self.timer = QTimer()
         self.timer.timeout.connect(self.operate)
-        self.timer.start(1000)
+        self.timer.start(500)
 
     def setupUi2(self, Form):
         Form.setObjectName("Form")
