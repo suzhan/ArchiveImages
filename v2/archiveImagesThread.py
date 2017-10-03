@@ -174,7 +174,7 @@ class GetPostThread(QThread):
                 if self.calculate_hashes(archFilename) in dubfilelist:
                     top_post = info + "已存在，不作复制"   #有重复的文件
                 else:
-                    #只是文件名重复，修改为文件名再复制 DSC_1689_2017-07-15.jpg
+                    #只是文件名重复，修改为文件名再复制，加上拍摄日期如 DSC_1689_2017-07-15.jpg
                     newfilename = f'{os.path.splitext(archFilename)[0]}{"_"}{t[:10]}{os.path.splitext(archFilename)[1]}'
 
                     shutil.move(archFilename, newfilename)
@@ -189,7 +189,13 @@ class GetPostThread(QThread):
 
         if self.myRadioButton_cameraType.isChecked() == True:
             #如果按相机类型
-            pass
+
+            ct = self.getOriginalCameraType(archFilename)
+            top_post = ct
+
+            return top_post
+
+
 
         if self.myRadioButton_lensType.isChecked() == True:
             #如果按镜头类型
@@ -292,6 +298,35 @@ class GetPostThread(QThread):
 
         #state=os.stat(filename)
         #return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
+
+    def getOriginalCameraType(self, filename):
+        """
+        处理'.jpg', '.png', '.mp4', '.nef', '.3gp', '.flv', '.mkv'文件.读出建立日期
+        """
+        try:
+            fd=open(filename, 'rb')
+        except:
+            raise ReadFailException("unopen file[%s]\n" % filename)
+
+        data=exifread.process_file(fd)
+
+        if data:
+            try:
+                c = data['Image Model']
+                return str(c)
+            except:
+                pass
+
+
+    def getOriginalCameraTypeMOV(self, filename):
+        """
+        单独处理mov视频文件,读出建立日期
+        """
+        with createParser(filename) as parser:
+            metadata = extractMetadata(parser)
+            t = metadata.exportPlaintext(line_prefix="")[4][15:] #2014-03-13 02:09:03)
+            return str(t)
+
 
     def getOriginalDateMOV(self, filename):
         """单独处理mov视频文件,读出建立日期"""
