@@ -17,14 +17,20 @@ for root, dirs, files in os.walk(sPath, True):
             continue
         filename_list.append(filename)
 
-print(filename_list)
+#print(filename_list)
 
 #files = ['C:/Users/sulei/Desktop/bb/DSC_0552.jpg', 'C:/Users/sulei/Desktop/bb/IMG_1040_2013.07.20.MOV','C:/Users/sulei/Desktop/bb/Pentax_K10D.jpg','C:/Users/sulei/Desktop/bb/DSC_1664.png']
-
 #files = ['C:/Users/sulei/Desktop/bb/IMG_1040_2013.07.20.MOV']
 
-with exiftool.ExifTool() as et:
-    metadata = et.get_metadata_batch(filename_list)
+filenames = ['C:/Users/sulei/Desktop/aa\DSC_0553.jpg']
+
+
+metadata = exiftool.ExifTool()
+
+metadata.get_metadata_batch('C:/Users/sulei/Desktop/aa/DSC_0553.jpg')
+
+#with exiftool.ExifTool() as et:
+#    metadata = et.get_metadata_batch(files)
 for d in metadata:
     print(d)
     #print("{:20.20} {:20.20}".format(d["SourceFile"],d["EXIF:DateTimeOriginal"]))
@@ -46,6 +52,10 @@ for d in metadata:
         #print(d["MakerNotes:Lens"])
         print(d["Composite:GPSLatitude"])
         print(d["Composite:GPSLongitude"])
+    elif d["File:FileType"] == "NEF":
+        print(d["EXIF:Model"])
+        print(d["EXIF:CreateDate"])
+        print(d["MakerNotes:Lens"])
     else:
         pass
 
