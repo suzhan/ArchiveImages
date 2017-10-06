@@ -1,9 +1,13 @@
 import exiftool
 import os
+import time
 
 #sPath =  'C:/Users/sulei/Desktop/exif-samples-master/exif-samples-master/jpg'
 
-sPath = 'C:/Users/sulei/Desktop/aa'
+sPath = 'C:/Users/sulei/Desktop/aabb/'
+
+print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+
 
 
 filename_list = []
@@ -17,21 +21,28 @@ for root, dirs, files in os.walk(sPath, True):
             continue
         filename_list.append(filename)
 
-#print(filename_list)
+print(filename_list)
 
-#files = ['C:/Users/sulei/Desktop/bb/DSC_0552.jpg', 'C:/Users/sulei/Desktop/bb/IMG_1040_2013.07.20.MOV','C:/Users/sulei/Desktop/bb/Pentax_K10D.jpg','C:/Users/sulei/Desktop/bb/DSC_1664.png']
+print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+
+files = ['C:/Users/sulei/Desktop/bb/DSC_0552.jpg', 'C:/Users/sulei/Desktop/bb/IMG_1040_2013.07.20.MOV','C:/Users/sulei/Desktop/bb/Pentax_K10D.jpg','C:/Users/sulei/Desktop/bb/DSC_1664.png']
 #files = ['C:/Users/sulei/Desktop/bb/IMG_1040_2013.07.20.MOV']
 
 filenames = ['C:/Users/sulei/Desktop/aa\DSC_0553.jpg']
 
 
-metadata = exiftool.ExifTool()
+#metadata = exiftool.ExifTool()
 
-metadata.get_metadata_batch('C:/Users/sulei/Desktop/aa/DSC_0553.jpg')
+#metadata.get_metadata_batch('C:/Users/sulei/Desktop/aa/DSC_0553.jpg')
 
-#with exiftool.ExifTool() as et:
-#    metadata = et.get_metadata_batch(files)
+a = 0
+
+with exiftool.ExifTool() as et:
+    metadata = et.get_metadata_batch(filename_list)
 for d in metadata:
+    a = a + 1
+    print("$$$")
+    print('#' + str(a))
     print(d)
     #print("{:20.20} {:20.20}".format(d["SourceFile"],d["EXIF:DateTimeOriginal"]))
     #print(d["EXIF:DateTimeOriginal"])
@@ -45,7 +56,7 @@ for d in metadata:
         #print(d["EXIF:DateTimeOriginal"])
         print(d["EXIF:Model"])
         print(d["File:FileCreateDate"][:19])
-        print(d["MakerNotes:Lens"])
+        #print(d["MakerNotes:Lens"])
     elif d["File:FileType"] == "MP4":
         #print(d["EXIF:Model"])
         print(d["QuickTime:CreateDate"][:19])
@@ -59,3 +70,4 @@ for d in metadata:
     else:
         pass
 
+print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
