@@ -131,37 +131,55 @@ class GetPostThread(QThread):
             #t[0:4] = 2005
             #t[:10] = 2005-03-10
 
+        directory = d["File:Directory"]  # 文件目录
+        filename = d["File:FileName"]  # 文件名
+        filetype = d["File:FileType"]  # 文件类型
+        createdate = d["EXIF:DateTimeOriginal"]  # 文件创建日期
+
+        createdate = createdate.replace(':', '-')[:10] + createdate[10:]
+
+        print(createdate)
+
+        dst = f'{self.subreddits_dst}/{createdate[0:4]}/{createdate[:10]}'
+
+        print("目标目录：")
+        print(dst)
+
+        print("文件源目录：")
+        print(directory)
+
+        print("文件名：")
+        print(filename)
+
+
         # 如果按拍摄日期存储
         #print(self.myRadioButton_date.isChecked())
         if self.myRadioButton_date.isChecked() == True:
 
-            t = d["EXIF:CreateDate"]
-
             # 建立存储目标目录名 t[0:4] = 2005  t[:10] = 2005-03-10
-            dst = f'{self.subreddits_dst}/{t[0:4]}/{t[:10]}'
+
             if not os.path.exists(dst):
                 os.makedirs(dst)
 
             tt = str(len(self.myfilenames))
             print(tt)
 
-            #d["File:Directory"]  #文件目录
-            #d["File:FileName"]  #文件名
+
 
 
             # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
-            dubfilelist = self.find_dub_filename(d["File:Directory"]+ '/' + d["File:FileName"] )
+            dubfilelist = self.find_dub_filename(directory + '/' + filename )
+
+            print(len(dubfilelist))
 
             info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + str(a) + "/" + str(tt) + " " + "文件:" + \
-                   d["File:FileName"] + " " + "拍摄时间:" + t + " "
+                   filename + " " + "拍摄时间:" + createdate + " "
+
+            print(info)
+
 
             #如果文件类型为JPEG或NEF
-            if d["File:FileType"] == "JPEG" or d["File:FileType"] == "NEF":
-                #t = d["EXIF:CreateDate"]
-                #print(d["File:FileName"])
-                #print(t)
-                #top_post = '#' + str(a) + ' ' + t + d["File:FileName"]
-
+            if filetype == "JPEG" or filetype == "NEF":
                 # 如果源目录与目标目录没有重复文件名的
                 if len(dubfilelist) == 0:
                     # 如果选择重命名
@@ -169,41 +187,41 @@ class GetPostThread(QThread):
                         # 原文件名
                         # print("原文件名")
                         # print(os.path.split(archFilename)[1])
-                        bb = self.reFilename(archFilename, t, a) + os.path.splitext(archFilename)[1]
-                        shutil.copy2(archFilename, dst)
+                        bb = self.reFilename(filename, createdate, a) + os.path.splitext(filename )[1]
+                        shutil.copy2(filename , dst)
                         # print(dst + '/' + os.path.split(archFilename)[1]) #原文件名
                         # print(dst + '/' + bb) #新名路径
-                        shutil.move(dst + '/' + os.path.split(archFilename)[1], dst + '/' + bb)
+                        shutil.move(dst + '/' + os.path.split(filename )[1], dst + '/' + bb)
 
                         # 如果选择删除文件
                         if self.myCheckBox_del == True:
-                            os.remove(archFilename)
+                            os.remove(filename )
 
                         top_post = info + "移动到:" + os.path.split(dst)[1]
 
                     else:
-                        shutil.copy2(archFilename, dst)
+                        shutil.copy2(filename , dst)
                         # 如果选择删除文件
                         if self.myCheckBox_del == True:
-                            os.remove(archFilename)
+                            os.remove(filename )
 
                         top_post = info + "移动到:" + os.path.split(dst)[1]
                 else:
 
-                    if self.calculate_hashes(archFilename) in dubfilelist:
+                    if self.calculate_hashes(filename ) in dubfilelist:
                         top_post = info + "已存在，不作复制"  # 有重复的文件
                     else:
                         # 只是文件名重复，修改为文件名再复制，加上拍摄日期如 DSC_1689_2017-07-15.jpg
-                        newfilename = f'{os.path.splitext(archFilename)[0]}{"_"}{t[:10]}{os.path.splitext(archFilename)[1]}'
+                        newfilename = f'{os.path.splitext(filename)[0]}{"_"}{t[:10]}{os.path.splitext(filename)[1]}'
 
-                        shutil.move(archFilename, newfilename)
+                        shutil.move(filename, newfilename)
                         shutil.copy2(newfilename, dst)
 
                         if self.myCheckBox_del == True:  # 如果选择删除文件
-                            os.remove(archFilename)
+                            os.remove(filename)
 
                         top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + str(a) + "/" + str(tt) + " " + \
-                                   os.path.split(archFilename)[1] + " " + "文件名已存在, 变更文件名为" + newfilename + "复制"
+                                   os.path.split(filename)[1] + " " + "文件名已存在, 变更文件名为" + newfilename + "复制"
 
                 return top_post
 
@@ -228,7 +246,7 @@ class GetPostThread(QThread):
         if self.myRadioButton_cameraType.isChecked() == True:
             #如果按相机类型
 
-            ct = self.getOriginalCameraType(archFilename)
+            ct = self.getOriginalCameraType(filename)
             top_post = ct
 
             return top_post

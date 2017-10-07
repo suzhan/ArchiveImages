@@ -53,7 +53,7 @@ for d in metadata:
         print(d["QuickTime:Model"])
 
     elif d["File:FileType"] == "JPEG":
-        #print(d["EXIF:DateTimeOriginal"])
+        print(d["EXIF:DateTimeOriginal"])
         print(d["EXIF:Model"])
         print(d["File:FileCreateDate"][:19])
         #print(d["MakerNotes:Lens"])
