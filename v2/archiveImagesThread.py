@@ -6,12 +6,12 @@ import hachoir
 from hachoir.parser import createParser
 from hachoir.metadata import extractMetadata
 
-import re, shutil
+import re
+import shutil
 import hashlib
 import time
 from PyQt5.QtCore import QThread
 from PyQt5.QtCore import pyqtSignal
-
 
 import exiftool
 
@@ -43,7 +43,7 @@ class GetPostThread(QThread):
 
         self.filelist = []
 
-        #a = self.mylabel_0.text()
+        # a = self.mylabel_0.text()
 
     def setSubReddit_src(self, lineEdit_src):
         """源目录"""
@@ -81,7 +81,6 @@ class GetPostThread(QThread):
         """按GPS选择"""
         self.myRadioButton_GPS = radioButton_GPS
 
-
     def setlabel_newname1(self, label_newname1):
         """前缀名称"""
         self.mylabel_newname1 = label_newname1
@@ -114,7 +113,6 @@ class GetPostThread(QThread):
         """中缀序列号"""
         self.mylabel_lineEdit_sn = label_lineEdit_sn
 
-
     def setArchFilename(self, archFilename):
         """需整理目录"""
         self.myfilenames = archFilename
@@ -122,38 +120,78 @@ class GetPostThread(QThread):
     def get_top_post(self, d, a):
         """对源目录中的文件进行处理"""
         # 取得exif中的拍摄日期时间
-        #print(archFilename)
-        #if  os.path.splitext(archFilename)[1] == '.MOV':
+        # print(archFilename)
+        # if  os.path.splitext(archFilename)[1] == '.MOV':
         #    t = self.getOriginalDateMOV(archFilename)
-        #else:
+        # else:
         #    t = self.getOriginalDate(archFilename)
-            # t = 2005-03-10 15:10:48
-            #t[0:4] = 2005
-            #t[:10] = 2005-03-10
+        # t = 2005-03-10 15:10:48
+        # t[0:4] = 2005
+        # t[:10] = 2005-03-10
 
         directory = d["File:Directory"]  # 文件目录
         filename = d["File:FileName"]  # 文件名
         filetype = d["File:FileType"]  # 文件类型
-        createdate = d["EXIF:DateTimeOriginal"]  # 文件创建日期
+
+        print("abc")
+
+        if filetype == "JPEG" or filetype == "NEF":
+            createdate = d["EXIF:DateTimeOriginal"]  # 文件创建日期
+            model = d["EXIF:Model"]                  # 相机类型
+            lens = d["MakerNotes:Lens"]              # 镜头类型
+            if not d["EXIF:GPSLatitude"]:
+                GPSLatitude = d["EXIF:GPSLatitude"]   #经
+            else:
+                GPSLatitude = ''
+
+            if not  d["EXIF:GPSLongitude"]:
+                GPSLongitude = d["EXIF:GPSLongitude"]  # 纬
+            else:
+                GPSLongitude = ''
+
+        elif filetype == "MOV" :
+            createdate = d["QuickTime:CreateDate"]
+            model = d["QuickTime:Model"]
+
+            try:
+                d["EXIF:GPSLatitude"]
+            except NameError:
+                print("不存在")
+            else:
+                print("存在")
+
+        elif filetype == "MP4":
+            createdate = d["QuickTime:CreateDate"]
+            model = ''
+
+            try:
+                d["EXIF:GPSLatitude"]
+            except NameError:
+                print("不存在")
+            else:
+                print("存在")
+
+        else:
+            print("不支持的文件类型")
+
+
+
+        print("NNNN")
+        print(model)
+        print(str(GPSLatitude))
+        print(str(GPSLongitude))
+
+
+        sourceFile = d["SourceFile"]  #源文件，带路径
 
         createdate = createdate.replace(':', '-')[:10] + createdate[10:]
 
         print(createdate)
 
-        dst = f'{self.subreddits_dst}/{createdate[0:4]}/{createdate[:10]}'
-
-        print("目标目录：")
-        print(dst)
-
-        print("文件源目录：")
-        print(directory)
-
-        print("文件名：")
-        print(filename)
-
+        dst = f'{self.subreddits_dst}/{createdate[0:4]}/{createdate[:10]}/'
 
         # 如果按拍摄日期存储
-        #print(self.myRadioButton_date.isChecked())
+        # print(self.myRadioButton_date.isChecked())
         if self.myRadioButton_date.isChecked() == True:
 
             # 建立存储目标目录名 t[0:4] = 2005  t[:10] = 2005-03-10
@@ -162,89 +200,68 @@ class GetPostThread(QThread):
                 os.makedirs(dst)
 
             tt = str(len(self.myfilenames))
-            print(tt)
-
-
 
 
             # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
-            dubfilelist = self.find_dub_filename(directory + '/' + filename )
+            dubfilelist = self.find_dub_filename(directory + '/' + filename)
 
-            print(len(dubfilelist))
+
 
             info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + str(a) + "/" + str(tt) + " " + "文件:" + \
                    filename + " " + "拍摄时间:" + createdate + " "
 
-            print(info)
 
 
-            #如果文件类型为JPEG或NEF
-            if filetype == "JPEG" or filetype == "NEF":
-                # 如果源目录与目标目录没有重复文件名的
-                if len(dubfilelist) == 0:
-                    # 如果选择重命名
-                    if self.myCheckBox_rename.isChecked() == True:
-                        # 原文件名
-                        # print("原文件名")
-                        # print(os.path.split(archFilename)[1])
-                        bb = self.reFilename(filename, createdate, a) + os.path.splitext(filename )[1]
-                        shutil.copy2(filename , dst)
-                        # print(dst + '/' + os.path.split(archFilename)[1]) #原文件名
-                        # print(dst + '/' + bb) #新名路径
-                        shutil.move(dst + '/' + os.path.split(filename )[1], dst + '/' + bb)
+            # 如果源目录与目标目录没有重复文件名的
+            if len(dubfilelist) == 0:
+                # 如果选择重命名
+                if self.myCheckBox_rename.isChecked() == True:
+                    # 原文件名
+                    # print("原文件名")
+                    # print(os.path.split(archFilename)[1])
+                    bb = self.reFilename(filename, createdate, a) + os.path.splitext(filename)[1]
+                    shutil.copy2(filename, dst)
+                    # print(dst + '/' + os.path.split(archFilename)[1]) #原文件名
+                    # print(dst + '/' + bb) #新名路径
+                    shutil.move(dst + '/' + os.path.split(filename)[1], dst + '/' + bb)
 
-                        # 如果选择删除文件
-                        if self.myCheckBox_del == True:
-                            os.remove(filename )
+                    # 如果选择删除文件
+                    if self.myCheckBox_del == True:
+                        os.remove(filename)
 
-                        top_post = info + "移动到:" + os.path.split(dst)[1]
+                    top_post = info + "移动到:" + os.path.split(dst)[1]
 
-                    else:
-                        shutil.copy2(filename , dst)
-                        # 如果选择删除文件
-                        if self.myCheckBox_del == True:
-                            os.remove(filename )
-
-                        top_post = info + "移动到:" + os.path.split(dst)[1]
                 else:
+                    shutil.copy(sourceFile, dst)
 
-                    if self.calculate_hashes(filename ) in dubfilelist:
-                        top_post = info + "已存在，不作复制"  # 有重复的文件
-                    else:
-                        # 只是文件名重复，修改为文件名再复制，加上拍摄日期如 DSC_1689_2017-07-15.jpg
-                        newfilename = f'{os.path.splitext(filename)[0]}{"_"}{t[:10]}{os.path.splitext(filename)[1]}'
+                    # 如果选择删除文件
+                    if self.myCheckBox_del == True:
+                        os.remove(sourceFile)
 
-                        shutil.move(filename, newfilename)
-                        shutil.copy2(newfilename, dst)
-
-                        if self.myCheckBox_del == True:  # 如果选择删除文件
-                            os.remove(filename)
-
-                        top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + str(a) + "/" + str(tt) + " " + \
-                                   os.path.split(filename)[1] + " " + "文件名已存在, 变更文件名为" + newfilename + "复制"
-
-                return top_post
-
-            elif d["File:FileType"] == "MOV":
-                t = d["QuickTime:MediaCreateDate"]
-                print(d["File:FileName"])
-                print(t)
-                top_post =  '#' + str(a) + ' ' + t +  d["File:FileName"]
-
-            elif d["File:FileType"] == "MP4":
-                t = d["QuickTime:CreateDate"][:19]
-                print(d["File:FileName"])
-                print(t)
-                top_post = '#' + str(a) + ' ' + t + d["File:FileName"]
+                    top_post = info + "移动到:" + '..' + dst[-17:]
             else:
-                pass
 
+                if self.calculate_hashes(filename) in dubfilelist:
+                    top_post = info + "已存在，不作复制"  # 有重复的文件
+                else:
+                    # 只是文件名重复，修改为文件名再复制，加上拍摄日期如 DSC_1689_2017-07-15.jpg
+                    newfilename = f'{os.path.splitext(filename)[0]}{"_"}{t[:10]}{os.path.splitext(filename)[1]}'
+
+                    shutil.move(filename, newfilename)
+                    shutil.copy2(newfilename, dst)
+
+                    if self.myCheckBox_del == True:  # 如果选择删除文件
+                        os.remove(filename)
+
+                    top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + str(a) + "/" + str(tt) + " " + \
+                               os.path.split(filename)[1] + " " + "文件名已存在, 变更文件名为" + newfilename + "复制"
 
             return top_post
 
 
+
         if self.myRadioButton_cameraType.isChecked() == True:
-            #如果按相机类型
+            # 如果按相机类型
 
             ct = self.getOriginalCameraType(filename)
             top_post = ct
@@ -252,16 +269,14 @@ class GetPostThread(QThread):
             return top_post
 
         if self.myRadioButton_lensType.isChecked() == True:
-            #如果按镜头类型
+            # 如果按镜头类型
             pass
 
         if self.myRadioButton_GPS.isChecked() == True:
-            #如果按GSP
+            # 如果按GSP
             pass
 
-
-
-    def reFilename(self, filename, t , a):
+    def reFilename(self, filename, t, a):
         """
         重命名文件名
         """
@@ -276,7 +291,7 @@ class GetPostThread(QThread):
         # 新文件名前缀连接符
         newName2 = self.mylabel_hyphen1.text()
 
-        #print(self.mylabel_datetimesn1.text())
+        # print(self.mylabel_datetimesn1.text())
         # 中缀
         if self.mylabel_datetimesn1.text() == "20171130":  # yyyymmdd
             newName3_1 = t.replace('-', '')[:8]
@@ -324,45 +339,44 @@ class GetPostThread(QThread):
 
         return newName
 
-
     def getOriginalDate(self, filename):
         """
         处理'.jpg', '.png', '.mp4', '.nef', '.3gp', '.flv', '.mkv'文件.读出建立日期
         """
-        #with open(filename,'rb') as f:
+        # with open(filename,'rb') as f:
         #    exif = exifread.process_file(f)
         #    if exif is not None:
         #        t= exif['EXIF DateTimeOriginal']
         #        return str(t).replace(":", ".")[:10]
-        #state = os.stat(filename)
-        #return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
+        # state = os.stat(filename)
+        # return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
         try:
-            fd=open(filename, 'rb')
+            fd = open(filename, 'rb')
         except:
             raise ReadFailException("unopen file[%s]\n" % filename)
 
-        data=exifread.process_file(fd)
+        data = exifread.process_file(fd)
 
         if data:
             try:
-                t=data['EXIF DateTimeOriginal']
-                return str(t).replace(":", "-")[:10] + str(t)[10:] #格式 2026-11-24 14:41:16
+                t = data['EXIF DateTimeOriginal']
+                return str(t).replace(":", "-")[:10] + str(t)[10:]  # 格式 2026-11-24 14:41:16
             except:
                 pass
 
-        #state=os.stat(filename)
-        #return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
+                # state=os.stat(filename)
+                # return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
 
     def getOriginalCameraType(self, filename):
         """
         处理'.jpg', '.png', '.mp4', '.nef', '.3gp', '.flv', '.mkv'文件.读出建立日期
         """
         try:
-            fd=open(filename, 'rb')
+            fd = open(filename, 'rb')
         except:
             raise ReadFailException("unopen file[%s]\n" % filename)
 
-        data=exifread.process_file(fd)
+        data = exifread.process_file(fd)
 
         if data:
             try:
@@ -371,22 +385,20 @@ class GetPostThread(QThread):
             except:
                 pass
 
-
     def getOriginalCameraTypeMOV(self, filename):
         """
         单独处理mov视频文件,读出建立日期
         """
         with createParser(filename) as parser:
             metadata = extractMetadata(parser)
-            t = metadata.exportPlaintext(line_prefix="")[4][15:] #2014-03-13 02:09:03)
+            t = metadata.exportPlaintext(line_prefix="")[4][15:]  # 2014-03-13 02:09:03)
             return str(t)
-
 
     def getOriginalDateMOV(self, filename):
         """单独处理mov视频文件,读出建立日期"""
         with createParser(filename) as parser:
             metadata = extractMetadata(parser)
-            t = metadata.exportPlaintext(line_prefix="")[4][15:] #2014-03-13 02:09:03)
+            t = metadata.exportPlaintext(line_prefix="")[4][15:]  # 2014-03-13 02:09:03)
             return str(t)
 
     def calculate_hashes(self, filename):
@@ -411,21 +423,14 @@ class GetPostThread(QThread):
 
     def run(self):
         a = 0
-        #for archFilename in self.myfilenames:  # 需处理的图像列表传到线程类中
+        # for archFilename in self.myfilenames:  # 需处理的图像列表传到线程类中
         #    a = a + 1
         #    top_post = self.get_top_post(archFilename, a)  # 进行归档处理
         #    self.postSignal.emit(top_post)  # run方法中处理并获得数据，然后通过信号将其发出
         with exiftool.ExifTool() as et:
             metadata = et.get_metadata_batch(self.myfilenames)
-            print("^^^")
-            print(metadata)
-            print("BBB")
         for d in metadata:
             a = a + 1
-            top_post = self.get_top_post(d,a)
-            #time.sleep(5)
+            top_post = self.get_top_post(d, a)
+            # time.sleep(5)
             self.postSignal.emit(top_post)
-
-
-
-
