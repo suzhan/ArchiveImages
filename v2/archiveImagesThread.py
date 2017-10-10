@@ -133,53 +133,70 @@ class GetPostThread(QThread):
         filename = d["File:FileName"]  # 文件名
         filetype = d["File:FileType"]  # 文件类型
 
-        print("abc")
+        #创建日期
+        try:
+            d["EXIF:QuickTime:CreateDate"]
+        except:
+            createdate = ''
+        else:
+            createdate = d["EXIF:QuickTime:CreateDate"]
 
-        if filetype == "JPEG" or filetype == "NEF":
-            createdate = d["EXIF:DateTimeOriginal"]  # 文件创建日期
-            model = d["EXIF:Model"]                  # 相机类型
-            lens = d["MakerNotes:Lens"]              # 镜头类型
-            if not d["EXIF:GPSLatitude"]:
-                GPSLatitude = d["EXIF:GPSLatitude"]   #经
-            else:
-                GPSLatitude = ''
 
-            if not  d["EXIF:GPSLongitude"]:
-                GPSLongitude = d["EXIF:GPSLongitude"]  # 纬
-            else:
-                GPSLongitude = ''
 
-        elif filetype == "MOV" :
-            createdate = d["QuickTime:CreateDate"]
+
+
+        # 相机类型
+        try:
+            d["EXIF:Model"]
+        except:
+            model = ''
+        else:
+            model = d["EXIF:Model"]
+
+        #相机类型2
+        try:
+            d["QuickTime:Model"]
+        except:
+            model = ''
+        else:
             model = d["QuickTime:Model"]
 
-            try:
-                d["EXIF:GPSLatitude"]
-            except NameError:
-                print("不存在")
-            else:
-                print("存在")
-
-        elif filetype == "MP4":
-            createdate = d["QuickTime:CreateDate"]
-            model = ''
-
-            try:
-                d["EXIF:GPSLatitude"]
-            except NameError:
-                print("不存在")
-            else:
-                print("存在")
-
+        # 镜头类型
+        try:
+            d["MakerNotes:Lens"]
+        except:
+            lens = '无lens'
         else:
-            print("不支持的文件类型")
+            lens = d["MakerNotes:Lens"]
 
+
+        # 经度
+        try:
+            d["EXIF:GPSLongitude"]
+        except:
+            GPSLongitude = '无经度'
+        else:
+            GPSLongitude = d["EXIF:GPSLongitude"]
+
+        # 纬度
+        try:
+            d["EXIF:GPSLatitude"]
+        except:
+            GPSLatitude = '无纬度'
+        else:
+            GPSLatitude = d["EXIF:GPSLatitude"]
 
 
         print("NNNN")
+        print(filename)
+        print(filetype)
         print(model)
-        print(str(GPSLatitude))
+        print(lens)
         print(str(GPSLongitude))
+        print(str(GPSLatitude))
+        print("NNNN")
+
+
 
 
         sourceFile = d["SourceFile"]  #源文件，带路径
@@ -431,6 +448,7 @@ class GetPostThread(QThread):
             metadata = et.get_metadata_batch(self.myfilenames)
         for d in metadata:
             a = a + 1
+            print(d)
             top_post = self.get_top_post(d, a)
             # time.sleep(5)
             self.postSignal.emit(top_post)
