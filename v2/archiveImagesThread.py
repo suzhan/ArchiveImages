@@ -119,21 +119,14 @@ class GetPostThread(QThread):
 
     def get_top_post(self, d, a):
         """对源目录中的文件进行处理"""
-        # 取得exif中的拍摄日期时间
-        # print(archFilename)
-        # if  os.path.splitext(archFilename)[1] == '.MOV':
-        #    t = self.getOriginalDateMOV(archFilename)
-        # else:
-        #    t = self.getOriginalDate(archFilename)
-        # t = 2005-03-10 15:10:48
-        # t[0:4] = 2005
-        # t[:10] = 2005-03-10
+
 
         directory = d["File:Directory"]  # 文件目录
         filename = d["File:FileName"]  # 文件名
         filetype = d["File:FileType"]  # 文件类型
+        sourceFile = d["SourceFile"]  # 源文件，带路径
 
-        #创建日期
+        #创建日期, mov ,mp4格式的
         try:
             d["EXIF:QuickTime:CreateDate"]
         except:
@@ -141,11 +134,15 @@ class GetPostThread(QThread):
         else:
             createdate = d["EXIF:QuickTime:CreateDate"]
 
+        #创建日期，jpg nef 格式的
+        try:
+            d["EXIF:CreateDate"]
+        except:
+            createdate = ''
+        else:
+            createdate = d["EXIF:CreateDate"]
 
-
-
-
-        # 相机类型
+        # 相机类型，jpg nef
         try:
             d["EXIF:Model"]
         except:
@@ -153,7 +150,7 @@ class GetPostThread(QThread):
         else:
             model = d["EXIF:Model"]
 
-        #相机类型2
+        #相机类型, mov mp4
         try:
             d["QuickTime:Model"]
         except:
@@ -186,7 +183,6 @@ class GetPostThread(QThread):
         else:
             GPSLatitude = d["EXIF:GPSLatitude"]
 
-
         print("NNNN")
         print(filename)
         print(filetype)
@@ -196,14 +192,8 @@ class GetPostThread(QThread):
         print(str(GPSLatitude))
         print("NNNN")
 
-
-
-
-        sourceFile = d["SourceFile"]  #源文件，带路径
-
+        #修改格式为2008-10-22 16:28:39
         createdate = createdate.replace(':', '-')[:10] + createdate[10:]
-
-        print(createdate)
 
         dst = f'{self.subreddits_dst}/{createdate[0:4]}/{createdate[:10]}/'
 
