@@ -346,7 +346,7 @@ class Ui_MainWindow(object):
             for filename in files:
                 filename = os.path.join(root, filename)
                 f, e = os.path.splitext(filename)
-                if e.lower() not in ('.jpg', '.jpeg', '.png', '.nef', '.mp4', '.3gp', '.flv', '.mkv', '.mov'):
+                if e.lower() not in ('.jpg', '.jpeg', '.nef', '.mp4', '.mov'):
                     continue
                 filename_list.append(filename)
                 

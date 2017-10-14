@@ -126,43 +126,65 @@ class GetPostThread(QThread):
         filetype = d["File:FileType"]  # 文件类型
         sourceFile = d["SourceFile"]  # 源文件，带路径
 
-        #创建日期, mov ,mp4格式的
-        try:
-            d["EXIF:QuickTime:CreateDate"]
-        except:
-            createdate = ''
+        #创建日期,
+        if filetype == "JPEG" or  filetype == "NEF":
+            try:
+                d["EXIF:CreateDate"]
+            except:
+                try:
+                    d["XMP:CreateDate"]
+                except:
+                    try:
+                        d["XMP:DateTimeOriginal"]
+                    except:
+                        try:
+                            d["EXIF:DateTimeOriginal"]
+                        except:
+                            createdate = 'no-createdate'
+                        else:
+                            createdate = d["EXIF:DateTimeOriginal"]
+                    else:
+                        createdate = d["XMP:DateTimeOriginal"]
+                else:
+                    createdate = d["XMP:CreateDate"]
+            else:
+                createdate = d["EXIF:CreateDate"]
+        elif filetype == "MP4" or filetype == "MOV":
+            try:
+                d["QuickTime:CreateDate"]
+            except:
+                createdate = 'no-createdate'
+            else:
+                createdate = d["QuickTime:CreateDate"]
         else:
-            createdate = d["EXIF:QuickTime:CreateDate"]
+            createdate = "no-createdate"
 
-        #创建日期，jpg nef 格式的
-        try:
-            d["EXIF:CreateDate"]
-        except:
-            createdate = ''
-        else:
-            createdate = d["EXIF:CreateDate"]
+        #DateTimeOriginal
 
-        # 相机类型，jpg nef
-        try:
-            d["EXIF:Model"]
-        except:
-            model = ''
-        else:
-            model = d["EXIF:Model"]
 
-        #相机类型, mov mp4
-        try:
-            d["QuickTime:Model"]
-        except:
-            model = ''
+        #相机类型
+        if filetype == "JPEG" or filetype == "NEF":
+            try:
+                d["EXIF:Model"]
+            except:
+                model = "no-model"
+            else:
+                model = d["EXIF:Model"]
+        elif filetype == "MOV":
+            try:
+                d["QuickTime:Model"]
+            except:
+                model = "no-model"
+            else:
+                model = d["QuickTime:Model"]
         else:
-            model = d["QuickTime:Model"]
+            model = "no-model"
 
         # 镜头类型
         try:
             d["MakerNotes:Lens"]
         except:
-            lens = '无lens'
+            lens = 'no-lens'
         else:
             lens = d["MakerNotes:Lens"]
 
@@ -171,7 +193,7 @@ class GetPostThread(QThread):
         try:
             d["EXIF:GPSLongitude"]
         except:
-            GPSLongitude = '无经度'
+            GPSLongitude = 'no-GPSLongitude'
         else:
             GPSLongitude = d["EXIF:GPSLongitude"]
 
@@ -179,45 +201,48 @@ class GetPostThread(QThread):
         try:
             d["EXIF:GPSLatitude"]
         except:
-            GPSLatitude = '无纬度'
+            GPSLatitude = 'no-GPSLatitude'
         else:
             GPSLatitude = d["EXIF:GPSLatitude"]
 
-        print("NNNN")
-        print(filename)
-        print(filetype)
-        print(model)
-        print(lens)
-        print(str(GPSLongitude))
-        print(str(GPSLatitude))
-        print("NNNN")
-
         #修改格式为2008-10-22 16:28:39
-        createdate = createdate.replace(':', '-')[:10] + createdate[10:]
+        if createdate == "no-createdate":
+            createdate = "no-createdate"
+        else:
+            createdate = createdate.replace(':', '-')[:10] + createdate[10:]
 
-        dst = f'{self.subreddits_dst}/{createdate[0:4]}/{createdate[:10]}/'
+        print("----------------------------------")
+        print('filename:' + filename)
+        print('filetype:' + filetype)
+        print('createdate:' + createdate)
+        print('model:' + model)
+        print('lens:' + lens)
+        print('GPSLongitude:' + str(GPSLongitude))
+        print('GPSLatitude:' + str(GPSLatitude))
+        print("-----------------------------------")
+
+
+        if createdate == "no-createdate":
+            dst = f'{self.subreddits_dst}/no-createdate/no-createdate/'
+        else:
+            dst = f'{self.subreddits_dst}/{createdate[0:4]}/{createdate[:10]}/'
+
+        print(dst)
+
 
         # 如果按拍摄日期存储
-        # print(self.myRadioButton_date.isChecked())
         if self.myRadioButton_date.isChecked() == True:
-
             # 建立存储目标目录名 t[0:4] = 2005  t[:10] = 2005-03-10
-
             if not os.path.exists(dst):
                 os.makedirs(dst)
 
             tt = str(len(self.myfilenames))
 
-
             # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
             dubfilelist = self.find_dub_filename(directory + '/' + filename)
 
-
-
             info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + str(a) + "/" + str(tt) + " " + "文件:" + \
                    filename + " " + "拍摄时间:" + createdate + " "
-
-
 
             # 如果源目录与目标目录没有重复文件名的
             if len(dubfilelist) == 0:
@@ -270,18 +295,15 @@ class GetPostThread(QThread):
         if self.myRadioButton_cameraType.isChecked() == True:
             # 如果按相机类型
 
-            ct = self.getOriginalCameraType(filename)
-            top_post = ct
-
-            return top_post
+             print("相机类型")
 
         if self.myRadioButton_lensType.isChecked() == True:
             # 如果按镜头类型
-            pass
+             print("镜头类型")
 
         if self.myRadioButton_GPS.isChecked() == True:
             # 如果按GSP
-            pass
+            print("GPS")
 
     def reFilename(self, filename, t, a):
         """
@@ -345,68 +367,6 @@ class GetPostThread(QThread):
         print(newName)
 
         return newName
-
-    def getOriginalDate(self, filename):
-        """
-        处理'.jpg', '.png', '.mp4', '.nef', '.3gp', '.flv', '.mkv'文件.读出建立日期
-        """
-        # with open(filename,'rb') as f:
-        #    exif = exifread.process_file(f)
-        #    if exif is not None:
-        #        t= exif['EXIF DateTimeOriginal']
-        #        return str(t).replace(":", ".")[:10]
-        # state = os.stat(filename)
-        # return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
-        try:
-            fd = open(filename, 'rb')
-        except:
-            raise ReadFailException("unopen file[%s]\n" % filename)
-
-        data = exifread.process_file(fd)
-
-        if data:
-            try:
-                t = data['EXIF DateTimeOriginal']
-                return str(t).replace(":", "-")[:10] + str(t)[10:]  # 格式 2026-11-24 14:41:16
-            except:
-                pass
-
-                # state=os.stat(filename)
-                # return time.strftime("%Y.%m.%d", time.localtime(state[-2]))
-
-    def getOriginalCameraType(self, filename):
-        """
-        处理'.jpg', '.png', '.mp4', '.nef', '.3gp', '.flv', '.mkv'文件.读出建立日期
-        """
-        try:
-            fd = open(filename, 'rb')
-        except:
-            raise ReadFailException("unopen file[%s]\n" % filename)
-
-        data = exifread.process_file(fd)
-
-        if data:
-            try:
-                c = data['Image Model']
-                return str(c)
-            except:
-                pass
-
-    def getOriginalCameraTypeMOV(self, filename):
-        """
-        单独处理mov视频文件,读出建立日期
-        """
-        with createParser(filename) as parser:
-            metadata = extractMetadata(parser)
-            t = metadata.exportPlaintext(line_prefix="")[4][15:]  # 2014-03-13 02:09:03)
-            return str(t)
-
-    def getOriginalDateMOV(self, filename):
-        """单独处理mov视频文件,读出建立日期"""
-        with createParser(filename) as parser:
-            metadata = extractMetadata(parser)
-            t = metadata.exportPlaintext(line_prefix="")[4][15:]  # 2014-03-13 02:09:03)
-            return str(t)
 
     def calculate_hashes(self, filename):
         """得出文件的MD5,sha1码，文件大小,用于对比文件"""
