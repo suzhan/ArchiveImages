@@ -193,7 +193,7 @@ class GetPostThread(QThread):
         try:
             d["EXIF:GPSLongitude"]
         except:
-            GPSLongitude = 'no-GPSLongitude'
+            GPSLongitude = 'no-GPS'
         else:
             GPSLongitude = d["EXIF:GPSLongitude"]
 
@@ -201,7 +201,7 @@ class GetPostThread(QThread):
         try:
             d["EXIF:GPSLatitude"]
         except:
-            GPSLatitude = 'no-GPSLatitude'
+            GPSLatitude = 'no-GPS'
         else:
             GPSLatitude = d["EXIF:GPSLatitude"]
 
@@ -221,89 +221,97 @@ class GetPostThread(QThread):
         print('GPSLatitude:' + str(GPSLatitude))
         print("-----------------------------------")
 
-
-        if createdate == "no-createdate":
-            dst = f'{self.subreddits_dst}/no-createdate/no-createdate/'
-        else:
-            dst = f'{self.subreddits_dst}/{createdate[0:4]}/{createdate[:10]}/'
-
-        print(dst)
-
-
-        # 如果按拍摄日期存储
         if self.myRadioButton_date.isChecked() == True:
-            # 建立存储目标目录名 t[0:4] = 2005  t[:10] = 2005-03-10
-            if not os.path.exists(dst):
-                os.makedirs(dst)
-
-            tt = str(len(self.myfilenames))
-
-            # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
-            dubfilelist = self.find_dub_filename(directory + '/' + filename)
-
-            info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + str(a) + "/" + str(tt) + " " + "文件:" + \
-                   filename + " " + "拍摄时间:" + createdate + " "
-
-            # 如果源目录与目标目录没有重复文件名的
-            if len(dubfilelist) == 0:
-                # 如果选择重命名
-                if self.myCheckBox_rename.isChecked() == True:
-                    # 原文件名
-                    # print("原文件名")
-                    # print(os.path.split(archFilename)[1])
-                    bb = self.reFilename(filename, createdate, a) + os.path.splitext(filename)[1]
-                    shutil.copy2(filename, dst)
-                    # print(dst + '/' + os.path.split(archFilename)[1]) #原文件名
-                    # print(dst + '/' + bb) #新名路径
-                    shutil.move(dst + '/' + os.path.split(filename)[1], dst + '/' + bb)
-
-                    # 如果选择删除文件
-                    if self.myCheckBox_del == True:
-                        os.remove(filename)
-
-                    top_post = info + "移动到:" + os.path.split(dst)[1]
-
-                else:
-                    shutil.copy(sourceFile, dst)
-
-                    # 如果选择删除文件
-                    if self.myCheckBox_del == True:
-                        os.remove(sourceFile)
-
-                    top_post = info + "移动到:" + '..' + dst[-17:]
+            if createdate == "no-createdate":
+                dst = f'{self.subreddits_dst}/no-createdate/no-createdate/'
             else:
+                dst = f'{self.subreddits_dst}/{createdate[0:4]}/{createdate[:10]}/'
 
-                if self.calculate_hashes(filename) in dubfilelist:
-                    top_post = info + "已存在，不作复制"  # 有重复的文件
-                else:
-                    # 只是文件名重复，修改为文件名再复制，加上拍摄日期如 DSC_1689_2017-07-15.jpg
-                    newfilename = f'{os.path.splitext(filename)[0]}{"_"}{t[:10]}{os.path.splitext(filename)[1]}'
-
-                    shutil.move(filename, newfilename)
-                    shutil.copy2(newfilename, dst)
-
-                    if self.myCheckBox_del == True:  # 如果选择删除文件
-                        os.remove(filename)
-
-                    top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + str(a) + "/" + str(tt) + " " + \
-                               os.path.split(filename)[1] + " " + "文件名已存在, 变更文件名为" + newfilename + "复制"
-
-            return top_post
-
-
-
-        if self.myRadioButton_cameraType.isChecked() == True:
+        elif self.myRadioButton_cameraType.isChecked() == True :
             # 如果按相机类型
 
-             print("相机类型")
+            if model == "no-model":
+                dst = f'{self.subreddits_dst}/no-model/no-model/'
+            else:
+                dst = f'{self.subreddits_dst}/{createdate[0:4]}/{model}/'
 
-        if self.myRadioButton_lensType.isChecked() == True:
+        elif self.myRadioButton_lensType.isChecked() == True :
             # 如果按镜头类型
-             print("镜头类型")
 
-        if self.myRadioButton_GPS.isChecked() == True:
+            if lens == "no-lens":
+                dst = f'{self.subreddits_dst}/no-lens/no-lens/'
+            else:
+                dst = f'{self.subreddits_dst}/{createdate[0:4]}/{lens}/'
+
+        elif self.myRadioButton_GPS.isChecked() == True :
             # 如果按GSP
-            print("GPS")
+            if GPSLongitude == 'no-GPS':
+                dst = f'{self.subreddits_dst}/no-GPS/no-GPS/'
+            else:
+                dst = f'{self.subreddits_dst}/{createdate[0:4]}/{str(GPSLongitude)}-{str(GPSLatitude)}/'
+        else:
+            pass
+
+
+
+        # 建立存储目标目录名 t[0:4] = 2005  t[:10] = 2005-03-10
+        if not os.path.exists(dst):
+            os.makedirs(dst)
+
+        tt = str(len(self.myfilenames))
+
+        # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
+        dubfilelist = self.find_dub_filename(directory + '/' + filename)
+
+        info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + str(a) + "/" + str(tt) + " " + "文件:" + \
+               filename + " " + "拍摄时间:" + createdate + " "
+
+        # 如果源目录与目标目录没有重复文件名的
+        if len(dubfilelist) == 0:
+            # 如果选择重命名
+            if self.myCheckBox_rename.isChecked() == True:
+                # 原文件名
+                # print("原文件名")
+                # print(os.path.split(archFilename)[1])
+                bb = self.reFilename(filename, createdate, a) + os.path.splitext(filename)[1]
+                shutil.copy2(filename, dst)
+                # print(dst + '/' + os.path.split(archFilename)[1]) #原文件名
+                # print(dst + '/' + bb) #新名路径
+                shutil.move(dst + '/' + os.path.split(filename)[1], dst + '/' + bb)
+
+                # 如果选择删除文件
+                if self.myCheckBox_del == True:
+                    os.remove(filename)
+
+                top_post = info + "移动到:" + os.path.split(dst)[1]
+
+            else:
+                shutil.copy(sourceFile, dst)
+
+                # 如果选择删除文件
+                if self.myCheckBox_del == True:
+                    os.remove(sourceFile)
+
+                top_post = info + "移动到:" + '..' + dst[-17:]
+        else:
+
+            if self.calculate_hashes(filename) in dubfilelist:
+                top_post = info + "已存在，不作复制"  # 有重复的文件
+            else:
+                # 只是文件名重复，修改为文件名再复制，加上拍摄日期如 DSC_1689_2017-07-15.jpg
+                newfilename = f'{os.path.splitext(filename)[0]}{"_"}{t[:10]}{os.path.splitext(filename)[1]}'
+
+                shutil.move(filename, newfilename)
+                shutil.copy2(newfilename, dst)
+
+                if self.myCheckBox_del == True:  # 如果选择删除文件
+                    os.remove(filename)
+
+                top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + str(a) + "/" + str(tt) + " " + \
+                           os.path.split(filename)[1] + " " + "文件名已存在, 变更文件名为" + newfilename + "复制"
+
+        return top_post
+
 
     def reFilename(self, filename, t, a):
         """
