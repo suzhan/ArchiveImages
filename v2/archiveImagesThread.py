@@ -222,10 +222,14 @@ class GetPostThread(QThread):
 
         location = GPSLongitude,GPSLatitude
 
-        print('location')
 
-        self.geocode()
+        print(location)
 
+
+
+        a = self.geocode('{location}')
+
+        print(a)
         print("-----------------------------------")
 
         if self.myRadioButton_date.isChecked() == True:
@@ -403,7 +407,7 @@ class GetPostThread(QThread):
                     result.append(self.calculate_hashes(os.path.join(root, filename)))
         return result
 
-    def geocode(location):
+    def geocode(self,location):
 
         # 高德
         # parameters = {'location': location, 'key': 'af1bd859d39559bf7d226107ab9fb899'}
@@ -418,8 +422,7 @@ class GetPostThread(QThread):
         base = 'https://maps.googleapis.com/maps/api/geocode/json'
         response = requests.get(base, parameters)
         answer = response.json()
-        # google map api   不同的精度需要调整[2] 里边的数字
-        return answer['results'][0]['formatted_address']
+        return answer['results'][0]['formatted_address']  # google map api   不同的精度需要调整[2] 里边的数字
 
     def run(self):
         a = 0
