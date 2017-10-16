@@ -1,11 +1,7 @@
 import os
 from cmath import e
 
-import exifread
-import hachoir
-from hachoir.parser import createParser
-from hachoir.metadata import extractMetadata
-
+import requests
 import re
 import shutil
 import hashlib
@@ -211,6 +207,9 @@ class GetPostThread(QThread):
         else:
             createdate = createdate.replace(':', '-')[:10] + createdate[10:]
 
+
+
+
         print("----------------------------------")
         print('filename:' + filename)
         print('filetype:' + filetype)
@@ -219,6 +218,14 @@ class GetPostThread(QThread):
         print('lens:' + lens)
         print('GPSLongitude:' + str(GPSLongitude))
         print('GPSLatitude:' + str(GPSLatitude))
+        #print('GPS:'+ str(GPS) )
+
+        location = GPSLongitude,GPSLatitude
+
+        print('location')
+
+        self.geocode()
+
         print("-----------------------------------")
 
         if self.myRadioButton_date.isChecked() == True:
@@ -395,6 +402,24 @@ class GetPostThread(QThread):
                 if filename == filename2:
                     result.append(self.calculate_hashes(os.path.join(root, filename)))
         return result
+
+    def geocode(location):
+
+        # 高德
+        # parameters = {'location': location, 'key': 'af1bd859d39559bf7d226107ab9fb899'}
+        # base = 'http://restapi.amap.com/v3/geocode/regeo';
+        # response = requests.get(base, parameters)
+        # answer = response.json()
+        #
+        # return answer['regeocode']['formatted_address']
+
+        # goole map api
+        parameters = {'latlng': location, 'key': 'AIzaSyBLUVoW6RXJozTtq-WQ8OMHgKiT3zU4m4g'}
+        base = 'https://maps.googleapis.com/maps/api/geocode/json'
+        response = requests.get(base, parameters)
+        answer = response.json()
+        # google map api   不同的精度需要调整[2] 里边的数字
+        return answer['results'][0]['formatted_address']
 
     def run(self):
         a = 0
