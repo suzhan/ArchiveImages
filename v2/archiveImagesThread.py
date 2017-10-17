@@ -116,7 +116,6 @@ class GetPostThread(QThread):
     def get_top_post(self, d, a):
         """对源目录中的文件进行处理"""
 
-
         directory = d["File:Directory"]  # 文件目录
         filename = d["File:FileName"]  # 文件名
         filetype = d["File:FileType"]  # 文件类型
@@ -136,7 +135,7 @@ class GetPostThread(QThread):
                         try:
                             d["EXIF:DateTimeOriginal"]
                         except:
-                            createdate = 'no-createdate'
+                            createdate = "no-createdate"
                         else:
                             createdate = d["EXIF:DateTimeOriginal"]
                     else:
@@ -149,13 +148,11 @@ class GetPostThread(QThread):
             try:
                 d["QuickTime:CreateDate"]
             except:
-                createdate = 'no-createdate'
+                createdate = "no-createdate"
             else:
                 createdate = d["QuickTime:CreateDate"]
         else:
             createdate = "no-createdate"
-
-        #DateTimeOriginal
 
 
         #相机类型
@@ -180,7 +177,7 @@ class GetPostThread(QThread):
         try:
             d["MakerNotes:Lens"]
         except:
-            lens = 'no-lens'
+            lens = "no-lens"
         else:
             lens = d["MakerNotes:Lens"]
 
@@ -189,7 +186,7 @@ class GetPostThread(QThread):
         try:
             d["EXIF:GPSLongitude"]
         except:
-            GPSLongitude = 'no-GPS'
+            GPSLongitude = "no-GPS"
         else:
             GPSLongitude = d["EXIF:GPSLongitude"]
 
@@ -197,7 +194,7 @@ class GetPostThread(QThread):
         try:
             d["EXIF:GPSLatitude"]
         except:
-            GPSLatitude = 'no-GPS'
+            GPSLatitude = "no-GPS"
         else:
             GPSLatitude = d["EXIF:GPSLatitude"]
 
@@ -207,7 +204,11 @@ class GetPostThread(QThread):
         else:
             createdate = createdate.replace(':', '-')[:10] + createdate[10:]
 
-        location = '{},{}'.format(str(GPSLatitude),str(GPSLongitude))
+        #地理位置
+        if GPSLongitude == "no-GPS":
+            location = "no-GPS"
+        else:
+            location = '{},{}'.format(str(GPSLatitude),str(GPSLongitude))
 
 
         print("----------------------------------")
@@ -218,7 +219,7 @@ class GetPostThread(QThread):
         print('lens:' + lens)
         print('GPSLongitude:' + str(GPSLongitude))
         print('GPSLatitude:' + str(GPSLatitude))
-        print(self.geocode(location))
+        #print(self.geocode(location))
         print("-----------------------------------")
 
         if self.myRadioButton_date.isChecked() == True:
@@ -247,7 +248,7 @@ class GetPostThread(QThread):
             # 如果按GSP
             # self.geocode(location) 找出地理位置
 
-            if GPSLongitude == 'no-GPS':
+            if GPSLongitude == "no-GPS":
                 dst = f'{self.subreddits_dst}/no-GPS/no-GPS/'
             else:
                 dst = f'{self.subreddits_dst}/{createdate[0:4]}/{self.geocode(location)}/'
@@ -255,8 +256,7 @@ class GetPostThread(QThread):
             pass
 
 
-
-        # 建立存储目标目录名 t[0:4] = 2005  t[:10] = 2005-03-10
+        # 建立存储目标目录名
         if not os.path.exists(dst):
             os.makedirs(dst)
 
@@ -301,7 +301,7 @@ class GetPostThread(QThread):
                 top_post = info + "已存在，不作复制"  # 有重复的文件
             else:
                 # 只是文件名重复，修改为文件名再复制，加上拍摄日期如 DSC_1689_2017-07-15.jpg
-                newfilename = f'{os.path.splitext(filename)[0]}{"_"}{t[:10]}{os.path.splitext(filename)[1]}'
+                newfilename = f'{os.path.splitext(filename)[0]}{"_"}{createdate[:10]}{os.path.splitext(filename)[1]}'
 
                 shutil.move(filename, newfilename)
                 shutil.copy2(newfilename, dst)
