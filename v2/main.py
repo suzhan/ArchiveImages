@@ -80,7 +80,6 @@ class Ui_MainWindow(object):
         self.checkBox_rename.setIconSize(QtCore.QSize(16, 16))
         self.checkBox_rename.setObjectName("checkBox_rename")
         # add
-
         self.checkBox_rename.toggle()
         self.checkBox_rename.stateChanged.connect(self.changeRename)
         # add_end
@@ -105,22 +104,22 @@ class Ui_MainWindow(object):
         self.radioButton_GPS.setObjectName("radioButton_GPS")
         # add
         self.radioButton_GPS.toggle()
-        self.radioButton_GPS.toggled.connect(self.changeGPS)
+        #self.radioButton_GPS.toggled.connect(self.changeGPS)
         # add_end
 
         #GPS范围滑条
-        self.horizontalSlider = QtWidgets.QSlider(self.centralwidget)
-        self.horizontalSlider.setGeometry(QtCore.QRect(180, 312, 250, 19))
-        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider.setObjectName("horizontalSlider")
+        #self.horizontalSlider = QtWidgets.QSlider(self.centralwidget)
+        #self.horizontalSlider.setGeometry(QtCore.QRect(180, 312, 250, 19))
+        #self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        #self.horizontalSlider.setObjectName("horizontalSlider")
         # add
-        self.horizontalSlider.valueChanged.connect(self.changeGPSvalue)
+        #self.horizontalSlider.valueChanged.connect(self.changeGPSvalue)
         # add_end
 
         # GPS范围值,米距离
-        self.label_gpsm=QtWidgets.QLabel(self.centralwidget)
-        self.label_gpsm.setGeometry(QtCore.QRect(440, 312, 270, 12))
-        self.label_gpsm.setObjectName("label_gpsm")
+        #self.label_gpsm=QtWidgets.QLabel(self.centralwidget)
+        #self.label_gpsm.setGeometry(QtCore.QRect(440, 312, 270, 12))
+        #self.label_gpsm.setObjectName("label_gpsm")
 
         self.groupBox_method = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_method.setGeometry(QtCore.QRect(20, 130, 601, 221))
@@ -222,7 +221,7 @@ class Ui_MainWindow(object):
         self.radioButton_cameraType.raise_()
         self.radioButton_lensType.raise_()
         self.radioButton_GPS.raise_()
-        self.horizontalSlider.raise_()
+        #self.horizontalSlider.raise_()
         self.groupBox_dst.raise_()
         self.pushButton_start.raise_()
         self.pushButton_stop.raise_()
@@ -261,7 +260,7 @@ class Ui_MainWindow(object):
         self.radioButton_lensType.setText(_translate("MainWindow", "按镜头型号"))
         self.radioButton_GPS.setText(_translate("MainWindow", "按GPS范围"))
         self.groupBox_method.setTitle(_translate("MainWindow", "方法"))
-        self.label_gpsm.setText(_translate("MainWindow", "经：±0米 纬：±0米"))
+        #self.label_gpsm.setText(_translate("MainWindow", "经：±0米 纬：±0米"))
         self.groupBox_dst.setTitle(_translate("MainWindow", "目的地"))
         self.pushButton_dst.setText(_translate("MainWindow", "浏览"))
         self.radioButton_select.setText(_translate("MainWindow", "选择文件夹"))
@@ -290,21 +289,21 @@ class Ui_MainWindow(object):
         self.pushButton_rename.setDisabled(False)
 
 
-    def changeGPS(self,state):
-        '''选择按GPS整理'''
-        #print(state)
-        #当选择按GPS整理时，滑条生效
-        if state:
-            self.horizontalSlider.setEnabled(True)
-        else:
-            self.horizontalSlider.setEnabled(False)
+    #def changeGPS(self,state):
+    #    '''选择按GPS整理'''
+    #    #print(state)
+    #    #当选择按GPS整理时，滑条生效
+    #    if state:
+    #        self.horizontalSlider.setEnabled(True)
+    #    else:
+    #        self.horizontalSlider.setEnabled(False)
 
-    def changeGPSvalue(self, value):
-        #print(value)
-        #经度1秒 = 23.6m 纬度1秒 = 大约30.9m
-        Longitude = value * 24
-        Latitude = value * 31
-        self.label_gpsm.setText('经：±' +str(Longitude)+'米' + ' ' + '纬：±' +  str(Latitude)+'米')
+    #def changeGPSvalue(self, value):
+    #    #print(value)
+    #    #经度1秒 = 23.6m 纬度1秒 = 大约30.9m
+    #    Longitude = value * 24
+    #    Latitude = value * 31
+    #    self.label_gpsm.setText('经：±' +str(Longitude)+'米' + ' ' + '纬：±' +  str(Latitude)+'米')
 
     def changeDstSelect(self):
         """选择一个目录作为存储目录"""

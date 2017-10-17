@@ -207,7 +207,7 @@ class GetPostThread(QThread):
         else:
             createdate = createdate.replace(':', '-')[:10] + createdate[10:]
 
-
+        location = '{},{}'.format(str(GPSLatitude),str(GPSLongitude))
 
 
         print("----------------------------------")
@@ -218,18 +218,7 @@ class GetPostThread(QThread):
         print('lens:' + lens)
         print('GPSLongitude:' + str(GPSLongitude))
         print('GPSLatitude:' + str(GPSLatitude))
-        #print('GPS:'+ str(GPS) )
-
-        location = GPSLongitude,GPSLatitude
-
-
-        print(location)
-
-
-
-        a = self.geocode('{location}')
-
-        print(a)
+        print(self.geocode(location))
         print("-----------------------------------")
 
         if self.myRadioButton_date.isChecked() == True:
@@ -256,10 +245,12 @@ class GetPostThread(QThread):
 
         elif self.myRadioButton_GPS.isChecked() == True :
             # 如果按GSP
+            # self.geocode(location) 找出地理位置
+
             if GPSLongitude == 'no-GPS':
                 dst = f'{self.subreddits_dst}/no-GPS/no-GPS/'
             else:
-                dst = f'{self.subreddits_dst}/{createdate[0:4]}/{str(GPSLongitude)}-{str(GPSLatitude)}/'
+                dst = f'{self.subreddits_dst}/{createdate[0:4]}/{self.geocode(location)}/'
         else:
             pass
 
@@ -407,7 +398,8 @@ class GetPostThread(QThread):
                     result.append(self.calculate_hashes(os.path.join(root, filename)))
         return result
 
-    def geocode(self,location):
+    def geocode(self, location):
+        """检测GPS地理位置，国内版用高德地图API, 国际版使用google map api"""
 
         # 高德
         # parameters = {'location': location, 'key': 'af1bd859d39559bf7d226107ab9fb899'}
@@ -418,11 +410,19 @@ class GetPostThread(QThread):
         # return answer['regeocode']['formatted_address']
 
         # goole map api
-        parameters = {'latlng': location, 'key': 'AIzaSyBLUVoW6RXJozTtq-WQ8OMHgKiT3zU4m4g'}
+        parameters = {'latlng': location , 'key': 'AIzaSyBLUVoW6RXJozTtq-WQ8OMHgKiT3zU4m4g'}
         base = 'https://maps.googleapis.com/maps/api/geocode/json'
         response = requests.get(base, parameters)
+        #print(response.url)
         answer = response.json()
-        return answer['results'][0]['formatted_address']  # google map api   不同的精度需要调整[2] 里边的数字
+        #print(answer)
+        return answer['results'][1]['formatted_address']
+        # google map api   不同的精度需要调整[2] 里边的数字
+        #0 Bei Huan Nan Hai Li Jiao, Nanshan Qu, Shenzhen Shi, Guangdong Sheng, China, 518057
+        #3  Nanshan, Shenzhen, Guangdong, China, 518057
+        #2  Shenzhen, Guangdong, China
+        #1  Nanshan, Shenzhen, Guangdong, China
+        #5  China
 
     def run(self):
         a = 0
