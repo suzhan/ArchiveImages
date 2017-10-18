@@ -211,16 +211,16 @@ class GetPostThread(QThread):
             location = '{},{}'.format(str(GPSLatitude),str(GPSLongitude))
 
 
-        print("----------------------------------")
-        print('filename:' + filename)
-        print('filetype:' + filetype)
-        print('createdate:' + createdate)
-        print('model:' + model)
-        print('lens:' + lens)
-        print('GPSLongitude:' + str(GPSLongitude))
-        print('GPSLatitude:' + str(GPSLatitude))
+        #print("----------------------------------")
+        #print('filename:' + filename)
+        #print('filetype:' + filetype)
+        #print('createdate:' + createdate)
+        #print('model:' + model)
+        #print('lens:' + lens)
+        #print('GPSLongitude:' + str(GPSLongitude))
+        #print('GPSLatitude:' + str(GPSLatitude))
         #print(self.geocode(location))
-        print("-----------------------------------")
+        #print("-----------------------------------")
 
         if self.myRadioButton_date.isChecked() == True:
             if createdate == "no-createdate":
@@ -263,7 +263,11 @@ class GetPostThread(QThread):
         tt = str(len(self.myfilenames))
 
         # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
-        dubfilelist = self.find_dub_filename(directory + '/' + filename)
+        dubfilelist = self.find_dub_filename(filename)
+
+        print("----------")
+        print(dubfilelist)
+        print("----------")
 
         info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + str(a) + "/" + str(tt) + " " + "文件:" + \
                filename + " " + "拍摄时间:" + createdate + " "
@@ -297,17 +301,18 @@ class GetPostThread(QThread):
                 top_post = info + "移动到:" + '..' + dst[-17:]
         else:
 
-            if self.calculate_hashes(filename) in dubfilelist:
+            if self.calculate_hashes(sourceFile) in dubfilelist:
                 top_post = info + "已存在，不作复制"  # 有重复的文件
             else:
                 # 只是文件名重复，修改为文件名再复制，加上拍摄日期如 DSC_1689_2017-07-15.jpg
+
                 newfilename = f'{os.path.splitext(filename)[0]}{"_"}{createdate[:10]}{os.path.splitext(filename)[1]}'
 
-                shutil.move(filename, newfilename)
+                shutil.copy2(sourceFile, newfilename)
                 shutil.copy2(newfilename, dst)
 
                 if self.myCheckBox_del == True:  # 如果选择删除文件
-                    os.remove(filename)
+                    os.remove(newfilename)
 
                 top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + str(a) + "/" + str(tt) + " " + \
                            os.path.split(filename)[1] + " " + "文件名已存在, 变更文件名为" + newfilename + "复制"
@@ -392,6 +397,10 @@ class GetPostThread(QThread):
     def find_dub_filename(self, filename):
         """检测存储目录是否存在同名文件,并得出md5sha1码存在结果"""
         result = []
+
+        print(filename)
+        print(self.subreddits_dst)
+
         for root, dirs, files in os.walk(self.subreddits_dst):
             for filename2 in files:
                 if filename == filename2:

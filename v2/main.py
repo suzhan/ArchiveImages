@@ -227,7 +227,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "ArchImages v2 suzhan.cn@gmail.com"))
         self.pushButton_src.setText(_translate("MainWindow", "浏览"))
         self.checkBox_Subdirectory.setText(_translate("MainWindow", "包括子文件夹"))
         self.checkBox_del.setText(_translate("MainWindow", "处理后删除原文件"))
