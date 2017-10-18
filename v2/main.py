@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'main.ui'
-#
-# Created by: PyQt5 UI code generator 5.9
-#
-# WARNING! All changes made in this file will be lost!
 
 import sys, os
 from PyQt5 import QtCore, QtGui
@@ -52,12 +45,12 @@ class Ui_MainWindow(object):
         #add_end
         #是否选择子文件夹
         self.checkBox_Subdirectory = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox_Subdirectory.setGeometry(QtCore.QRect(60, 70, 101, 16))
+        self.checkBox_Subdirectory.setGeometry(QtCore.QRect(60, 70, 201, 16))
         self.checkBox_Subdirectory.setObjectName("checkBox_Subdirectory")
 
         #是否选择删除文件
         self.checkBox_del = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox_del.setGeometry(QtCore.QRect(60, 90, 231, 16))
+        self.checkBox_del.setGeometry(QtCore.QRect(60, 90, 251, 16))
         self.checkBox_del.setObjectName("checkBox_del")
 
         self.groupBox_src = QtWidgets.QGroupBox(self.centralwidget)
@@ -76,7 +69,7 @@ class Ui_MainWindow(object):
 
         #是否选择重命令
         self.checkBox_rename = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox_rename.setGeometry(QtCore.QRect(60, 150, 61, 20))
+        self.checkBox_rename.setGeometry(QtCore.QRect(60, 150, 81, 20))
         self.checkBox_rename.setIconSize(QtCore.QSize(16, 16))
         self.checkBox_rename.setObjectName("checkBox_rename")
         # add
@@ -85,41 +78,28 @@ class Ui_MainWindow(object):
         # add_end
         #按拍摄日期
         self.radioButton_date = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_date.setGeometry(QtCore.QRect(60, 220, 91, 20))
+        self.radioButton_date.setGeometry(QtCore.QRect(60, 220, 150, 20))
         self.radioButton_date.setObjectName("radioButton_date")
 
         #按相机型号
         self.radioButton_cameraType = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_cameraType.setGeometry(QtCore.QRect(60, 250, 91, 20))
+        self.radioButton_cameraType.setGeometry(QtCore.QRect(60, 250, 150, 20))
         self.radioButton_cameraType.setObjectName("radioButton_cameraType")
 
         #按镜头型号
         self.radioButton_lensType = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_lensType.setGeometry(QtCore.QRect(60, 280, 91, 20))
+        self.radioButton_lensType.setGeometry(QtCore.QRect(60, 280, 150, 20))
         self.radioButton_lensType.setObjectName("radioButton_lensType")
 
         #按GPS范围
         self.radioButton_GPS = QtWidgets.QRadioButton(self.centralwidget)
-        self.radioButton_GPS.setGeometry(QtCore.QRect(60, 310, 91, 20))
+        self.radioButton_GPS.setGeometry(QtCore.QRect(60, 310, 150, 20))
         self.radioButton_GPS.setObjectName("radioButton_GPS")
         # add
         self.radioButton_GPS.toggle()
-        #self.radioButton_GPS.toggled.connect(self.changeGPS)
+
         # add_end
 
-        #GPS范围滑条
-        #self.horizontalSlider = QtWidgets.QSlider(self.centralwidget)
-        #self.horizontalSlider.setGeometry(QtCore.QRect(180, 312, 250, 19))
-        #self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
-        #self.horizontalSlider.setObjectName("horizontalSlider")
-        # add
-        #self.horizontalSlider.valueChanged.connect(self.changeGPSvalue)
-        # add_end
-
-        # GPS范围值,米距离
-        #self.label_gpsm=QtWidgets.QLabel(self.centralwidget)
-        #self.label_gpsm.setGeometry(QtCore.QRect(440, 312, 270, 12))
-        #self.label_gpsm.setObjectName("label_gpsm")
 
         self.groupBox_method = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_method.setGeometry(QtCore.QRect(20, 130, 601, 221))
@@ -248,18 +228,18 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton_src.setText(_translate("MainWindow", "Browse"))
-        self.checkBox_Subdirectory.setText(_translate("MainWindow", "Include subfolders"))
-        self.checkBox_del.setText(_translate("MainWindow", "Delete it after processing"))
-        self.groupBox_src.setTitle(_translate("MainWindow", "Source"))
-        self.lineEdit_rename.setText(_translate("MainWindow", "Rename"))
-        self.pushButton_rename.setText(_translate("MainWindow", "Edit"))
-        self.checkBox_rename.setText(_translate("MainWindow", "Rename"))
-        self.radioButton_date.setText(_translate("MainWindow", "By CreateDate"))
-        self.radioButton_cameraType.setText(_translate("MainWindow", "By CameraType"))
-        self.radioButton_lensType.setText(_translate("MainWindow", "By LensType"))
-        self.radioButton_GPS.setText(_translate("MainWindow", "By GPS"))
-        self.groupBox_method.setTitle(_translate("MainWindow", "Processor"))
+        self.pushButton_src.setText(_translate("MainWindow", "浏览"))
+        self.checkBox_Subdirectory.setText(_translate("MainWindow", "包括子文件夹"))
+        self.checkBox_del.setText(_translate("MainWindow", "处理后删除原文件"))
+        self.groupBox_src.setTitle(_translate("MainWindow", "来源"))
+        self.lineEdit_rename.setText(_translate("MainWindow", ""))
+        self.pushButton_rename.setText(_translate("MainWindow", "编辑"))
+        self.checkBox_rename.setText(_translate("MainWindow", "重命名"))
+        self.radioButton_date.setText(_translate("MainWindow", "按拍摄日期"))
+        self.radioButton_cameraType.setText(_translate("MainWindow", "按相机类型"))
+        self.radioButton_lensType.setText(_translate("MainWindow", "按镜头类型"))
+        self.radioButton_GPS.setText(_translate("MainWindow", "按GPS"))
+        self.groupBox_method.setTitle(_translate("MainWindow", "方法"))
         #self.label_gpsm.setText(_translate("MainWindow", "经：±0米 纬：±0米"))
         self.groupBox_dst.setTitle(_translate("MainWindow", "目的地"))
         self.pushButton_dst.setText(_translate("MainWindow", "浏览"))
@@ -288,22 +268,6 @@ class Ui_MainWindow(object):
         '''选择将文件更名'''
         self.pushButton_rename.setDisabled(False)
 
-
-    #def changeGPS(self,state):
-    #    '''选择按GPS整理'''
-    #    #print(state)
-    #    #当选择按GPS整理时，滑条生效
-    #    if state:
-    #        self.horizontalSlider.setEnabled(True)
-    #    else:
-    #        self.horizontalSlider.setEnabled(False)
-
-    #def changeGPSvalue(self, value):
-    #    #print(value)
-    #    #经度1秒 = 23.6m 纬度1秒 = 大约30.9m
-    #    Longitude = value * 24
-    #    Latitude = value * 31
-    #    self.label_gpsm.setText('经：±' +str(Longitude)+'米' + ' ' + '纬：±' +  str(Latitude)+'米')
 
     def changeDstSelect(self):
         """选择一个目录作为存储目录"""
