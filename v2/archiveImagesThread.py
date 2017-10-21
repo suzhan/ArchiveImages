@@ -224,7 +224,7 @@ class GetPostThread(QThread):
 
         if self.myRadioButton_date.isChecked() == True:
             if createdate == "no-createdate":
-                dst = f'{self.subreddits_dst}/no-createdate/no-createdate/'
+                dst = f'{self.subreddits_dst}/no-createdate/'
             else:
                 dst = f'{self.subreddits_dst}/{createdate[0:4]}/{createdate[:10]}/'
 
@@ -232,7 +232,7 @@ class GetPostThread(QThread):
             # 如果按相机类型
 
             if model == "no-model":
-                dst = f'{self.subreddits_dst}/no-model/no-model/'
+                dst = f'{self.subreddits_dst}/no-model/'
             else:
                 dst = f'{self.subreddits_dst}/{createdate[0:4]}/{model}/'
 
@@ -240,7 +240,7 @@ class GetPostThread(QThread):
             # 如果按镜头类型
 
             if lens == "no-lens":
-                dst = f'{self.subreddits_dst}/no-lens/no-lens/'
+                dst = f'{self.subreddits_dst}/no-lens/'
             else:
                 dst = f'{self.subreddits_dst}/{createdate[0:4]}/{lens}/'
 
@@ -249,7 +249,7 @@ class GetPostThread(QThread):
             # self.geocode(location) 找出地理位置
 
             if GPSLongitude == "no-GPS":
-                dst = f'{self.subreddits_dst}/no-GPS/no-GPS/'
+                dst = f'{self.subreddits_dst}/no-GPS/'
             else:
                 dst = f'{self.subreddits_dst}/{createdate[0:4]}/{self.geocode(location)}/'
         else:
@@ -277,25 +277,36 @@ class GetPostThread(QThread):
             # 如果选择重命名
             if self.myCheckBox_rename.isChecked() == True:
                 # 原文件名
-                # print("原文件名")
-                # print(os.path.split(archFilename)[1])
-                bb = self.reFilename(filename, createdate, a) + os.path.splitext(filename)[1]
-                shutil.copy2(filename, dst)
-                # print(dst + '/' + os.path.split(archFilename)[1]) #原文件名
-                # print(dst + '/' + bb) #新名路径
-                shutil.move(dst + '/' + os.path.split(filename)[1], dst + '/' + bb)
+                print("原文件名")
+                print(filename)
+                print(os.path.splitext(filename)[1])
+                print(dst)
+
+                print(self.reFilename(filename, createdate, a))
+
+                #bb = self.reFilename(filename, createdate, a) + os.path.splitext(filename)[1]
+
+                shutil.copy2(sourceFile, dst)
+                shutil.move(dst + '/' + filename , dst + '/' +  self.reFilename(filename, createdate, a) + os.path.splitext(filename)[1])
+
 
                 # 如果选择删除文件
-                if self.myCheckBox_del == True:
-                    os.remove(filename)
+                print("????????????????????")
+                print(self.myCheckBox_del.isChecked())
 
-                top_post = info + "移动到:" + os.path.split(dst)[1]
+                if self.myCheckBox_del.isChecked() == True:
+                    os.remove(sourceFile)
+
+                top_post = info + "移动到:" + dst
 
             else:
                 shutil.copy(sourceFile, dst)
+                print("????????????????????")
+                print(self.myCheckBox_del.isChecked())
 
                 # 如果选择删除文件
-                if self.myCheckBox_del == True:
+                if self.myCheckBox_del.isChecked() == True:
+                    print("11111111111111111111111111111111")
                     os.remove(sourceFile)
 
                 top_post = info + "移动到:" + '..' + dst[-17:]
@@ -311,7 +322,7 @@ class GetPostThread(QThread):
                 shutil.copy2(sourceFile, newfilename)
                 shutil.copy2(newfilename, dst)
 
-                if self.myCheckBox_del == True:  # 如果选择删除文件
+                if self.myCheckBox_del.isChecked() == True:  # 如果选择删除文件
                     os.remove(newfilename)
 
                 top_post = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + str(a) + "/" + str(tt) + " " + \
