@@ -19,6 +19,7 @@ Email: suzhan.cn@gmail.com
 4. 可选择是否删除原文件， 如果目标文件中存在与源文件的MD5,sha1，文件大小都一样的文件就忽略处理，直接删除       
 5. 依赖 python 3.6 , pyqt5 , exiftool(https://www.sno.phy.queensu.ca/~phil/exiftool/), google maps api ,需安装本地exiftool, 如需使用GPS分类，需确保正常使用google maps
 
-
+1.png
+2.png
 
 开源协议: GNU General Public Licence v3
