@@ -265,10 +265,6 @@ class GetPostThread(QThread):
         # 如果存储目录存在同名文件，检测hashe值及文件大小， 如果一样，不作处理, 如只是同命，更命后再复制
         dubfilelist = self.find_dub_filename(filename)
 
-        print("----------")
-        print(dubfilelist)
-        print("----------")
-
         info = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " " + str(a) + "/" + str(tt) + " " + "文件:" + \
                filename + " " + "拍摄时间:" + createdate + " "
 
@@ -276,24 +272,10 @@ class GetPostThread(QThread):
         if len(dubfilelist) == 0:
             # 如果选择重命名
             if self.myCheckBox_rename.isChecked() == True:
-                # 原文件名
-                print("原文件名")
-                print(filename)
-                print(os.path.splitext(filename)[1])
-                print(dst)
-
-                print(self.reFilename(filename, createdate, a))
-
-                #bb = self.reFilename(filename, createdate, a) + os.path.splitext(filename)[1]
-
                 shutil.copy2(sourceFile, dst)
                 shutil.move(dst + '/' + filename , dst + '/' +  self.reFilename(filename, createdate, a) + os.path.splitext(filename)[1])
 
-
                 # 如果选择删除文件
-                print("????????????????????")
-                print(self.myCheckBox_del.isChecked())
-
                 if self.myCheckBox_del.isChecked() == True:
                     os.remove(sourceFile)
 
@@ -301,15 +283,12 @@ class GetPostThread(QThread):
 
             else:
                 shutil.copy(sourceFile, dst)
-                print("????????????????????")
-                print(self.myCheckBox_del.isChecked())
 
                 # 如果选择删除文件
                 if self.myCheckBox_del.isChecked() == True:
-                    print("11111111111111111111111111111111")
                     os.remove(sourceFile)
 
-                top_post = info + "移动到:" + '..' + dst[-17:]
+                top_post = info + "移动到:" + dst
         else:
 
             if self.calculate_hashes(sourceFile) in dubfilelist:
