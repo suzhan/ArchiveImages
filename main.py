@@ -10,10 +10,8 @@ from archiveImagesThread import GetPostThread
 
 class Ui_MainWindow(object):
 
-    #rename_signal=pyqtSignal()
     def __init__( self, parent = None ):
         super().__init__()
-        #sys.exit(app.exec_())
         
         self.archThread = GetPostThread() #GetpostThread 参数传递地
 
@@ -67,8 +65,6 @@ class Ui_MainWindow(object):
         self.pushButton_rename.setGeometry(QtCore.QRect(530, 180, 75, 23))
         self.pushButton_rename.setObjectName("pushButton_rename")
 
-        #self.pushButton_rename.clicked.connect(Form.show)
-
         #是否选择重命令
         self.checkBox_rename = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBox_rename.setGeometry(QtCore.QRect(60, 150, 81, 20))
@@ -99,7 +95,6 @@ class Ui_MainWindow(object):
         self.radioButton_GPS.setObjectName("radioButton_GPS")
         # add
         self.radioButton_GPS.toggle()
-
         # add_end
 
 
@@ -128,7 +123,6 @@ class Ui_MainWindow(object):
         # add
         self.radioButton_select.toggle()
         self.radioButton_select.toggled.connect(self.changeDstSelect)
-
         # add_end
 
         self.radioButton_src = QtWidgets.QRadioButton(self.groupBox_dst)
@@ -203,13 +197,11 @@ class Ui_MainWindow(object):
         self.radioButton_cameraType.raise_()
         self.radioButton_lensType.raise_()
         self.radioButton_GPS.raise_()
-        #self.horizontalSlider.raise_()
         self.groupBox_dst.raise_()
         self.pushButton_start.raise_()
         self.pushButton_stop.raise_()
         self.progressBar.raise_()
         self.textBrowser.raise_()
-        #self.label.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -242,19 +234,17 @@ class Ui_MainWindow(object):
         self.radioButton_lensType.setText(_translate("MainWindow", "按镜头类型"))
         self.radioButton_GPS.setText(_translate("MainWindow", "按GPS"))
         self.groupBox_method.setTitle(_translate("MainWindow", "方法"))
-        #self.label_gpsm.setText(_translate("MainWindow", "经：±0米 纬：±0米"))
         self.groupBox_dst.setTitle(_translate("MainWindow", "目的地"))
         self.pushButton_dst.setText(_translate("MainWindow", "浏览"))
         self.radioButton_select.setText(_translate("MainWindow", "选择文件夹"))
         self.radioButton_src.setText(_translate("MainWindow", "选择源文件夹"))
         self.pushButton_start.setText(_translate("MainWindow", "开始"))
         self.pushButton_stop.setText(_translate("MainWindow", "取消"))
-        #self.label.setText(_translate("MainWindow", ""))
         self.groupBox_schedule.setTitle(_translate("MainWindow", "进度"))
 
 
     def srcBtnClicked(self,filepath):
-        '''选择源文件夹'''
+        """选择源文件夹"""
         self.sPath = QFileDialog.getExistingDirectory()
         print(self.sPath)
         self.lineEdit_src.setText(self.sPath)
@@ -267,7 +257,7 @@ class Ui_MainWindow(object):
 
 
     def changeRename(self,state):
-        '''选择将文件更名'''
+        """选择将文件更名"""
         if self.checkBox_rename.isChecked() == True:
             self.pushButton_rename.setDisabled(False)
         else:
@@ -350,8 +340,6 @@ class Ui_MainWindow(object):
         self.archThread.setlabel_hyphen2(self.label_hyphen2) #中缀序列号
         self.archThread.setlabel_newname2(self.label_newname2) #中缀拍摄日期序列号
 
-
-
         self.archThread.start()   #开始执行archThread线程
         
         self.pushButton_start.setEnabled(False)  # 设置开始按钮为禁用
@@ -365,10 +353,6 @@ class Ui_MainWindow(object):
         
     def threadFinished(self):
         '''完成整理'''
-        #self.progressBar.setValue(0)  #进度条值清空
-        #if self.archThread.isRunning():
-        #    self.archThread.terminate()
-        #self.label.setText("整理结束。")
         self.textBrowser.append("整理完成！")
 
         self.pushButton_start.setEnabled(True)  # 设置开始按钮为禁用
@@ -378,11 +362,9 @@ class Ui_MainWindow(object):
     def messages(self, messages):
         """没有选择来源目录时，弹出窗口提示"""
         infoBox = QMessageBox()
-        #infoBox.setIcon(QMessageBox.Information)
         infoBox.setText(messages + "       ")
         infoBox.setInformativeText("")
         infoBox.setWindowTitle("消息")
-        #infoBox.setDetailedText("Detailed Text")
         infoBox.setStandardButtons(QMessageBox.Ok)
         infoBox.setEscapeButton(infoBox.exec_())
 

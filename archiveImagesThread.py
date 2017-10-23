@@ -211,17 +211,6 @@ class GetPostThread(QThread):
             location = '{},{}'.format(str(GPSLatitude),str(GPSLongitude))
 
 
-        #print("----------------------------------")
-        #print('filename:' + filename)
-        #print('filetype:' + filetype)
-        #print('createdate:' + createdate)
-        #print('model:' + model)
-        #print('lens:' + lens)
-        #print('GPSLongitude:' + str(GPSLongitude))
-        #print('GPSLatitude:' + str(GPSLatitude))
-        #print(self.geocode(location))
-        #print("-----------------------------------")
-
         if self.myRadioButton_date.isChecked() == True:
             if createdate == "no-createdate":
                 dst = f'{self.subreddits_dst}/no-createdate/'
@@ -325,7 +314,6 @@ class GetPostThread(QThread):
         # 新文件名前缀连接符
         newName2 = self.mylabel_hyphen1.text()
 
-        # print(self.mylabel_datetimesn1.text())
         # 中缀
         if self.mylabel_datetimesn1.text() == "20171130":  # yyyymmdd
             newName3_1 = t.replace('-', '')[:8]
@@ -388,9 +376,6 @@ class GetPostThread(QThread):
         """检测存储目录是否存在同名文件,并得出md5sha1码存在结果"""
         result = []
 
-        print(filename)
-        print(self.subreddits_dst)
-
         for root, dirs, files in os.walk(self.subreddits_dst):
             for filename2 in files:
                 if filename == filename2:
@@ -412,9 +397,7 @@ class GetPostThread(QThread):
         parameters = {'latlng': location , 'key': 'AIzaSyBLUVoW6RXJozTtq-WQ8OMHgKiT3zU4m4g'}
         base = 'https://maps.googleapis.com/maps/api/geocode/json'
         response = requests.get(base, parameters)
-        #print(response.url)
         answer = response.json()
-        #print(answer)
         return answer['results'][1]['formatted_address']
         # google map api   不同的精度需要调整[2] 里边的数字
         #0 Bei Huan Nan Hai Li Jiao, Nanshan Qu, Shenzhen Shi, Guangdong Sheng, China, 518057
@@ -425,15 +408,10 @@ class GetPostThread(QThread):
 
     def run(self):
         a = 0
-        # for archFilename in self.myfilenames:  # 需处理的图像列表传到线程类中
-        #    a = a + 1
-        #    top_post = self.get_top_post(archFilename, a)  # 进行归档处理
-        #    self.postSignal.emit(top_post)  # run方法中处理并获得数据，然后通过信号将其发出
         with exiftool.ExifTool() as et:
             metadata = et.get_metadata_batch(self.myfilenames)
         for d in metadata:
             a = a + 1
             print(d)
             top_post = self.get_top_post(d, a)
-            # time.sleep(5)
             self.postSignal.emit(top_post)
