@@ -16,8 +16,8 @@ Email: suzhan.cn@gmail.com
 
 **备注:**
 1. 支持文件类型：.jpg, .nef, .mp4, .mov  
-2. 从文件的exif中得出拍拍摄日期，相机类型，镜头类型，GPS地址，移动到存储目录
-3. 整理存储格式 : 存储目录路径/拍摄年份/[拍摄日期，相机类型，镜头类型，GPS地址]/... 如  d:/photo/2017/D80/DES_1231.JPG  
+2. 从文件的exif中得出  _拍摄日期，相机类型，镜头类型，GPS地址_ ，移动到存储目录
+3. 整理存储格式 : 存储目录路径/拍摄年份/ _拍摄日期，相机类型，镜头类型，GPS地址/_  ... 如  d:/photo/2017/D80/DES_1231.JPG  
 4. 可选择是否删除原文件， 如果目标文件中存在与源文件的MD5,sha1，文件大小都一样的文件就忽略处理，直接删除       
 5. 依赖 python 3.6 , pyqt5 , [exiftool](https://www.sno.phy.queensu.ca/~phil/exiftool/), google maps api ,需安装本地exiftool, 如需使用GPS分类，需确保正常使用google maps
 
