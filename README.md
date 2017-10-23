@@ -1,7 +1,7 @@
 # archive Images v2
-整理图片视频程序V2
-作者：suzhan  
-Email: suzhan.cn@gmail.com  
+整理图片视频程序V2  
+作者：suzhan    
+Email: suzhan.cn@gmail.com    
 
 **用途：**
 将手机，单反相机拍摄的视频图像整理归档
