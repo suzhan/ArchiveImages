@@ -10,7 +10,9 @@ Email: suzhan.cn@gmail.com
 将图片视频文件按拍摄日期，相机类型，镜头类型，GPS地址整理到指定目录.
 
 使用方法：
-从start.py启动
+1. 下载 https://www.sno.phy.queensu.ca/~phil/exiftool/exiftool-10.64.zip 
+   解压得 exiftool(-k).exe 重命名为 exiftool.exe , 并复制到windows 目录下面
+2. https://github.com/suzhan/archiveImages/blob/master/archiveImagesV2.exe 下载执行
 
 备注:
 1. 支持文件类型：.jpg, .nef, .mp4, .mov  
