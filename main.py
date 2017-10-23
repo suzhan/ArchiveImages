@@ -268,7 +268,11 @@ class Ui_MainWindow(object):
 
     def changeRename(self,state):
         '''选择将文件更名'''
-        self.pushButton_rename.setDisabled(False)
+        if self.checkBox_rename.isChecked() == True:
+            self.pushButton_rename.setDisabled(False)
+        else:
+            self.pushButton_rename.setDisabled(True)
+
 
 
     def changeDstSelect(self):
@@ -314,7 +318,11 @@ class Ui_MainWindow(object):
                 if e.lower() not in ('.jpg', '.jpeg', '.nef', '.mp4', '.mov'):
                     continue
                 filename_list.append(filename)
-                
+
+        if len(filename_list) == 0:
+            self.messages("源目录没有需要整理的文件，请重新选择！")
+            return
+
         #处理进度消息显示总文件数
         self.textBrowser.clear()   #清空结果
         self.textBrowser.append("开始整理")
