@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-
+from PyQt5.QtGui import QIcon
 
 class Ui_Form(object):
     def __init__(self, parent=None):
@@ -14,6 +14,9 @@ class Ui_Form(object):
     def setupUi2(self, Form):
         Form.setObjectName("Form")
         Form.resize(580, 314)
+
+        Form.setWindowTitle('Icon')
+        Form.setWindowIcon(QIcon('ico.ico'))
 
         # 示例
         self.label_example = QtWidgets.QLabel(Form)

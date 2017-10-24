@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QFileDialog,QStyleFactory,QApplication,QMessageBox,Q
 from PyQt5.QtCore import Qt,pyqtSignal
 from PyQt5 import QtCore, QtGui, QtWidgets
 from archiveImagesThread import GetPostThread
+from PyQt5.QtGui import QIcon
 
 
 class Ui_MainWindow(object):
@@ -23,14 +24,17 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(640, 685)
-
-
+        MainWindow.setWindowTitle('Icon')
+        MainWindow.setWindowIcon(QIcon('ico.ico'))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(9)
         font.setBold(False)
         font.setWeight(50)
         MainWindow.setFont(font)
+
+
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.lineEdit_src = QtWidgets.QLineEdit(self.centralwidget)
@@ -221,7 +225,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "ArchImages v2 suzhan.cn@gmail.com"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "ArchImages v2.1 suzhan.cn@gmail.com"))
         self.pushButton_src.setText(_translate("MainWindow", "浏览"))
         self.checkBox_Subdirectory.setText(_translate("MainWindow", "包括子文件夹"))
         self.checkBox_del.setText(_translate("MainWindow", "处理后删除原文件"))
