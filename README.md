@@ -12,7 +12,7 @@ Email: suzhan.cn@gmail.com
 **使用方法：**
 1. 下载 [exiftool](https://www.sno.phy.queensu.ca/~phil/exiftool/exiftool-10.64.zip) 
    解压得 exiftool(-k).exe 重命名为 exiftool.exe , 并复制到windows 目录下面
-2. [archiveImages V2 for windows](https://github.com/suzhan/archiveImages/blob/master/archiveImagesV2.exe) 下载执行
+2. [archiveImages V2.1 for windows](https://github.com/suzhan/archiveImages/blob/master/archiveImagesV2.1.exe) 下载执行
 
 **备注:**
 1. 支持文件类型：.jpg, .nef, .mp4, .mov  
