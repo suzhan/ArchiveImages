@@ -9,7 +9,7 @@ Email: suzhan.cn@gmail.com
 **功能：** 
 将图片视频文件按拍摄日期，相机类型，镜头类型，GPS地址整理到指定目录.
 
-**使用方法：**
+**Windows 下的使用方法：**
 1. 下载 [exiftool](https://www.sno.phy.queensu.ca/~phil/exiftool/exiftool-10.64.zip) 
    解压得 exiftool(-k).exe 重命名为 exiftool.exe , 并复制到windows 目录下面
 2. [archiveImages V2.1 for windows](https://github.com/suzhan/archiveImages/blob/master/archiveImagesV2.1.exe) 下载执行
